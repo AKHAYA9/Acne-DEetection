@@ -20,6 +20,8 @@ urlpatterns = [
     path('DeactivateUsers/', admins.DeactivateUsers, name='DeactivateUsers'),
     path('DeleteUsers/', admins.DeleteUsers, name='DeleteUsers'),
     path('EditUser/', admins.EditUser, name='EditUser'),
+    path('approve-user/<uuid:token>/', admins.ApproveUserViaEmail, name='ApproveUserViaEmail'),
+
 
   
 

@@ -1,49 +1,99 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block contents %}
 <style>
-    .auth-container { min-height: 80vh; display: flex; align-items: center; padding: 40px 0; }
-    .auth-card { 
-        width: 100%; 
-        max-width: 400px; 
-        margin: 0 auto; 
-        border-radius: 24px; 
-        overflow: hidden; 
-        background: rgba(30, 41, 59, 0.6); 
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow: var(--shadow-lg); 
+    .auth-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        padding: 40px 0;
     }
-    .auth-form-container { flex: 1; padding: 40px; background: transparent; }
-    .btn-premium { background: var(--brand-secondary); color: white; border-radius: 12px; border: none; font-weight: 600; transition: all 0.3s ease; }
-    .btn-premium:hover { background: var(--brand-primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(45, 212, 191, 0.3); color: #0f172a; }
-    
-    .otp-container { display: flex; gap: 10px; justify-content: center; margin-bottom: 25px; }
-    .otp-box { 
-        width: 45px; 
-        height: 55px; 
-        text-align: center; 
-        font-size: 1.5rem; 
-        font-weight: 700; 
-        border-radius: 12px; 
-        border: 2px solid rgba(255, 255, 255, 0.1); 
-        background: rgba(15, 23, 42, 0.5);
-        color: white;
-        transition: all 0.2s ease;
+
+    .auth-card {
+        display: flex;
+        width: 100%;
+        max-width: 480px;
+        margin: 0 auto;
+        border-radius: 16px;
+        overflow: hidden;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .auth-form-container {
+        flex: 1;
+        padding: 40px;
+        background: transparent;
+    }
+
+    /* Submit Button styling */
+    .btn-submit {
+        background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+        border: none;
+        color: #ffffff;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 600;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 242, 254, 0.25);
+    }
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
+        color: #ffffff;
+    }
+
+    /* OTP Inputs container */
+    .otp-container {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin: 25px 0;
+    }
+
+    .otp-box {
+        width: 50px;
+        height: 60px;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--text-main);
+        transition: all 0.25s ease;
         padding: 0;
     }
+
+    body.light-theme .otp-box {
+        background: #ffffff;
+        color: #1e293b;
+        border-color: #cbd5e1;
+    }
+
     .otp-box:focus {
-        border-color: var(--brand-primary);
-        box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1);
+        border-color: #00f2fe;
+        box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
         outline: none;
-        background: rgba(15, 23, 42, 0.8);
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    body.light-theme .otp-box:focus {
+        background: #ffffff;
+        border-color: #00f2fe;
     }
 </style>
 
 <div class="auth-container">
     <div class="container">
-        <div class="auth-card premium-card animate-up">
+        <div class="auth-card premium-card animate-up mx-auto">
             <div class="auth-form-container w-100">
-                <div class="text-center mb-4">
+                <div class="mb-4 text-center">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 64px; height: 64px; background: rgba(255, 255, 255, 0.03); color: var(--brand-secondary); border: 1px solid var(--border-color);">
+                        <i class="fas fa-shield-alt fa-2x"></i>
+                    </div>
                     <h4 class="font-weight-bold">Verify OTP</h4>
                     <p class="text-muted extra-small">Enter the 6-digit code sent to your email</p>
                 </div>
@@ -51,9 +101,9 @@
                 <form method="POST" action="{% url 'VerifyOTP' %}" id="otpForm">
                     {% csrf_token %}
                     
-                    <div class="form-group mb-2">
-                        <label class="extra-small font-weight-bold text-muted ml-1">6-DIGIT SECURITY CODE</label>
-                        <div class="otp-container mt-2">
+                    <div class="form-group mb-2 text-center">
+                        <label class="extra-small font-weight-bold text-muted uppercase tracking-wider">6-Digit Security Code</label>
+                        <div class="otp-container">
                             <input type="text" class="otp-box" maxlength="1" pattern="\d" required autofocus>
                             <input type="text" class="otp-box" maxlength="1" pattern="\d" required>
                             <input type="text" class="otp-box" maxlength="1" pattern="\d" required>
@@ -64,10 +114,10 @@
                         <input type="hidden" name="otp" id="hiddenOtp">
                     </div>
 
-                    <button type="submit" class="btn-premium w-100 py-2 mb-3">Verify Code</button>
+                    <button type="submit" class="btn-submit w-100 py-3 mb-4">Verify Code</button>
 
                     <div class="text-center">
-                        <a href="{% url 'ForgotPassword' %}" class="text-muted small">Didn't receive it? Request a new one</a>
+                        <a href="{% url 'ForgotPassword' %}" class="text-muted small text-decoration-none hover-underline">Didn't receive it? Request a new one</a>
                     </div>
                 </form>
             </div>
@@ -82,23 +132,19 @@
 
     otpBoxes.forEach((box, index) => {
         box.addEventListener('input', (e) => {
-            // Only allow digits
             box.value = box.value.replace(/[^0-9]/g, '');
             
-            // Move to next box if filled
             if (box.value !== '' && index < otpBoxes.length - 1) {
                 otpBoxes[index + 1].focus();
             }
         });
 
         box.addEventListener('keydown', (e) => {
-            // Move to previous box on backspace if current is empty
             if (e.key === 'Backspace' && box.value === '' && index > 0) {
                 otpBoxes[index - 1].focus();
             }
         });
         
-        // Handle paste event
         box.addEventListener('paste', (e) => {
             e.preventDefault();
             const pasteData = e.clipboardData.getData('text').replace(/[^0-9]/g, '').slice(0, 6);
