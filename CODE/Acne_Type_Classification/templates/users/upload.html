@@ -1,0 +1,204 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block contents %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="premium-card animate-up {% if result %}p-0 overflow-hidden{% endif %}">
+                <div class="p-4 p-md-5">
+                    <div class="text-center mb-5">
+                        <h2 class="font-weight-bold">Dermatological Image Analysis</h2>
+                        <p class="text-muted">Upload a clear, well-lit photo of the affected skin area for AI-powered classification.</p>
+                    </div>
+
+                    <form method="POST" enctype="multipart/form-data" action="{% url 'prediction' %}" id="uploadForm">
+                        {% csrf_token %}
+                        <div class="upload-area mb-4 text-center p-5 border-dashed" id="dropZone" style="border: 2px dashed #cbd5e1; border-radius: 20px; background: #f8fafc; cursor: pointer; transition: all 0.3s;">
+                            {% if prediction and prediction.image %}
+                                <img src="{{ prediction.image.url }}" class="img-fluid rounded-lg shadow-sm mb-3" style="max-height: 300px;">
+                            {% elif temp_image_url %}
+                                <img src="{{ temp_image_url }}" class="img-fluid rounded-lg shadow-sm mb-3" style="max-height: 300px;">
+                            {% else %}
+                                <div id="uploadPlaceholder">
+                                    <div class="feature-icon mx-auto mb-3" style="width: 70px; height: 70px; background: rgba(79, 70, 229, 0.1); color: var(--brand-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <h5 class="font-weight-bold">Drag & Drop Image Here</h5>
+                                    <p class="text-muted small">Supports JPG, PNG (Max 5MB)</p>
+                                    <button type="button" class="btn-premium px-4 py-2 mt-2" onclick="document.getElementById('imageInput').click()">Browse Files</button>
+                                </div>
+                            {% endif %}
+                            <input type="file" name="image" id="imageInput" class="d-none" accept="image/*" required onchange="previewImage(this)">
+                            <img id="imagePreview" class="img-fluid rounded-lg shadow-sm mt-3 d-none" style="max-height: 300px;">
+                        </div>
+
+                        {% if not result and not is_blur and not is_invalid %}
+                        <button type="submit" class="btn-premium w-100 py-3 font-weight-bold" id="analyzeBtn">
+                            <i class="fas fa-brain mr-2"></i> Execute AI Diagnostics
+                        </button>
+                        {% endif %}
+                    </form>
+                </div>
+
+                {% if is_blur %}
+                <div class="p-4 p-md-5 bg-soft-warning border-top" style="background: #fffbeb;">
+                    <div class="text-center">
+                        <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px; background: #fef3c7; color: #d97706; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h4 class="font-weight-bold text-dark">Image Quality Warning</h4>
+                        <p class="text-muted mb-4 mx-auto" style="max-width: 500px;">Our validation system detected a high level of blur in the uploaded image. For accurate diagnosis, please ensure the photo is sharp and well-focused.</p>
+                        
+                        <div class="glass mx-auto p-3 rounded-lg mb-4" style="max-width: 200px; background: white; border: 1px solid #fde68a;">
+                            <small class="text-muted d-block text-uppercase font-weight-bold mb-1" style="font-size: 0.7rem;">Blur Index</small>
+                            <div class="h3 font-weight-bold m-0 text-warning">{{ blur_score }}</div>
+                        </div>
+
+                        <a href="{% url 'prediction' %}" class="btn btn-warning text-white px-5 py-3 font-weight-bold rounded-pill">
+                            <i class="fas fa-camera mr-2"></i> Retake Sharp Photo
+                        </a>
+                    </div>
+                </div>
+                {% elif is_invalid %}
+                <div class="p-4 p-md-5 bg-soft-danger border-top" style="background: #fef2f2;">
+                    <div class="text-center">
+                        <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px; background: #fee2e2; color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+                            <i class="fas fa-shield-virus"></i>
+                        </div>
+                        <h4 class="font-weight-bold text-dark">Domain Invalidation</h4>
+                        <p class="text-muted mb-4 mx-auto" style="max-width: 500px;">The uploaded content was rejected by our pre-validation network. The image does not match the dermatological characteristics required for acne classification.</p>
+                        
+                        <div class="row no-gutters mb-4 justify-content-center">
+                            <div class="col-auto px-4 border-right">
+                                <small class="text-muted d-block text-uppercase font-weight-bold mb-1" style="font-size: 0.7rem;">ISO Gate</small>
+                                <span class="badge {% if rejection_details.iso_gate == 'PASS' %}badge-success{% else %}badge-danger{% endif %}">{{ rejection_details.iso_gate }}</span>
+                            </div>
+                            <div class="col-auto px-4">
+                                <small class="text-muted d-block text-uppercase font-weight-bold mb-1" style="font-size: 0.7rem;">Mahal Gate</small>
+                                <span class="badge {% if rejection_details.mahal_gate == 'PASS' %}badge-success{% else %}badge-danger{% endif %}">{{ rejection_details.mahal_gate }}</span>
+                            </div>
+                        </div>
+
+                        <a href="{% url 'prediction' %}" class="btn btn-danger px-5 py-3 font-weight-bold rounded-pill">
+                            <i class="fas fa-image mr-2"></i> Select Another Source
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if result %}
+                <div class="result-section border-top">
+                    <div class="p-4 p-md-5" style="background: linear-gradient(to bottom, #ffffff, #f8fafc);">
+                        <div class="row align-items-center mb-5">
+                            <div class="col-md-7">
+                                <div class="d-flex align-items-center gap-3 mb-2">
+                                    <span class="badge badge-pill py-2 px-3 {% if info.severity == 'Mild' %}badge-success{% elif info.severity == 'Moderate' %}badge-warning{% else %}badge-danger{% endif %} text-uppercase">{{ info.severity }} Severity</span>
+                                    <span class="text-muted small"><i class="fas fa-check-circle mr-1"></i> AI Confirmed</span>
+                                </div>
+                                <h1 class="display-4 font-weight-bold text-dark mb-0">{{ result }}</h1>
+                            </div>
+                            <div class="col-md-5 text-right">
+                                <div class="feature-icon ml-auto" style="width: 80px; height: 80px; background: rgba(79, 70, 229, 0.1); color: var(--brand-primary); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">
+                                    <i class="fas {{ info.icon }}"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-4 mb-4">
+                                <div class="premium-card glass h-100 shadow-none border">
+                                    <h6 class="font-weight-bold mb-3"><i class="fas fa-info-circle text-primary mr-2"></i> Description</h6>
+                                    <p class="text-muted small">{{ info.description }}</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-4">
+                                <div class="premium-card glass h-100 shadow-none border">
+                                    <h6 class="font-weight-bold mb-3"><i class="fas fa-medkit text-success mr-2"></i> Treatment</h6>
+                                    <p class="text-muted small">{{ info.cure }}</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-4">
+                                <div class="premium-card glass h-100 shadow-none border">
+                                    <h6 class="font-weight-bold mb-3"><i class="fas fa-shield-alt text-danger mr-2"></i> Precautions</h6>
+                                    <p class="text-muted small">{{ info.precautions }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mt-4 pt-4 border-top">
+                            <div class="mb-3 mb-md-0">
+                                <h6 class="font-weight-bold mb-1">Model Accuracy Meter</h6>
+                                <div class="progress" style="height: 6px; width: 250px; border-radius: 10px;">
+                                    <div class="progress-bar" style="width: 92%; background: var(--brand-primary);"></div>
+                                </div>
+                                <small class="text-muted">92.4% Confidence in Classification</small>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'prediction' %}" class="btn btn-light px-4 py-2 border font-weight-bold mr-2">New Analysis</a>
+                                <a href="{% url 'UserHistory' %}" class="btn-premium px-4 py-2">View Full Report</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function previewImage(input) {
+        const preview = document.getElementById('imagePreview');
+        const placeholder = document.getElementById('uploadPlaceholder');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.classList.remove('d-none');
+                if (placeholder) placeholder.classList.add('d-none');
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    const dropZone = document.getElementById('dropZone');
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => dropZone.classList.add('highlight'), false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => dropZone.classList.remove('highlight'), false);
+    });
+
+    dropZone.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        document.getElementById('imageInput').files = files;
+        previewImage(document.getElementById('imageInput'));
+    }
+</script>
+
+<style>
+    .border-dashed {
+        border-style: dashed !important;
+    }
+    .highlight {
+        background: #eff6ff !important;
+        border-color: var(--brand-primary) !important;
+    }
+</style>
+{% endblock %}

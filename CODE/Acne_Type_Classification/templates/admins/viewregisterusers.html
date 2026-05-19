@@ -1,0 +1,115 @@
+{% extends 'admins/adminbase.html' %}
+{% load static %}
+
+{% block contents %}
+<div class="animate-up">
+    <div class="d-flex align-items-center justify-content-between mb-5">
+        <div>
+            <h1 class="display-5 font-weight-bold mb-1">User Management</h1>
+            <p class="text-muted mb-0">Overview and control of registered platform users.</p>
+        </div>
+        <div class="badge badge-soft-primary px-3 py-2 border">
+            <i class="fas fa-user-shield mr-2"></i> {{ data|length }} TOTAL USERS
+        </div>
+    </div>
+
+    <div class="premium-card p-0 overflow-hidden shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-premium mb-0">
+                <thead>
+                    <tr>
+                        <th class="px-4">User Information</th>
+                        <th>Contact Details</th>
+                        <th>Account Status</th>
+                        <th>Session Activity</th>
+                        <th class="text-right px-4">Administrative Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in data %}
+                    <tr class="align-middle">
+                        <td class="px-4 py-3">
+                            <div class="d-flex align-items-center">
+                                <div class="profile-avatar mr-3" style="width: 40px; height: 40px;">{{ i.name|slice:":1" }}</div>
+                                <div>
+                                    <div class="font-weight-bold text-dark">{{ i.name }}</div>
+                                    <div class="small text-muted">ID: <code class="text-primary">{{ i.loginid }}</code></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="small mb-1"><i class="far fa-envelope mr-2 text-muted"></i>{{ i.email }}</div>
+                            <div class="small"><i class="fas fa-mobile-alt mr-2 text-muted"></i>{{ i.mobile }}</div>
+                        </td>
+                        <td>
+                            {% if i.status == 'activated' %}
+                                <span class="badge badge-soft-success px-3 py-2 border border-success">
+                                    <i class="fas fa-check-circle mr-1"></i> ACTIVE
+                                </span>
+                            {% elif i.status == 'deactivated' %}
+                                <span class="badge badge-soft-danger px-3 py-2 border border-danger">
+                                    <i class="fas fa-user-slash mr-1"></i> SUSPENDED
+                                </span>
+                            {% else %}
+                                <span class="badge badge-soft-warning px-3 py-2 border border-warning">
+                                    <i class="fas fa-hourglass-half mr-1"></i> PENDING
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if i.last_login %}
+                                <div class="small text-dark font-weight-bold">{{ i.last_login|date:"M d, Y" }}</div>
+                                <div class="small text-muted">{{ i.last_login|date:"h:i A" }}</div>
+                            {% else %}
+                                <span class="badge badge-light text-muted border px-2 py-1 small">NEVER ACCESSED</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-right px-4">
+                            <div class="d-flex justify-content-end gap-2">
+                                <a href="{% url 'EditUser' %}?uid={{ i.id }}" class="btn btn-sm btn-soft-primary border mr-2" title="Edit User">
+                                    <i class="fas fa-edit mr-1"></i> Edit
+                                </a>
+                                {% if i.status == 'activated' %}
+
+                                <a href="{% url 'DeactivateUsers' %}?uid={{ i.id }}" class="btn btn-sm btn-soft-warning border mr-2" title="Deactivate Access">
+                                    <i class="fas fa-ban mr-1"></i> Suspend
+                                </a>
+                                {% else %}
+                                <a href="{% url 'ActivaUsers' %}?uid={{ i.id }}" class="btn btn-sm btn-soft-success border mr-2" title="Grant Access">
+                                    <i class="fas fa-user-check mr-1"></i> Activate
+                                </a>
+                                {% endif %}
+                                <a href="{% url 'DeleteUsers' %}?uid={{ i.id }}" class="btn btn-sm btn-soft-danger border" title="Permanent Delete" onclick="return confirm('DANGER: This will permanently remove all records for this user. Continue?')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <div class="py-4">
+                                <i class="fas fa-users fa-3x text-light mb-3"></i>
+                                <h5 class="text-muted">No User Records Indexed</h5>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-soft-primary { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+    .btn-soft-primary:hover { background: #3b82f6; color: #fff; }
+    .btn-soft-success { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+
+    .btn-soft-success:hover { background: #10b981; color: #fff; }
+    .btn-soft-warning { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+    .btn-soft-warning:hover { background: #f59e0b; color: #fff; }
+    .btn-soft-danger { background: rgba(239, 68, 68, 0.1); color: #ef6c6c; }
+    .btn-soft-danger:hover { background: #ef4444; color: #fff; }
+</style>
+{% endblock %}

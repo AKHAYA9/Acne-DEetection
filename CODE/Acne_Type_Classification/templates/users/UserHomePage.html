@@ -1,0 +1,100 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block contents %}
+<style>
+    .btn-dashboard-hero {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        color: white !important;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 12px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-dashboard-hero:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .btn-dashboard-hero i {
+        transition: transform 0.3s;
+    }
+
+    .btn-dashboard-hero:hover i {
+        transform: scale(1.2);
+    }
+</style>
+
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="premium-card animate-up overflow-hidden" style="background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%); color: white; border: none; padding: 40px;">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-4 font-weight-bold mb-3">Welcome back, {{ request.session.loggeduser }}!</h1>
+                    <p class="lead opacity-8 mb-4">Your personal health portal is ready. Track your skin progress and perform new AI-driven acne classifications with ease.</p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="{% url 'prediction' %}" class="btn-dashboard-hero mr-3 mb-2"><i class="fas fa-stethoscope"></i> New Analysis</a>
+                    </div>
+                </div>
+                <div class="col-md-4 d-none d-md-block text-right">
+                    <i class="fas fa-user-circle opacity-2" style="font-size: 10rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h4 class="font-weight-bold mb-4">Core Analysis Tools</h4>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="premium-card h-100 animate-up" style="animation-delay: 0.1s">
+            <div class="feature-icon bg-soft-primary" style="background: rgba(79, 70, 229, 0.1); color: var(--brand-primary); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <i class="fas fa-camera"></i>
+            </div>
+            <h5 class="font-weight-bold">Image Prediction</h5>
+            <p class="text-muted small mb-4">Upload skin lesion images and get instant classification results using our deep learning models.</p>
+            <a href="{% url 'prediction' %}" class="btn-premium-outline w-100 text-center text-decoration-none py-2">Start Prediction</a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="premium-card h-100 animate-up" style="animation-delay: 0.2s">
+            <div class="feature-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <i class="fas fa-video"></i>
+            </div>
+            <h5 class="font-weight-bold">Live Prediction</h5>
+            <p class="text-muted small mb-4">Use your device's camera for real-time acne detection and analysis powered by AI.</p>
+            <a href="{% url 'live_prediction' %}" class="btn-premium-outline w-100 text-center text-decoration-none py-2">Open Camera</a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="premium-card h-100 animate-up" style="animation-delay: 0.3s">
+            <div class="feature-icon" style="background: rgba(244, 63, 94, 0.1); color: var(--brand-accent); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <i class="fas fa-history"></i>
+            </div>
+            <h5 class="font-weight-bold">Medical History</h5>
+            <p class="text-muted small mb-4">Review your previous diagnosis reports and track changes over time.</p>
+            <a href="{% url 'UserHistory' %}" class="btn-premium-outline w-100 text-center text-decoration-none py-2">View Reports</a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="premium-card h-100 animate-up" style="animation-delay: 0.4s">
+            <div class="feature-icon" style="background: rgba(100, 116, 139, 0.1); color: #64748b; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <i class="fas fa-sign-out-alt"></i>
+            </div>
+            <h5 class="font-weight-bold">Logout</h5>
+            <p class="text-muted small mb-4">Securely sign out of your account and end your current session.</p>
+            <a href="{% url 'UserLogout' %}" class="btn-premium-outline w-100 text-center text-decoration-none py-2">Sign Out</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

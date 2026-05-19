@@ -1,0 +1,685 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contents %}
+<style>
+    .auth-container {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        padding: 40px 0;
+    }
+
+    .auth-card {
+        display: flex;
+        width: 100%;
+        max-width: 700px;
+        margin: 0 auto;
+        border-radius: 16px;
+        overflow: hidden;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .auth-form-container {
+        flex: 1;
+        padding: 40px;
+        background: transparent;
+    }
+
+    .form-control.premium-input {
+        border-radius: 12px;
+        padding: 10px 15px;
+        height: auto;
+        font-size: 0.85rem;
+        color: var(--text-main);
+    }
+
+    /* Ensure typed text is always visible in light theme */
+    body.light-theme .form-control.premium-input {
+        color: #1e293b !important;
+        background-color: #ffffff !important;
+    }
+
+    body.light-theme .input-group-text {
+        color: #64748b !important;
+        background-color: transparent !important;
+    }
+
+    body.light-theme .form-control.premium-input::placeholder {
+        color: #94a3b8 !important;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .password-toggle {
+        cursor: pointer;
+        background: transparent;
+        border: 1px solid #e2e8f0;
+        border-left: none;
+        border-radius: 0 12px 12px 0;
+        padding: 0 12px;
+        display: flex;
+        align-items: center;
+        color: #94a3b8;
+    }
+
+    @media (max-width: 991px) {
+        .auth-card { max-width: 500px; }
+    }
+
+    /* Submit Button styling matching executive dashboard */
+    .btn-submit {
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        border: none;
+        color: #ffffff;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 600;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.25);
+    }
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    }
+
+    /* Divider */
+    .auth-divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 22px 0 18px;
+        color: var(--text-muted);
+        font-size: 0.7rem;
+        font-family: 'Outfit', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+    .auth-divider::before,
+    .auth-divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .auth-divider:not(:empty)::before {
+        margin-right: 15px;
+    }
+    .auth-divider:not(:empty)::after {
+        margin-left: 15px;
+    }
+
+    .btn-google-auth {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 500;
+        font-size: 0.85rem;
+        color: var(--text-main);
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        cursor: pointer;
+        width: 100%;
+        padding: 11px 16px;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .btn-google-auth:hover {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateY(-1.5px);
+        border-color: rgba(255, 255, 255, 0.2);
+        color: var(--text-main);        /* keep text visible on dark hover */
+    }
+    body.light-theme .btn-google-auth {
+        background: #ffffff;
+        border-color: #cbd5e1;
+        color: #1e293b !important;
+    }
+    body.light-theme .btn-google-auth:hover {
+        background: #f8fafc;
+        border-color: #94a3b8;
+        color: #1e293b !important;      /* keep text dark on light hover */
+    }
+    .google-icon-svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Auto-fill pulse glow animation for imported Google fields */
+    @keyframes autofillPulse {
+        0%, 100% {
+            border-color: var(--border-color);
+            box-shadow: none;
+        }
+        50% {
+            border-color: #22c55e !important;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+        }
+    }
+    .auto-filled-highlight {
+        animation: autofillPulse 2s ease-in-out 2;
+    }
+
+    /* Google OAuth Modal Styles */
+    .google-modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 99999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        transition: all 0.3s ease;
+    }
+    .google-modal-backdrop.active {
+        display: flex;
+    }
+    .google-oauth-card {
+        background: #ffffff;
+        color: #202124;
+        width: 100%;
+        max-width: 420px;
+        border-radius: 8px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+        padding: 36px 40px;
+        position: relative;
+        text-align: center;
+        border: 1px solid #dadce0;
+        font-family: 'Outfit', 'Segoe UI', Arial, sans-serif;
+    }
+    body.dark-theme .google-oauth-card {
+        background: #202124;
+        color: #e8eaed;
+        border-color: #3c4043;
+    }
+    .google-modal-close {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        border: none;
+        background: transparent;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #5f6368;
+        outline: none !important;
+    }
+    body.dark-theme .google-modal-close {
+        color: #9aa0a6;
+    }
+    .google-logo-container {
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: center;
+    }
+    .google-oauth-title {
+        font-size: 1.4rem;
+        font-weight: 500;
+        margin-bottom: 6px;
+        letter-spacing: -0.01em;
+        font-family: 'Outfit', sans-serif;
+    }
+    .google-oauth-subtitle {
+        font-size: 0.9rem;
+        color: #5f6368;
+        margin-bottom: 24px;
+    }
+    body.dark-theme .google-oauth-subtitle {
+        color: #9aa0a6;
+    }
+    .google-accounts-list {
+        border-top: 1px solid #dadce0;
+        border-bottom: 1px solid #dadce0;
+        margin-bottom: 24px;
+        text-align: left;
+    }
+    body.dark-theme .google-accounts-list {
+        border-color: #3c4043;
+    }
+    .google-account-item {
+        display: flex;
+        align-items: center;
+        padding: 14px 12px;
+        cursor: pointer;
+        border-bottom: 1px solid #f1f3f4;
+        transition: background 0.2s;
+        border-radius: 4px;
+    }
+    body.dark-theme .google-account-item {
+        border-color: #3c4043;
+    }
+    .google-account-item:last-child {
+        border-bottom: none;
+    }
+    .google-account-item:hover {
+        background: rgba(66, 133, 244, 0.05);
+    }
+    body.dark-theme .google-account-item:hover {
+        background: rgba(138, 180, 248, 0.08);
+    }
+    .google-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.85rem;
+        margin-right: 12px;
+    }
+    .google-plus-avatar {
+        background: transparent !important;
+        border: 1px solid #dadce0;
+        color: #1a73e8;
+    }
+    body.dark-theme .google-plus-avatar {
+        border-color: #5f6368;
+        color: #8ab4f8;
+    }
+    .google-account-details {
+        display: flex;
+        flex-direction: column;
+    }
+    .google-account-name {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #3c4043;
+    }
+    body.dark-theme .google-account-name {
+        color: #e8eaed;
+    }
+    .google-account-email {
+        font-size: 0.75rem;
+        color: #5f6368;
+    }
+    body.dark-theme .google-account-email {
+        color: #9aa0a6;
+    }
+    .google-oauth-footer {
+        font-size: 0.68rem;
+        color: #5f6368;
+        line-height: 1.45;
+        text-align: left;
+    }
+    body.dark-theme .google-oauth-footer {
+        color: #9aa0a6;
+    }
+    .google-link {
+        color: #1a73e8;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    .google-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="auth-container">
+    <div class="container">
+        <div class="auth-card premium-card animate-up mx-auto">
+            <!-- Form Container -->
+            <div class="auth-form-container w-100">
+                <div class="mb-4 text-center">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 64px; height: 64px; background: rgba(255, 255, 255, 0.03); color: var(--brand-secondary); border: 1px solid var(--border-color);">
+                        <i class="fas fa-user-plus fa-2x"></i>
+                    </div>
+                    <h4 class="font-weight-bold">Create Account</h4>
+                    <p class="text-muted extra-small">Join our skin health analysis network</p>
+                </div>
+
+                <form action="{% url 'UserRegisterActions' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="extra-small font-weight-bold text-muted ml-1">FULL NAME</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-transparent border-right-0 py-0" style="border-radius: 12px 0 0 12px;"><i class="far fa-user text-muted small"></i></span>
+                                    </div>
+                                    <input type="text" name="name" class="form-control premium-input border-left-0" style="border-radius: 0 12px 12px 0;" placeholder="Name" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="extra-small font-weight-bold text-muted ml-1">LOGIN ID</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-transparent border-right-0 py-0" style="border-radius: 12px 0 0 12px;"><i class="fas fa-id-badge text-muted small"></i></span>
+                                    </div>
+                                    <input type="text" name="loginid" class="form-control premium-input border-left-0" style="border-radius: 0 12px 12px 0;" placeholder="ID" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="extra-small font-weight-bold text-muted ml-1">PASSWORD</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-transparent border-right-0 py-0" style="border-radius: 12px 0 0 12px;"><i class="fas fa-lock text-muted small"></i></span>
+                                    </div>
+                                    <input type="password" name="password" id="passwordInput" class="form-control premium-input border-left-0 border-right-0" style="border-radius: 0;" placeholder="••••" required>
+                                    <div class="input-group-append">
+                                        <span class="password-toggle" onclick="togglePassword()">
+                                            <i class="fas fa-eye small" id="eyeIcon"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="extra-small font-weight-bold text-muted ml-1">MOBILE NUMBER</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-transparent border-right-0 py-0" style="border-radius: 12px 0 0 12px;"><i class="fas fa-mobile-alt text-muted small"></i></span>
+                                    </div>
+                                    <input type="text" name="mobile" id="mobileInput" class="form-control premium-input border-left-0" style="border-radius: 0 12px 12px 0;" placeholder="Starts with 6-9" maxlength="10" pattern="[6-9][0-9]{9}" title="Mobile number must start with 6-9 and be exactly 10 digits" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="extra-small font-weight-bold text-muted ml-1">EMAIL ADDRESS</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-transparent border-right-0 py-0" style="border-radius: 12px 0 0 12px;"><i class="fas fa-envelope text-muted small"></i></span>
+                                    </div>
+                                    <input type="email" name="email" class="form-control premium-input border-left-0" style="border-radius: 0 12px 12px 0;" placeholder="example@gmail.com" pattern="[a-z0-9._%+-]+@gmail\.com$" title="Please enter a valid Gmail address" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="extra-small font-weight-bold text-muted ml-1">CITY</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-transparent border-right-0 py-0" style="border-radius: 12px 0 0 12px;"><i class="fas fa-city text-muted small"></i></span>
+                                    </div>
+                                    <input type="text" name="city" class="form-control premium-input border-left-0" style="border-radius: 0 12px 12px 0;" placeholder="City" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="extra-small font-weight-bold text-muted ml-1">STATE</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-transparent border-right-0 py-0" style="border-radius: 12px 0 0 12px;"><i class="fas fa-map text-muted small"></i></span>
+                                    </div>
+                                    <input type="text" name="state" class="form-control premium-input border-left-0" style="border-radius: 0 12px 12px 0;" placeholder="State" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="extra-small font-weight-bold text-muted ml-1">LOCALITY</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-transparent border-right-0 py-0" style="border-radius: 12px 0 0 12px;"><i class="fas fa-map-marker-alt text-muted small"></i></span>
+                                    </div>
+                                    <input type="text" name="locality" class="form-control premium-input border-left-0" style="border-radius: 0 12px 12px 0;" placeholder="Locality" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="extra-small font-weight-bold text-muted ml-1">FULL ADDRESS</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-transparent border-right-0 py-0" style="border-radius: 12px 0 0 12px;"><i class="fas fa-home text-muted small"></i></span>
+                                    </div>
+                                    <input type="text" name="address" class="form-control premium-input border-left-0" style="border-radius: 0 12px 12px 0;" placeholder="Street Address" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="status" value="waiting">
+
+                    <button type="submit" class="btn-submit btn-purple w-100 py-3 mt-2">Create Account</button>
+
+                    <!-- OR Sign Up Divider -->
+                    <div class="auth-divider">
+                        <span>or register with</span>
+                    </div>
+
+                    <!-- Premium Google Sign Up Button -->
+                    <button type="button" class="btn-google-auth mb-3" id="googleAuthBtn">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google Logo" class="google-icon-svg mr-2">
+                        Continue with Google
+                    </button>
+
+                    <div class="text-center mt-3">
+                        <p class="text-muted extra-small">Already a member? <a href="{% url 'UserLogin' %}" class="text-primary font-weight-bold">Sign In</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePassword() {
+        const input = document.getElementById('passwordInput');
+        const icon = document.getElementById('eyeIcon');
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
+    // Mobile Number Validation
+    const mobileInput = document.getElementById('mobileInput');
+    if (mobileInput) {
+        mobileInput.addEventListener('input', function (e) {
+            // Remove any non-digit characters
+            let val = this.value.replace(/\D/g, '');
+            
+            // Rule: First digit must be 6, 7, 8, or 9
+            if (val.length > 0 && !['6', '7', '8', '9'].includes(val[0])) {
+                val = '';
+                // Optional: Show a subtle toast or message
+            }
+            
+            // Ensure only 10 digits are kept
+            if (val.length > 10) {
+                val = val.slice(0, 10);
+            }
+            
+            this.value = val;
+        });
+
+        // Block non-numeric keys at the keyboard level
+        mobileInput.addEventListener('keypress', function (e) {
+            if (e.which < 48 || e.which > 57) {
+                e.preventDefault();
+            }
+        });
+    }
+
+    // Google Sign Up micro-interaction account chooser trigger
+    const googleBtn = document.getElementById('googleAuthBtn');
+    const googleModalBackdrop = document.getElementById('googleModalBackdrop');
+    const closeGoogleModalBtn = document.getElementById('closeGoogleModalBtn');
+    const googleAccountItems = document.querySelectorAll('.google-account-item:not(.google-add-account)');
+
+    // Active Simulated Profiles for Google Account Chooser
+    const googleProfiles = {
+        john: {
+            name: "John Doe",
+            email: "johndoe@gmail.com",
+            mobile: "9876543210",
+            city: "Bhubaneswar",
+            state: "Odisha",
+            locality: "Patia",
+            address: "KIIT Road, Patia"
+        },
+        jane: {
+            name: "Jane Smith",
+            email: "janesmith@gmail.com",
+            mobile: "7654321098",
+            city: "Cuttack",
+            state: "Odisha",
+            locality: "Link Road",
+            address: "Siddheshwar Colony, Cuttack"
+        }
+    };
+
+    if (googleBtn && googleModalBackdrop) {
+        // Open Google Account Chooser Modal
+        googleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            googleModalBackdrop.classList.add('active');
+        });
+
+        // Close Modal via cross button
+        if (closeGoogleModalBtn) {
+            closeGoogleModalBtn.addEventListener('click', function() {
+                googleModalBackdrop.classList.remove('active');
+            });
+        }
+
+        // Close Modal clicking backdrop
+        googleModalBackdrop.addEventListener('click', function(e) {
+            if (e.target === googleModalBackdrop) {
+                googleModalBackdrop.classList.remove('active');
+            }
+        });
+
+        // Choose account click event
+        googleAccountItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const accountId = this.getAttribute('data-account');
+                const selectedProfile = googleProfiles[accountId];
+                
+                // Hide Google Dialog
+                googleModalBackdrop.classList.remove('active');
+                
+                // Set loading status on the main register page button
+                googleBtn.innerHTML = `<span class="spinner-border spinner-border-sm text-success mr-2" role="status" aria-hidden="true" style="width:1rem;height:1rem;border-width:0.15em;"></span> Connecting to ${selectedProfile.name}'s Google Account...`;
+                googleBtn.style.pointerEvents = 'none';
+                googleBtn.style.opacity = '0.85';
+                
+                setTimeout(() => {
+                    googleBtn.innerHTML = `<i class="fas fa-check-circle text-success mr-2"></i> Selected: ${selectedProfile.email}`;
+                    googleBtn.style.color = '#22c55e';
+                    googleBtn.style.borderColor = '#22c55e';
+                    googleBtn.style.background = 'rgba(34, 197, 94, 0.05)';
+                    
+                    // Auto-fill form inputs with selected profile
+                    const form = googleBtn.closest('form');
+                    if (form) {
+                        const inputsToFill = ['name', 'email', 'mobile', 'city', 'state', 'locality', 'address'];
+                        inputsToFill.forEach(fieldName => {
+                            const input = form.querySelector(`[name="${fieldName}"]`);
+                            if (input) {
+                                input.value = selectedProfile[fieldName];
+                                input.classList.add('auto-filled-highlight');
+                                // Trigger input event to clear validation indicators
+                                input.dispatchEvent(new Event('input'));
+                                
+                                // Remove highlight class after animation finishes
+                                setTimeout(() => {
+                                    input.classList.remove('auto-filled-highlight');
+                                }, 4000);
+                            }
+                        });
+
+                        // Set focus to the login ID field
+                        const loginInput = form.querySelector('[name="loginid"]');
+                        if (loginInput) {
+                            loginInput.focus();
+                            loginInput.placeholder = "Choose a custom Login ID";
+                        }
+                    }
+                    
+                    // Re-enable button click in case they want to switch account
+                    googleBtn.style.pointerEvents = 'auto';
+                    googleBtn.style.opacity = '1';
+                }, 1000);
+            });
+        });
+    }
+</script>
+
+<!-- Google Account Chooser Modal Element -->
+<div class="google-modal-backdrop" id="googleModalBackdrop">
+    <div class="google-oauth-card">
+        <!-- Close Button -->
+        <button type="button" class="google-modal-close" id="closeGoogleModalBtn">&times;</button>
+        
+        <!-- Google Large Color Logo -->
+        <div class="google-logo-container">
+            <svg viewBox="0 0 24 24" width="32" height="32">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+        </div>
+        
+        <h5 class="google-oauth-title">Sign in with Google</h5>
+        <p class="google-oauth-subtitle">Choose an account to continue to <strong>DERMA.AI</strong></p>
+        
+        <!-- Account List -->
+        <div class="google-accounts-list">
+            <!-- Account 1: John Doe -->
+            <div class="google-account-item" data-account="john">
+                <div class="google-avatar" style="background-color: #4285F4;">J</div>
+                <div class="google-account-details">
+                    <span class="google-account-name">John Doe</span>
+                    <span class="google-account-email">johndoe@gmail.com</span>
+                </div>
+            </div>
+            
+            <!-- Account 2: Jane Smith -->
+            <div class="google-account-item" data-account="jane">
+                <div class="google-avatar" style="background-color: #e040fb;">J</div>
+                <div class="google-account-details">
+                    <span class="google-account-name">Jane Smith</span>
+                    <span class="google-account-email">janesmith@gmail.com</span>
+                </div>
+            </div>
+            
+            <!-- Use another account -->
+            <div class="google-account-item google-add-account">
+                <div class="google-avatar google-plus-avatar"><i class="fas fa-plus"></i></div>
+                <div class="google-account-details">
+                    <span class="google-account-name" style="color: #4285F4; font-weight: 500;">Use another account</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="google-oauth-footer">
+            To continue, Google will share your name, email address, language preference, and profile picture with DERMA.AI. Before using this app, you can review its <a href="#" class="google-link">privacy policy</a> and <a href="#" class="google-link">terms of service</a>.
+        </div>
+    </div>
+</div>
+{% endblock %}

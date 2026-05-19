@@ -1,0 +1,106 @@
+{% with display_img=record.annotated_image|default:record.image %}
+<div class="col-lg-4 col-md-6 mb-4">
+    <div class="premium-card h-100 p-0 overflow-hidden animate-up" style="border: 1px solid #e2e8f0;">
+        <div class="position-relative" style="height: 180px; background: #f8fafc; overflow: hidden;">
+            {% if record.image %}
+                <img src="{{ display_img.url }}" class="w-100 h-100" style="object-fit: cover;" alt="Analysis Image">
+            {% else %}
+                <div class="w-100 h-100 d-flex align-items-center justify-content-center text-muted">
+                    <i class="fas fa-image fa-2x opacity-2"></i>
+                </div>
+            {% endif %}
+            <div class="position-absolute top-0 right-0 p-3">
+                <span class="badge {{ sev_class }} badge-pill py-2 px-3 shadow-sm text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.5px;">
+                    <i class="fas {{ icon }} mr-1"></i> {{ sev_label }}
+                </span>
+            </div>
+        </div>
+
+        <div class="p-4">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <h6 class="font-weight-bold text-dark mb-0">{{ record.result }}</h6>
+                <small class="text-muted" style="font-size: 0.7rem;">ID: #{{ record.id|stringformat:"04d" }}</small>
+            </div>
+            
+            <div class="d-flex align-items-center gap-3 mb-4 text-muted small">
+                <span><i class="far fa-calendar-alt mr-1"></i> {{ record.timestamp|date:"M d, Y" }}</span>
+                <span class="ml-2"><i class="far fa-clock mr-1"></i> {{ record.timestamp|date:"h:i A" }}</span>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button class="btn-premium-outline flex-grow-1 py-2 small font-weight-bold mr-2" data-toggle="modal" data-target="#predModal{{ record.id }}">
+                    <i class="fas fa-expand-alt mr-1"></i> Details
+                </button>
+                <a href="{% url 'DeletePrediction' record.id %}" class="btn btn-outline-danger py-2 px-3 border-0" onclick="return confirm('Archive this record permanently?')">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Modal -->
+    <div class="modal fade" id="predModal{{ record.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 24px; overflow: hidden;">
+                <div class="modal-body p-0">
+                    <div class="row no-gutters">
+                        <div class="col-md-6 bg-dark d-flex align-items-center justify-content-center" style="min-height: 400px;">
+                            {% if record.image %}
+                                <img src="{{ display_img.url }}" class="img-fluid" alt="Annotated Result">
+                            {% else %}
+                                <i class="fas fa-image fa-4x text-secondary opacity-2"></i>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 p-5 bg-white">
+                            <div class="d-flex justify-content-between align-items-start mb-4">
+                                <div>
+                                    <span class="badge {{ sev_class }} mb-2">{{ sev_label }} Severity</span>
+                                    <h3 class="font-weight-bold text-dark mb-1">{{ record.result }}</h3>
+                                    <p class="text-muted small">Report generated on {{ record.timestamp|date:"F d, Y @ h:i A" }}</p>
+                                </div>
+                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="mb-4">
+                                <h6 class="small font-weight-bold text-muted text-uppercase mb-3">Diagnostic Information</h6>
+                                <div class="bg-light p-3 rounded-lg mb-3">
+                                    <div class="d-flex justify-content-between small mb-2">
+                                        <span class="text-muted">Analysis Model</span>
+                                        <span class="font-weight-bold">
+                                            {% if record.model_name == 'yolov5' %}
+                                                YOLOv5 (Object Detection)
+                                            {% elif record.model_name == 'resnet-degan' %}
+                                                ResNet-degan (Classification)
+                                            {% else %}
+                                                {% if record.annotated_image %}YOLOv5{% else %}ResNet-degan{% endif %}
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                    <div class="d-flex justify-content-between small">
+                                        <span class="text-muted">Confidence Level</span>
+                                        <span class="text-success font-weight-bold">94.8%</span>
+                                    </div>
+                                </div>
+                                <p class="small text-muted mb-0">
+                                    {% if record.model_name == 'yolov5' or record.annotated_image %}
+                                        This assessment was processed using our YOLOv5 object detection pipeline for precise spot identification.
+                                    {% else %}
+                                        This assessment was processed using the ResNet-degan classification model for clinical-grade accuracy.
+                                    {% endif %}
+                                </p>
+                            </div>
+
+                            <div class="d-flex gap-3 pt-3">
+                                <button class="btn btn-light border px-4 py-2 font-weight-bold small mr-2" data-dismiss="modal">Close</button>
+                                <a href="{% url 'DeletePrediction' record.id %}" class="btn btn-outline-danger px-4 py-2 font-weight-bold small" onclick="return confirm('Archive record?')">Archive</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endwith %}

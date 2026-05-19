@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block contents %}
+<div class="container py-5 text-center mt-5">
+    <h2>Admin Login Redirect</h2>
+    <p class="text-muted">The login portal has been unified. Please use the main User Login page and select the Admin tab.</p>
+    <a href="{% url 'UserLogin' %}" class="btn btn-primary mt-3">Go to Login Portal</a>
+</div>
+{% endblock %}

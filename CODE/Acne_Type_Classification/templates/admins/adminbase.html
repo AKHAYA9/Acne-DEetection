@@ -1,0 +1,235 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — AcneCheck AI</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+
+    <style>
+        :root {
+            --admin-sidebar-width: 280px;
+            --admin-bg: var(--bg-main);
+        }
+
+        body {
+            background: var(--admin-bg);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        #sidebar {
+            width: var(--admin-sidebar-width);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #0f172a; /* Slate 900 */
+            color: #fff;
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #content {
+            margin-left: var(--admin-sidebar-width);
+            min-height: 100vh;
+            transition: all 0.3s;
+            padding: 2rem;
+        }
+
+        .sidebar-header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .brand-text {
+            font-size: 1.25rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar-menu {
+            padding: 1.5rem 1rem;
+            list-style: none;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.85rem 1.25rem;
+            color: #94a3b8;
+            text-decoration: none !important;
+            border-radius: 12px;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .sidebar-link i {
+            width: 20px;
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-link:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .sidebar-link.active {
+            color: #fff;
+            background: var(--brand-primary);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .sidebar-section-title {
+            padding: 1.5rem 1.25rem 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* Top Bar */
+        .admin-top-bar {
+            background: rgba(17, 37, 38, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: -2rem -2rem 2rem -2rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .user-profile-pill {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 6px 6px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--brand-primary);
+            color: #0f172a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 991.98px) {
+            #sidebar { left: -280px; }
+            #content { margin-left: 0; }
+            body.sidebar-open #sidebar { left: 0; }
+            body.sidebar-open #content { transform: translateX(280px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <div class="d-flex align-items-center gap-3 mb-1">
+                <div class="brand-icon" style="width: 35px; height: 35px; background: var(--brand-primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff;">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <span class="brand-text">ADMIN.HUB</span>
+            </div>
+            <small class="text-muted" style="font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase;">Control Systems v2.4</small>
+        </div>
+
+        <ul class="sidebar-menu">
+            <div class="sidebar-section-title">Core Panel</div>
+            <li>
+                <a href="{% url 'AdminHome' %}" class="sidebar-link {% if request.resolver_match.url_name == 'AdminHome' %}active{% endif %}">
+                    <i class="fas fa-columns"></i> Dashboard
+                </a>
+            </li>
+            
+            <div class="sidebar-section-title">User Management</div>
+            <li>
+                <a href="{% url 'RegisterUsersView' %}" class="sidebar-link {% if request.resolver_match.url_name == 'RegisterUsersView' %}active{% endif %}">
+                    <i class="fas fa-users"></i> Platform Users
+                </a>
+            </li>
+
+            <div class="sidebar-section-title">System</div>
+            <li>
+                <a href="{% url 'UserLogin' %}" class="sidebar-link text-danger">
+                    <i class="fas fa-power-off"></i> Terminate Session
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="content">
+        <div class="admin-top-bar">
+            <div class="d-flex align-items-center">
+                <button id="sidebarCollapse" class="btn btn-light d-lg-none mr-3">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h6 class="mb-0 font-weight-bold text-white d-none d-md-block">Administrator Management Center</h6>
+            </div>
+            
+            <div class="user-profile-pill">
+                <div class="small font-weight-bold text-white mr-2">System Administrator</div>
+                <div class="profile-avatar">AD</div>
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show border-0 shadow-sm mb-4" role="alert" style="border-radius: 12px;">
+                    <div class="d-flex align-items-center">
+                        <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %} mr-2"></i>
+                        {{ message }}
+                    </div>
+                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block contents %}{% endblock %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('body').toggleClass('sidebar-open');
+            });
+        });
+    </script>
+</body>
+</html>

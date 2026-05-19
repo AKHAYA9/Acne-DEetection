@@ -1,0 +1,156 @@
+{% extends 'admins/adminbase.html' %}
+{% load static %}
+
+{% block contents %}
+<div class="animate-up">
+    <div class="premium-card bg-dark text-white p-5 border-0 shadow-lg mb-5 overflow-hidden position-relative">
+        <div class="row align-items-center position-relative" style="z-index: 2;">
+            <div class="col-lg-8">
+                <h1 class="display-5 font-weight-bold mb-3">System Overview</h1>
+                <p class="lead opacity-75 mb-0">Platform administrative control center. Monitor neural engine performance and manage secure user access across the AcneCheck ecosystem.</p>
+            </div>
+            <div class="col-lg-4 text-center mt-4 mt-lg-0">
+                <div class="badge badge-soft-primary p-3 border border-secondary">
+                    <i class="fas fa-signal-stream mr-2"></i> SYSTEM STATUS: ONLINE
+                </div>
+            </div>
+        </div>
+        <div class="position-absolute" style="top: -50px; right: -50px; opacity: 0.1;">
+            <i class="fas fa-shield-alt" style="font-size: 300px;"></i>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="premium-card h-100 py-2 border-left-primary">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">User Base</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">128 Active</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="premium-card h-100 py-2 border-left-success">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">AI Precision</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">94.8% Avg</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-brain fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="premium-card h-100 py-2 border-left-info">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Analyses Today</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">42 Requests</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-microscope fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="premium-card h-100 py-2 border-left-warning">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Server Load</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Low Latency</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-server fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="premium-card mb-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h5 class="font-weight-bold mb-0">System Activity Logs</h5>
+                    <button class="btn btn-sm btn-light border">Export Logs</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-premium small mb-0">
+                        <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>System Module</th>
+                                <th>Timestamp</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-weight-bold text-dark">User Authentication</td>
+                                <td>Security Engine</td>
+                                <td class="text-muted">2 mins ago</td>
+                                <td><span class="badge badge-success px-2 py-1">SUCCESS</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold text-dark">Neural Inference</td>
+                                <td>VGG16 Pipeline</td>
+                                <td class="text-muted">15 mins ago</td>
+                                <td><span class="badge badge-success px-2 py-1">SUCCESS</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold text-dark">Database Sync</td>
+                                <td>PostgreSQL Core</td>
+                                <td class="text-muted">45 mins ago</td>
+                                <td><span class="badge badge-info px-2 py-1">SYNCED</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="premium-card h-100">
+                <h5 class="font-weight-bold mb-4">Quick Actions</h5>
+                <div class="d-grid gap-3">
+                    <a href="{% url 'RegisterUsersView' %}" class="btn-premium w-100 mb-3 py-3 text-center d-block" style="text-decoration: none;">
+                        <i class="fas fa-user-cog mr-2"></i> User Management
+                    </a>
+                    <button class="btn btn-light border w-100 mb-3 py-3 font-weight-bold small">
+                        <i class="fas fa-sync mr-2"></i> Recalibrate Engine
+                    </button>
+                    <button class="btn btn-light border w-100 py-3 font-weight-bold small text-danger">
+                        <i class="fas fa-exclamation-triangle mr-2"></i> System Maintenance
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .border-left-primary { border-left: 4px solid var(--brand-primary) !important; }
+    .border-left-success { border-left: 4px solid #10b981 !important; }
+    .border-left-info { border-left: 4px solid #06b6d4 !important; }
+    .border-left-warning { border-left: 4px solid #f59e0b !important; }
+    .text-xs { font-size: .7rem; }
+</style>
+{% endblock %}

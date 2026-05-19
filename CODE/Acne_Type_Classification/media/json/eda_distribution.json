@@ -1,0 +1,23 @@
+{
+  "train": {
+    "Blackheads": 735,
+    "Cyst": 645,
+    "Papules": 621,
+    "Pustules": 584,
+    "Whiteheads": 193
+  },
+  "valid": {
+    "Blackheads": 240,
+    "Cyst": 206,
+    "Papules": 209,
+    "Pustules": 217,
+    "Whiteheads": 49
+  },
+  "test": {
+    "Blackheads": 265,
+    "Cyst": 189,
+    "Papules": 202,
+    "Pustules": 205,
+    "Whiteheads": 57
+  }
+}

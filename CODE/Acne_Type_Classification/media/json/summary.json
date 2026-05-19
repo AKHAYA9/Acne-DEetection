@@ -1,0 +1,46 @@
+{
+  "class_names": [
+    "Blackheads",
+    "Cyst",
+    "Papules",
+    "Pustules",
+    "Whiteheads"
+  ],
+  "num_classes": 5,
+  "results": [
+    {
+      "model": "VGG16",
+      "gan_augmentation": false,
+      "accuracy": 0.7919,
+      "precision": 0.8111,
+      "f1_score": 0.7939
+    },
+    {
+      "model": "VGG16",
+      "gan_augmentation": true,
+      "accuracy": 0.9074,
+      "precision": 0.9082,
+      "f1_score": 0.9073
+    },
+    {
+      "model": "ResNet50",
+      "gan_augmentation": false,
+      "accuracy": 0.8617,
+      "precision": 0.8627,
+      "f1_score": 0.8615
+    },
+    {
+      "model": "ResNet50",
+      "gan_augmentation": true,
+      "accuracy": 0.8998,
+      "precision": 0.8991,
+      "f1_score": 0.899
+    }
+  ],
+  "paper_reference": {
+    "VGG16_baseline": 0.4554,
+    "VGG16_dcgan": 0.8425,
+    "ResNet50_baseline": 0.3216,
+    "ResNet50_dcgan": 0.482
+  }
+}

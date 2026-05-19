@@ -1,0 +1,120 @@
+{% extends 'admins/adminbase.html' %}
+{% load static %}
+
+{% block contents %}
+<div class="animate-up">
+    <div class="d-flex align-items-center justify-content-between mb-5">
+        <div>
+            <h1 class="display-5 font-weight-bold mb-1">Edit User Profile</h1>
+            <p class="text-muted mb-0">Modify account details for <span class="text-primary font-weight-bold">{{ user.name }}</span></p>
+        </div>
+        <a href="{% url 'RegisterUsersView' %}" class="btn btn-soft-secondary border">
+            <i class="fas fa-arrow-left mr-2"></i> Back to List
+        </a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="premium-card p-4 shadow-sm">
+                <form method="post" class="needs-validation">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        {% for field in form %}
+                        {% if field.name == 'status' %}
+                            {{ field }}
+                        {% else %}
+                        <div class="col-md-6 mb-4">
+                            <label class="small font-weight-bold text-uppercase text-muted mb-2 d-block">
+                                {{ field.label }}
+                                {% if field.name == 'loginid' or field.name == 'last_login' %}
+                                    <i class="fas fa-lock ml-2 text-warning" title="This field is locked"></i>
+                                {% endif %}
+                            </label>
+                            <div class="field-wrapper {% if field.name == 'loginid' or field.name == 'last_login' %}field-locked{% endif %}">
+                                {{ field }}
+                                {% if field.name == 'password' %}
+                                    <button type="button" class="btn-password-toggle" onclick="togglePassword()">
+                                        <i class="fas fa-eye" id="toggleIcon"></i>
+                                    </button>
+                                {% endif %}
+                            </div>
+                            {% if field.errors %}
+                                <div class="small text-danger mt-1">
+                                    {{ field.errors|striptags }}
+                                </div>
+                            {% endif %}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <hr class="my-4 opacity-5">
+
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary px-5 py-2 shadow-sm">
+                            <i class="fas fa-save mr-2"></i> Update User Details
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .premium-card input, .premium-card select, .premium-card textarea {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #f9fafb;
+        transition: all 0.2s;
+    }
+    .premium-card input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    }
+    .field-locked input {
+        background-color: #f3f4f6 !important;
+        cursor: not-allowed;
+        color: #9ca3af;
+        border-style: dashed;
+    }
+    .field-wrapper { position: relative; }
+    .btn-password-toggle {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: none;
+        color: #6b7280;
+        cursor: pointer;
+        padding: 5px;
+    }
+    .btn-soft-secondary { background: rgba(107, 114, 128, 0.1); color: #6b7280; }
+    .btn-soft-secondary:hover { background: #6b7280; color: #fff; }
+</style>
+
+<script>
+    function togglePassword() {
+        const passField = document.querySelector('input[name="password"]');
+        const icon = document.getElementById('toggleIcon');
+        if (passField.type === "password") {
+            passField.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passField.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+</script>
+{% endblock %}

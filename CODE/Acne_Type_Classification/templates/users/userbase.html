@@ -1,0 +1,424 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard — AcneCheck AI</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+    <style>
+        :root {
+            --sidebar-width: 280px;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            background: var(--bg-sidebar);
+            color: white;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link-sidebar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.7) !important;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: all 0.2s;
+            text-decoration: none !important;
+            font-weight: 500;
+        }
+
+        .nav-link-sidebar:hover, .nav-link-sidebar.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white !important;
+        }
+
+        .nav-link-sidebar.active {
+            background: var(--brand-primary);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .sidebar-header {
+            margin-bottom: 40px;
+        }
+
+        .top-bar {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 15px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--brand-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+        }
+
+        .sidebar-toggler {
+            padding: 10px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .sidebar-toggler:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-sidebar-btn {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .close-sidebar-btn:hover {
+            background: rgba(244, 63, 94, 0.2);
+            border-color: rgba(244, 63, 94, 0.4);
+            color: #f43f5e;
+            transform: rotate(90deg);
+        }
+
+        .burger-icon {
+            width: 20px;
+            height: 14px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .burger-icon span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background: var(--brand-primary);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .nav-link-sidebar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.5) !important;
+            border-radius: 12px;
+            margin-bottom: 5px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none !important;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-link-research {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--brand-primary-light) !important;
+            margin-top: 20px;
+            border: 1px dashed rgba(79, 70, 229, 0.3);
+        }
+
+        .nav-link-sidebar:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.9) !important;
+            padding-left: 20px;
+        }
+
+        .nav-link-sidebar.active {
+            background: linear-gradient(135deg, var(--brand-primary) 0%, #6366f1 100%);
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+        }
+
+        @media (max-width: 991px) {
+            .sidebar { transform: translateX(-100%); }
+            .main-content { margin-left: 0; }
+            .sidebar.active { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header d-flex align-items-center justify-content-between">
+            <a href="{% url 'UserHome' %}" class="d-flex align-items-center gap-2 text-white text-decoration-none">
+                <div class="brand-logo bg-white text-primary rounded p-2" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-microscope"></i>
+                </div>
+                <span class="font-weight-bold h5 mb-0">AcneCheck</span>
+            </a>
+            <button class="close-sidebar-btn d-lg-none" onclick="$('.sidebar').removeClass('active')">
+                <i class="fas fa-times h4 mb-0"></i>
+            </button>
+        </div>
+
+        <nav class="flex-grow-1">
+            <a href="{% url 'UserHome' %}" class="nav-link-sidebar {% if request.resolver_match.url_name == 'UserHome' %}active{% endif %}">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a href="{% url 'prediction' %}" class="nav-link-sidebar {% if request.resolver_match.url_name == 'prediction' %}active{% endif %}">
+                <i class="fas fa-stethoscope"></i> Image Predict
+            </a>
+            <a href="{% url 'UserHistory' %}" class="nav-link-sidebar {% if request.resolver_match.url_name == 'UserHistory' %}active{% endif %}">
+                <i class="fas fa-history"></i> Medical History
+            </a>
+        </nav>
+
+        <div class="mt-auto pt-4 border-top border-secondary">
+            <a href="{% url 'UserLogin' %}" class="nav-link-sidebar text-danger">
+                <i class="fas fa-sign-out-alt"></i> Sign Out
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <div class="d-flex align-items-center gap-3">
+                <button class="sidebar-toggler d-lg-none" onclick="$('.sidebar').toggleClass('active')">
+                    <div class="burger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+                <h5 class="mb-0 font-weight-bold text-white">Patient Workspace</h5>
+            </div>
+            
+            <div class="d-flex align-items-center gap-3">
+                <div class="text-right d-none d-md-block mr-3">
+                    <p class="mb-0 small font-weight-bold text-white">{{ request.session.loggeduser }}</p>
+                    <p class="mb-0 text-muted" style="font-size: 0.7rem;">Verified Patient</p>
+                </div>
+                <div class="user-avatar" style="background: var(--brand-primary); color: #0f172a;">
+                    {{ request.session.loggeduser|slice:":1"|upper }}
+                </div>
+            </div>
+        </header>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show premium-card mb-4" role="alert">
+                    <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %} mr-2"></i>
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block contents %}{% endblock %}
+
+        <footer class="mt-5 text-center text-muted small">
+            <p>&copy; 2026 Developed by Akhaya Kumar Dash. All rights reserved.</p>
+        </footer>
+    </main>
+
+    <!-- About Modal (Synced from base.html) -->
+    <div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content premium-card border-0 p-0 overflow-hidden" style="background: #ffffff; border-radius: 24px;">
+                <!-- Header -->
+                <div class="modal-header border-0 p-4" style="background: #0f172a; color: white;">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="brand-logo mr-3" style="width: 45px; height: 45px;"><i class="fas fa-microscope"></i></div>
+                        <div>
+                            <h5 class="modal-title font-weight-bold mb-0">System Intelligence Analysis</h5>
+                            <p class="mb-0 small text-muted">Technical Research Foundation & Performance Metrics</p>
+                        </div>
+                    </div>
+                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+
+                <div class="modal-body p-0">
+                    <div class="row no-gutters">
+                        <!-- Left Panel: Problem & Solution -->
+                        <div class="col-lg-5 p-5 border-right" style="background: #f8fafc;">
+                            <section class="mb-5">
+                                <h6 class="text-uppercase tracking-wider font-weight-bold small text-danger mb-4">Research Gap Analysis</h6>
+                                <div class="premium-card bg-white p-3 mb-3 border-0 shadow-sm">
+                                    <div class="d-flex gap-3 mb-2">
+                                        <i class="fas fa-user-md text-danger"></i>
+                                        <p class="small font-weight-bold mb-0">Legacy Manual Diagnosis</p>
+                                    </div>
+                                    <p class="extra-small text-muted mb-0">Subjective visual assessment prone to 15-20% variability in inter-observer agreement.</p>
+                                </div>
+                                <div class="premium-card bg-white p-3 border-0 shadow-sm">
+                                    <div class="d-flex gap-3 mb-2">
+                                        <i class="fas fa-code-branch text-danger"></i>
+                                        <p class="small font-weight-bold mb-0">Shallow CNN Architectures</p>
+                                    </div>
+                                    <p class="extra-small text-muted mb-0">Baseline models suffered from 45.5% low accuracy due to severe class imbalance.</p>
+                                </div>
+                            </section>
+
+                            <section>
+                                <h6 class="text-uppercase tracking-wider font-weight-bold small text-primary mb-4">Hybrid Innovation</h6>
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="badge-soft-primary p-2 rounded-circle mr-3"><i class="fas fa-network-wired small"></i></div>
+                                    <p class="extra-small mb-0"><strong>VGG16 + ResNet50</strong> Transfer Learning</p>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="badge-soft-success p-2 rounded-circle mr-3"><i class="fas fa-magic small"></i></div>
+                                    <p class="extra-small mb-0"><strong>DCGAN</strong> Synthetic Data Balancing</p>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="badge-soft-info p-2 rounded-circle mr-3"><i class="fas fa-bolt small"></i></div>
+                                    <p class="extra-small mb-0"><strong>YOLOv5</strong> Real-time Localization</p>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- Right Panel: Side-by-Side Comparison -->
+                        <div class="col-lg-7 p-5">
+                            <h6 class="text-uppercase tracking-wider font-weight-bold small text-dark mb-4">Benchmark Comparison: Paper vs. Enhanced System</h6>
+                            
+                            <div class="row no-gutters rounded-lg overflow-hidden border shadow-sm mb-5">
+                                <!-- Base Paper Side -->
+                                <div class="col-6 p-4" style="background: #f1f5f9;">
+                                    <div class="badge badge-secondary mb-3">RESEARCH BASE PAPER</div>
+                                    <div class="mb-4">
+                                        <p class="extra-small font-weight-bold text-dark mb-1">Architecture</p>
+                                        <p class="extra-small text-muted mb-0">Standard VGG16 / ResNet50</p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <p class="extra-small font-weight-bold text-dark mb-1">Dataset Strategy</p>
+                                        <p class="extra-small text-muted mb-0">Basic DCGAN Augmentation</p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <p class="extra-small font-weight-bold text-dark mb-1">Peak Accuracy</p>
+                                        <div class="h5 font-weight-bold text-muted">84.25%</div>
+                                    </div>
+                                    <div class="mb-0">
+                                        <p class="extra-small font-weight-bold text-dark mb-1">Class Coverage</p>
+                                        <p class="extra-small text-muted mb-0">6 Standard Classes</p>
+                                    </div>
+                                    <div class="mt-4 p-2 bg-white rounded border border-warning text-center">
+                                        <p class="extra-small font-weight-bold text-warning mb-0"><i class="fas fa-lock mr-1"></i> Static Analysis Only</p>
+                                    </div>
+                                </div>
+
+                                <!-- Our System Side -->
+                                <div class="col-6 p-4" style="background: #ffffff; border-left: 2px dashed #e2e8f0;">
+                                    <div class="badge badge-primary mb-3">ENHANCED ACNECHECK AI</div>
+                                    <div class="mb-4">
+                                        <p class="extra-small font-weight-bold text-primary mb-1">Hybrid Architecture</p>
+                                        <p class="extra-small text-dark mb-0">VGG16 + YOLOv5 + ResNet50</p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <p class="extra-small font-weight-bold text-primary mb-1">Optimization</p>
+                                        <p class="extra-small text-dark mb-0">Hyper-tuned DCGAN v2</p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <p class="extra-small font-weight-bold text-primary mb-1">Peak Accuracy</p>
+                                        <div class="h5 font-weight-bold text-primary">90.74%</div>
+                                    </div>
+                                    <div class="mb-0">
+                                        <p class="extra-small font-weight-bold text-primary mb-1">Class Coverage</p>
+                                        <p class="extra-small text-dark mb-0">Dual-Mode (5 Cls. Predict / 6 Cls. Detect)</p>
+                                    </div>
+                                    <div class="mt-4 p-2 bg-soft-primary rounded border border-primary text-center">
+                                        <p class="extra-small font-weight-bold text-primary mb-0"><i class="fas fa-video mr-1"></i> Real-time Live Detection</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Benchmarking Summary -->
+                            <div class="premium-card bg-dark text-white border-0 p-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-9">
+                                        <h6 class="mb-1">Superior Diagnostic Performance</h6>
+                                        <p class="extra-small mb-0 text-muted">Our system delivers a <strong>+6.49%</strong> higher diagnostic accuracy and adds <strong>Real-time Spot Localization</strong> which was absent in the original research paper.</p>
+                                    </div>
+                                    <div class="col-md-3 text-right">
+                                        <div class="h4 mb-0 font-weight-bold text-gradient">+6.5%</div>
+                                        <div class="small text-muted" style="font-size: 0.5rem;">EFFICIENCY DELTA</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer border-0 p-4 bg-light">
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <p class="extra-small text-muted mb-0"><i class="fas fa-info-circle mr-1"></i> Data validated against clinical dataset of 5,600+ multi-ethnic samples.</p>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn-premium w-100" data-dismiss="modal">Close Dashboard</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .extra-small { font-size: 0.75rem; line-height: 1.5; }
+        .bg-soft-primary { background: rgba(79, 70, 229, 0.05); }
+        .bg-soft-info { background: rgba(6, 182, 212, 0.05); }
+        .tracking-wider { letter-spacing: 0.05em; }
+        .tracking-widest { letter-spacing: 0.1em; }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

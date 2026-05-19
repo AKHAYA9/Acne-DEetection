@@ -1,0 +1,250 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block contents %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="premium-card p-0 overflow-hidden mb-4 glass-dark" style="border-color: rgba(79, 70, 229, 0.3);">
+                <div class="p-3 d-flex align-items-center justify-content-between" style="background: rgba(15, 23, 42, 0.6); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div class="d-flex align-items-center gap-3">
+                        <div id="statusDot" class="live-dot" style="width: 10px; height: 10px; background: #64748b; border-radius: 50%;"></div>
+                        <h6 class="mb-0 font-weight-bold text-white small text-uppercase" style="letter-spacing: 1px;">Live AI Stream</h6>
+                        <span id="systemStatusBadge" class="badge badge-secondary ml-2 py-1 px-2" style="font-size: 0.6rem; opacity: 0.7;">System Inactive</span>
+                    </div>
+                </div>
+
+                <div class="position-relative bg-black" style="aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; min-height: 400px;">
+                    <video id="videoStream" autoplay playsinline class="w-100 h-100" style="object-fit: cover; display: none;"></video>
+                    
+                    <div id="cameraPrompt" class="position-absolute inset-0 w-100 h-100 flex-column align-items-center justify-content-center text-center p-4" style="background: rgba(15, 23, 42, 0.9); z-index: 20; display: flex;">
+                        <div class="mb-4" style="width: 80px; height: 80px; background: rgba(79, 70, 229, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-video text-primary h2 mb-0"></i>
+                        </div>
+                        <h5 class="text-white font-weight-bold">Ready to start detection?</h5>
+                        <p class="text-muted small mb-4" style="max-width: 250px;">Enable camera access to perform real-time analysis.</p>
+                        <button id="startCameraBtn" class="btn-premium px-5">Start Live Stream</button>
+                    </div>
+
+                    <div id="loadingOverlay" class="position-absolute inset-0 w-100 h-100 d-none align-items-center justify-content-center" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 10;">
+                        <div class="spinner-border text-primary" role="status"></div>
+                    </div>
+                </div>
+
+                <div class="p-4 text-center" style="background: rgba(15, 23, 42, 0.03); border-top: 1px solid rgba(0,0,0,0.05);">
+                    <div class="d-flex flex-wrap gap-3 justify-content-center">
+                        <button id="captureBtn" class="btn-camera-action primary-glow" disabled>
+                            <i class="fas fa-camera"></i> Capture & Analyze
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="premium-card h-100">
+                <h5 class="font-weight-bold mb-4">Diagnostics Panel</h5>
+                
+                <div id="instructionPanel">
+                    <div class="p-4 rounded-lg mb-4" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+                        <h6 class="font-weight-bold small text-primary mb-2">Instructions</h6>
+                        <ul class="list-unstyled small text-muted mb-0">
+                            <li class="mb-2"><i class="fas fa-check-circle mr-2 text-success"></i> Ensure adequate lighting.</li>
+                            <li class="mb-2"><i class="fas fa-check-circle mr-2 text-success"></i> Position skin area in center.</li>
+                            <li><i class="fas fa-check-circle mr-2 text-success"></i> Hold steady for analysis.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="resultCard" class="d-none animate-up">
+                    <div class="p-4 rounded-lg mb-4 text-white" style="background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);">
+                        <h6 class="small text-uppercase font-weight-bold opacity-8 mb-2">Detection Result</h6>
+                        <h4 id="resultBadge" class="font-weight-bold mb-0">—</h4>
+                    </div>
+
+                    <img id="resultImage" class="w-100 rounded-lg shadow-sm border d-none mb-3" alt="Annotated Result">
+                    
+                    <button class="btn btn-light w-100 border small font-weight-bold py-2" onclick="resetFeed()">
+                        <i class="fas fa-sync-alt mr-2"></i> Reset Feed
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    const video        = document.getElementById('videoStream');
+    const startCameraBtn = document.getElementById('startCameraBtn');
+    const cameraPrompt = document.getElementById('cameraPrompt');
+    const captureBtn   = document.getElementById('captureBtn');
+
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const resultCard     = document.getElementById('resultCard');
+    const instructionPanel = document.getElementById('instructionPanel');
+    const resultBadge    = document.getElementById('resultBadge');
+    const resultImage    = document.getElementById('resultImage');
+
+    const statusDot = document.getElementById('statusDot');
+    const statusBadge = document.getElementById('systemStatusBadge');
+
+    let stream = null;
+
+    // Start Camera using browser API
+    startCameraBtn.addEventListener('click', async () => {
+        try {
+            loadingOverlay.classList.remove('d-none');
+            startCameraBtn.disabled = true;
+            
+            stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            video.style.display = 'block';
+            cameraPrompt.style.display = 'none';
+            captureBtn.disabled = false;
+            
+            statusBadge.textContent = 'Feed Active';
+            statusBadge.className = 'badge badge-success ml-2 py-1 px-2';
+            statusDot.style.background = '#f43f5e';
+            statusDot.style.boxShadow = '0 0 10px #f43f5e';
+            statusDot.classList.add('active-pulse');
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Camera Connected',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Camera Error',
+                text: 'Could not access your camera. Please ensure permissions are granted.'
+            });
+            startCameraBtn.disabled = false;
+        } finally {
+            loadingOverlay.classList.add('d-none');
+        }
+    });
+
+    function showResult(data) {
+        loadingOverlay.classList.add('d-none');
+
+        if (data.status === 'success' || data.status === 'rejected') {
+            resultCard.classList.remove('d-none');
+            instructionPanel.classList.add('d-none');
+
+            resultBadge.textContent = data.result;
+
+            if (data.annotated) {
+                // Ensure annotated image displays properly
+                resultImage.src = data.annotated;
+                resultImage.classList.remove('d-none');
+            } else if (data.image) {
+                resultImage.src = data.image;
+                resultImage.classList.remove('d-none');
+            } else {
+                resultImage.classList.add('d-none');
+            }
+
+            Swal.fire({
+                icon: data.status === 'success' ? 'success' : 'warning',
+                title: data.status === 'success' ? 'Analysis Complete' : 'Image Rejected',
+                text: data.result,
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Analysis Failed',
+                text: data.message || 'Unknown error occurred.'
+            });
+        }
+    }
+
+    captureBtn.addEventListener('click', () => {
+        loadingOverlay.classList.remove('d-none');
+        
+        const canvas = document.createElement('canvas');
+        canvas.width  = video.videoWidth || 640;
+        canvas.height = video.videoHeight || 480;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        fetch("{% url 'capture_prediction' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ image: canvas.toDataURL('image/jpeg') })
+        })
+        .then(res => res.json())
+        .then(data => showResult(data))
+        .catch(() => {
+            loadingOverlay.classList.add('d-none');
+            Swal.fire({ icon: 'error', title: 'Connection Error', text: 'Failed to reach AI server.' });
+        });
+    });
+
+    function resetFeed() {
+        resultCard.classList.add('d-none');
+        instructionPanel.classList.remove('d-none');
+        resultImage.classList.add('d-none');
+        resultImage.src = "";
+    }
+</script>
+
+<style>
+    .inset-0 { top: 0; left: 0; right: 0; bottom: 0; }
+    .active-pulse { animation: pulse-red 2s infinite; }
+    
+    .btn-camera-action {
+        border: none;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+    }
+
+    .primary-glow {
+        background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+    }
+
+    .btn-camera-action:hover:not(:disabled) {
+        transform: translateY(-3px);
+    }
+
+    .primary-glow:hover:not(:disabled) {
+        box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+        filter: brightness(1.1);
+    }
+    
+    .btn-camera-action:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    @keyframes pulse-red {
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7); }
+        70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(244, 63, 94, 0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+    }
+</style>
+{% endblock %}

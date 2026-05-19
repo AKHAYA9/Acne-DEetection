@@ -1,0 +1,53 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block contents %}
+<div class="container py-4">
+    <div class="row align-items-center mb-5 animate-up">
+        <div class="col-md-8">
+            <h1 class="display-5 font-weight-bold mb-2">Medical History</h1>
+            <p class="text-muted">A chronological record of your AI dermatological assessments.</p>
+        </div>
+        <div class="col-md-4 text-md-right">
+            <a href="{% url 'prediction' %}" class="btn-premium px-4 py-2">
+                <i class="fas fa-plus mr-2"></i> New Analysis
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for record in records %}
+            {# Determine severity logic #}
+            {% if "cyst" in record.result|lower %}
+                {% with sev_class="badge-danger" sev_label="Severe" icon="fa-exclamation-circle" %}
+                    {% include "users/partials/history_card.html" %}
+                {% endwith %}
+            {% elif "papule" in record.result|lower or "pustule" in record.result|lower %}
+                {% with sev_class="badge-warning" sev_label="Moderate" icon="fa-info-circle" %}
+                    {% include "users/partials/history_card.html" %}
+                {% endwith %}
+            {% elif "blackhead" in record.result|lower or "whitehead" in record.result|lower %}
+                {% with sev_class="badge-success" sev_label="Mild" icon="fa-check-circle" %}
+                    {% include "users/partials/history_card.html" %}
+                {% endwith %}
+            {% else %}
+                {% with sev_class="badge-secondary" sev_label="Standard" icon="fa-circle" %}
+                    {% include "users/partials/history_card.html" %}
+                {% endwith %}
+            {% endif %}
+
+        {% empty %}
+            <div class="col-12">
+                <div class="premium-card text-center py-5 animate-up">
+                    <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px; background: #f1f5f9; color: #94a3b8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+                        <i class="fas fa-folder-open"></i>
+                    </div>
+                    <h4 class="font-weight-bold">No Records Found</h4>
+                    <p class="text-muted mb-4 mx-auto" style="max-width: 400px;">Your assessment history is currently empty. Start your first AI-driven classification to see results here.</p>
+                    <a href="{% url 'prediction' %}" class="btn-premium px-5 py-3">Begin AI Analysis</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
