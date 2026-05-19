@@ -53,6 +53,108 @@
             --text-muted: #64748b !important;
         }
 
+        /* Dynamic Light Theme Modals & Cards Override */
+        body.light-theme .modal-content {
+            background: #ffffff !important;
+            border: 1px solid rgba(0, 0, 0, 0.08) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+        }
+
+        body.light-theme .modal-header {
+            background: #f8fafc !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+        }
+
+        body.light-theme .modal-body {
+            background: #ffffff !important;
+        }
+
+        body.light-theme .modal-footer {
+            background: #f8fafc !important;
+            border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+        }
+
+        body.light-theme .modal-title,
+        body.light-theme .modal-content h5,
+        body.light-theme .modal-content h6,
+        body.light-theme .modal-content strong,
+        body.light-theme .modal-content .modal-body strong,
+        body.light-theme .modal-content p.text-white,
+        body.light-theme .modal-content .text-white {
+            color: #1e293b !important;
+        }
+
+        body.light-theme .modal-content p,
+        body.light-theme .modal-content span.text-muted,
+        body.light-theme .modal-content .text-muted,
+        body.light-theme .modal-content .extra-small.text-muted,
+        body.light-theme .modal-content .modal-footer p {
+            color: #64748b !important;
+        }
+
+        body.light-theme .modal-content input,
+        body.light-theme .modal-content textarea {
+            background: #f1f5f9 !important;
+            border: 1px solid rgba(0, 0, 0, 0.08) !important;
+            color: #1e293b !important;
+        }
+
+        body.light-theme .modal-content input::placeholder,
+        body.light-theme .modal-content textarea::placeholder {
+            color: #94a3b8 !important;
+        }
+
+        body.light-theme .modal-content .close {
+            color: #1e293b !important;
+            opacity: 0.7;
+        }
+
+        body.light-theme .nav-tabs {
+            background: #f8fafc !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+        }
+
+        body.light-theme .nav-tabs .nav-link {
+            color: #64748b !important;
+        }
+
+        body.light-theme .nav-tabs .nav-link.active {
+            color: #0080ff !important;
+            background: transparent !important;
+            border-bottom: 2px solid #0080ff !important;
+        }
+
+        /* Target all specific container background colors within modals in light mode */
+        body.light-theme .modal-body .row > div,
+        body.light-theme .modal-body div[style*="background"] {
+            background: #ffffff !important;
+            border-color: rgba(0, 0, 0, 0.06) !important;
+        }
+
+        body.light-theme .modal-body div[style*="background:#101418"] {
+            background: #f8fafc !important;
+        }
+
+        body.light-theme .modal-body div[style*="background:#0f1822"] {
+            background: #f0f7ff !important;
+        }
+
+        body.light-theme .modal-body div[style*="background:rgba(255,255,255,0.02)"],
+        body.light-theme .modal-body div[style*="background:rgba(255,255,255,0.01)"] {
+            background: #f8fafc !important;
+            border: 1px solid rgba(0, 0, 0, 0.05) !important;
+        }
+
+        body.light-theme .modal-body .text-muted,
+        body.light-theme .modal-body div[style*="color:#5a6070"],
+        body.light-theme .modal-body p[style*="color:#5a6070"] {
+            color: #64748b !important;
+        }
+
+        body.light-theme .modal-body a.text-muted {
+            color: #475569 !important;
+        }
+
         /* ===== DERMA.AI NAVBAR ===== */
         .navbar-main {
             position: sticky;
