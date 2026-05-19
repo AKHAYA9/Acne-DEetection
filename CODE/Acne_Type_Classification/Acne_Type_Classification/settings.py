@@ -153,4 +153,4 @@ EMAIL_HOST_USER     = os.environ.get('EMAIL_HOST_USER', 'akhayakumardash77@gmail
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'uegb tuhq bitp qnwz')
 DEFAULT_FROM_EMAIL  = os.environ.get('DEFAULT_FROM_EMAIL', 'AcneDetect<admin>')
 ADMIN_EMAIL         = os.environ.get('ADMIN_EMAIL', 'akhayakumardash77@gmail.com')
-SITE_URL            = os.environ.get('SITE_URL', 'http://127.0.0.1:8000')
+SITE_URL            = os.environ.get('SITE_URL', 'https://akhaya.pythonanywhere.com/')
