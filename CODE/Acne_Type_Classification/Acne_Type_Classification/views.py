@@ -59,3 +59,36 @@ def UserLogin(request):
 def UserRegister(request):
     form = UserRegistrationForm()
     return render(request, 'UserRegistrations.html', {'form': form})
+
+
+def ContactSupport(request):
+    from django.core.mail import send_mail
+    from django.conf import settings
+    from django.http import JsonResponse
+
+    if request.method == "POST":
+        name = request.POST.get('name', 'Anonymous')
+        email = request.POST.get('email', '')
+        message = request.POST.get('message', '')
+
+        try:
+            subject = f"[Acne Ai] Contact Inquiry from {name}"
+            email_message = (
+                f"You received a new inquiry from the Contact & Support form on Acne Ai:\n\n"
+                f"Name: {name}\n"
+                f"Email: {email}\n\n"
+                f"Message:\n{message}\n"
+            )
+
+            send_mail(
+                subject,
+                email_message,
+                settings.EMAIL_HOST_USER,
+                ['akhayakumardash77@gmail.com'],
+                fail_silently=False,
+            )
+            return JsonResponse({'status': 'success', 'message': 'Thank you! Your clinical inquiry has been sent to our team.'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': f'SMTP Error: {str(e)}'})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid Request Method'})

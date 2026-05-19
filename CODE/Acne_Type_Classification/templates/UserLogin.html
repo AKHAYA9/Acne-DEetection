@@ -7,29 +7,10 @@
         min-height: 80vh;
         display: flex;
         align-items: center;
-        padding: 40px 0;
+        padding: 60px 0;
+        background-color: var(--bg-main);
         position: relative;
         overflow: hidden;
-    }
-
-    /* Ambient Glowing Orbs behind the card */
-    .glow-orb {
-        position: absolute;
-        width: 320px;
-        height: 320px;
-        border-radius: 50%;
-        filter: blur(110px);
-        opacity: 0.12;
-        z-index: 1;
-        pointer-events: none;
-    }
-    .orb-1 {
-        top: 15%; left: 35%;
-        background: #00f2fe;
-    }
-    .orb-2 {
-        bottom: 15%; right: 35%;
-        background: #6366f1;
     }
 
     /* 3D Perspective Flip Container */
@@ -38,442 +19,181 @@
         width: 100%;
         max-width: 440px;
         margin: 0 auto;
-        cursor: grab;
         position: relative;
         z-index: 2;
-        user-select: none;
-    }
-    .flip-container:active {
-        cursor: grabbing;
     }
 
     .flip-card-inner {
         position: relative;
         width: 100%;
-        height: 540px; /* Snug, ultra-clean height to accommodate Google button */
+        height: 480px;
         transform-style: preserve-3d;
-        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .flip-card-inner.flipped {
         transform: rotateY(180deg);
     }
 
-    /* Premium Glassmorphism Cards */
+    /* Formal Glassmorphism Cards */
     .flip-card-front, .flip-card-back {
         position: absolute;
         width: 100%;
         height: 100%;
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
-        border-radius: 20px;
-        background: rgba(15, 23, 42, 0.45); /* Highly professional dark glass */
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        border-radius: 16px;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-lg);
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: center;
         overflow: hidden;
     }
 
-    body.light-theme .flip-card-front, body.light-theme .flip-card-back {
-        background: rgba(255, 255, 255, 0.65); /* Translucent light glass */
-        border: 1px solid rgba(0, 0, 0, 0.06);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
-    }
-
-    /* Rotate back card initially */
     .flip-card-back {
         transform: rotateY(180deg);
     }
 
     .auth-form-container {
-        flex: 1;
         padding: 40px;
-        background: transparent;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
     }
 
-    /* Premium Labels */
-    .premium-label {
+    /* Unified Form Elements */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label-formal {
         font-family: 'Outfit', sans-serif;
         font-weight: 600;
-        font-size: 0.72rem;
+        font-size: 0.75rem;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: 0.06em;
         color: var(--text-muted);
         margin-bottom: 8px;
         display: block;
     }
 
-    /* Unified Professional Form Input Box */
-    .form-group-unified {
+    .input-group-formal {
         position: relative;
         background: rgba(255, 255, 255, 0.02);
         border: 1px solid var(--border-color);
         border-radius: 12px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         align-items: center;
-        padding: 4px 16px;
-    }
-    
-    body.light-theme .form-group-unified {
-        background: rgba(0, 0, 0, 0.015);
+        padding: 2px 14px;
+        transition: all 0.25s ease;
     }
 
-    .form-group-unified:focus-within {
-        border-color: var(--brand-primary);
-        box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.12);
-        background: rgba(255, 255, 255, 0.04);
+    body.light-theme .input-group-formal {
+        background: #ffffff;
+        border-color: #cbd5e1;
     }
 
-    body.light-theme .form-group-unified:focus-within {
-        background: rgba(255, 255, 255, 0.8);
+    .input-group-formal:focus-within {
+        border-color: #0080ff;
+        box-shadow: 0 0 0 3px rgba(0, 128, 255, 0.12);
     }
 
-    .form-input-clean {
+    .input-group-formal i {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+    }
+
+    .input-group-formal .form-control-formal {
         border: none !important;
         background: transparent !important;
         box-shadow: none !important;
         color: var(--text-main) !important;
         outline: none !important;
         width: 100%;
-        font-size: 0.95rem;
-        padding: 12px 0 12px 10px !important;
+        font-size: 0.9rem;
+        padding: 12px 10px !important;
         height: auto !important;
     }
 
-    /* Password eye toggle */
-    .password-toggle-premium {
+    body.light-theme .input-group-formal .form-control-formal {
+        color: #1e293b !important;
+    }
+
+    /* Password eye icon */
+    .password-toggle {
         cursor: pointer;
-        padding-left: 10px;
+        color: var(--text-muted);
+        padding-left: 8px;
         display: flex;
         align-items: center;
-        color: var(--text-muted);
         transition: color 0.2s;
     }
-    .password-toggle-premium:hover {
+
+    .password-toggle:hover {
         color: var(--text-main);
     }
 
-    /* Premium Dynamic Buttons */
-    .btn-submit-premium {
-        background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-        color: white;
-        font-weight: 700;
+    /* Formal Buttons */
+    .btn-submit-formal {
+        background: #0080ff;
+        color: #ffffff !important;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 600;
         font-size: 0.9rem;
-        letter-spacing: 0.03em;
         border: none;
         border-radius: 12px;
         padding: 14px;
         width: 100%;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 15px rgba(0, 242, 254, 0.18);
         cursor: pointer;
+        transition: all 0.25s ease;
+        box-shadow: 0 4px 12px rgba(0, 128, 255, 0.15);
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 6px;
-    }
-    .btn-submit-premium:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(0, 242, 254, 0.35);
-        color: white;
-    }
-    .btn-submit-premium:active {
-        transform: translateY(0);
+        gap: 8px;
     }
 
-    .btn-submit-admin-premium {
-        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
-    }
-    .btn-submit-admin-premium:hover {
-        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
-        color: white;
-    }
-
-    /* Drag Hint Styles */
-    .drag-hint {
-        font-family: 'Outfit', sans-serif;
-        font-size: 0.74rem;
-        color: var(--text-muted);
-        pointer-events: none;
-        margin-top: 18px;
-    }
-    
-    .glass-pill {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid var(--border-color);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-    
-    body.light-theme .glass-pill {
-        background: rgba(0, 0, 0, 0.02);
-    }
-    
-    .text-cyan-glow {
-        color: #00f2fe;
-        text-shadow: 0 0 8px rgba(0, 242, 254, 0.6);
-    }
-    
-    @keyframes pulse {
-        0%, 100% { opacity: 0.7; transform: scale(0.98); }
-        50% { opacity: 1; transform: scale(1.02); }
-    }
-    
-    .animate-pulse {
-        animation: pulse 2.5s infinite ease-in-out;
-    }
-
-    @media (max-width: 991px) {
-        .flip-container { max-width: 400px; }
-        .flip-card-inner { height: 530px; }
-        .auth-form-container { padding: 30px 24px; }
-    }
-
-    /* Unified Google button styles inside Login Card */
-    .auth-divider {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        margin: 16px 0 12px;
-        color: var(--text-muted);
-        font-size: 0.68rem;
-        font-family: 'Outfit', sans-serif;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-    }
-    .auth-divider::before,
-    .auth-divider::after {
-        content: '';
-        flex: 1;
-        border-bottom: 1px solid var(--border-color);
-    }
-    .auth-divider:not(:empty)::before {
-        margin-right: 12px;
-    }
-    .auth-divider:not(:empty)::after {
-        margin-left: 12px;
-    }
-
-    .btn-google-auth {
-        font-family: 'Outfit', sans-serif;
-        font-weight: 500;
-        font-size: 0.82rem;
-        color: var(--text-main);
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        cursor: pointer;
-        width: 100%;
-        padding: 10px 16px;
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-    }
-    .btn-google-auth:hover {
-        background: rgba(255, 255, 255, 0.08);
+    .btn-submit-formal:hover {
+        background: #0066cc;
         transform: translateY(-1.5px);
-        border-color: rgba(255, 255, 255, 0.2);
-        color: var(--text-main);        /* keep text visible on dark hover */
-    }
-    body.light-theme .btn-google-auth {
-        background: #ffffff;
-        border-color: #cbd5e1;
-        color: #1e293b !important;
-    }
-    body.light-theme .btn-google-auth:hover {
-        background: #f8fafc;
-        border-color: #94a3b8;
-        color: #1e293b !important;      /* keep text dark on light-theme hover */
-    }
-    .google-icon-svg {
-        width: 16px;
-        height: 16px;
+        box-shadow: 0 6px 16px rgba(0, 128, 255, 0.25);
     }
 
-    /* Google OAuth Modal Styles */
-    .google-modal-backdrop {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(4px);
-        z-index: 99999;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        transition: all 0.3s ease;
+    .btn-submit-admin {
+        background: #6366f1;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
     }
-    .google-modal-backdrop.active {
-        display: flex;
+
+    .btn-submit-admin:hover {
+        background: #4f46e5;
+        box-shadow: 0 6px 16px rgba(99, 102, 241, 0.25);
     }
-    .google-oauth-card {
-        background: #ffffff;
-        color: #202124;
-        width: 100%;
-        max-width: 420px;
-        border-radius: 8px;
-        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-        padding: 36px 40px;
-        position: relative;
-        text-align: center;
-        border: 1px solid #dadce0;
-        font-family: 'Outfit', 'Segoe UI', Arial, sans-serif;
-    }
-    body.dark-theme .google-oauth-card {
-        background: #202124;
-        color: #e8eaed;
-        border-color: #3c4043;
-    }
-    .google-modal-close {
-        position: absolute;
-        top: 12px;
-        right: 16px;
-        border: none;
-        background: transparent;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: #5f6368;
-        outline: none !important;
-    }
-    body.dark-theme .google-modal-close {
-        color: #9aa0a6;
-    }
-    .google-logo-container {
-        margin-bottom: 16px;
-        display: flex;
-        justify-content: center;
-    }
-    .google-oauth-title {
-        font-size: 1.4rem;
-        font-weight: 500;
-        margin-bottom: 6px;
-        letter-spacing: -0.01em;
-        font-family: 'Outfit', sans-serif;
-    }
-    .google-oauth-subtitle {
-        font-size: 0.9rem;
-        color: #5f6368;
-        margin-bottom: 24px;
-    }
-    body.dark-theme .google-oauth-subtitle {
-        color: #9aa0a6;
-    }
-    .google-accounts-list {
-        border-top: 1px solid #dadce0;
-        border-bottom: 1px solid #dadce0;
-        margin-bottom: 24px;
-        text-align: left;
-    }
-    body.dark-theme .google-accounts-list {
-        border-color: #3c4043;
-    }
-    .google-account-item {
-        display: flex;
-        align-items: center;
-        padding: 14px 12px;
-        cursor: pointer;
-        border-bottom: 1px solid #f1f3f4;
-        transition: background 0.2s;
-        border-radius: 4px;
-    }
-    body.dark-theme .google-account-item {
-        border-color: #3c4043;
-    }
-    .google-account-item:last-child {
-        border-bottom: none;
-    }
-    .google-account-item:hover {
-        background: rgba(66, 133, 244, 0.05);
-    }
-    body.dark-theme .google-account-item:hover {
-        background: rgba(138, 180, 248, 0.08);
-    }
-    .google-avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        color: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 600;
-        font-size: 0.85rem;
-        margin-right: 12px;
-    }
-    .google-plus-avatar {
-        background: transparent !important;
-        border: 1px solid #dadce0;
-        color: #1a73e8;
-    }
-    body.dark-theme .google-plus-avatar {
-        border-color: #5f6368;
-        color: #8ab4f8;
-    }
-    .google-account-details {
-        display: flex;
-        flex-direction: column;
-    }
-    .google-account-name {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #3c4043;
-    }
-    body.dark-theme .google-account-name {
-        color: #e8eaed;
-    }
-    .google-account-email {
-        font-size: 0.75rem;
-        color: #5f6368;
-    }
-    body.dark-theme .google-account-email {
-        color: #9aa0a6;
-    }
-    .google-oauth-footer {
-        font-size: 0.68rem;
-        color: #5f6368;
-        line-height: 1.45;
-        text-align: left;
-    }
-    body.dark-theme .google-oauth-footer {
-        color: #9aa0a6;
-    }
-    .google-link {
-        color: #1a73e8;
-        text-decoration: none;
-        font-weight: 500;
-    }
-    .google-link:hover {
-        text-decoration: underline;
+
+    /* Mobile Responsive Optimizations */
+    @media (max-width: 576px) {
+        .auth-container {
+            padding: 30px 0;
+            min-height: auto;
+        }
+        .flip-container {
+            padding: 0 12px;
+        }
+        .auth-form-container {
+            padding: 30px 20px;
+        }
+        .flip-card-inner {
+            height: 440px; /* Snug, clean fit preventing vertical overflow */
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .btn-submit-formal {
+            padding: 12px;
+        }
     }
 </style>
 
 <div class="auth-container">
-    <!-- Neon glows behind card -->
-    <div class="glow-orb orb-1"></div>
-    <div class="glow-orb orb-2"></div>
-
-    <div class="container text-center" style="position: relative; z-index: 5;">
-        <!-- Pulse Drag Hint Icon at the top -->
-        <div class="drag-hint mb-4">
-            <div class="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill glass-pill border animate-pulse">
-                <i class="fas fa-arrows-alt-h text-cyan-glow mr-1"></i>
-                <span>Drag or swipe card horizontally to flip between portals</span>
-            </div>
-        </div>
-
+    <div class="container" style="position: relative; z-index: 5;">
         <div class="flip-container" id="flipContainer">
             <div class="flip-card-inner" id="flipCardInner">
                 
@@ -481,53 +201,45 @@
                 <div class="flip-card-front">
                     <div class="auth-form-container">
                         <div class="text-center mb-4">
-                            <h4 class="font-weight-bold text-cyan-glow" style="font-size: 1.65rem; font-family: 'Outfit', sans-serif; letter-spacing: 0.02em;">User Login</h4>
-                            <p class="text-muted extra-small">Access your personal skin health records</p>
+                            <h4 class="font-weight-bold" style="font-family: 'Outfit', sans-serif;">User Sign In</h4>
+                            <p class="text-muted extra-small">Access clinical diagnostic platform</p>
                         </div>
 
                         <form method="POST" action="{% url 'UserLogin' %}">
                             {% csrf_token %}
                             <input type="hidden" name="role" value="user">
 
-                            <div class="mb-3 text-left">
-                                <label class="premium-label">Login ID</label>
-                                <div class="form-group-unified">
-                                    <i class="far fa-user text-muted"></i>
-                                    <input type="text" name="loginid" class="form-input-clean" placeholder="Enter your ID" required>
+                            <div class="form-group">
+                                <label class="form-label-formal">Login ID</label>
+                                <div class="input-group-formal">
+                                    <i class="far fa-user"></i>
+                                    <input type="text" name="loginid" class="form-control-formal" placeholder="Enter your Login ID" required>
                                 </div>
                             </div>
 
-                            <div class="mb-4 text-left">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <label class="premium-label mb-0">Password</label>
-                                    <a href="{% url 'ForgotPassword' %}" class="text-muted small text-decoration-none hover-underline" style="font-size: 0.72rem; font-weight: 500;">Forgot Password?</a>
+                            <div class="form-group mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label class="form-label-formal mb-0">Password</label>
+                                    <a href="{% url 'ForgotPassword' %}" class="text-muted extra-small text-decoration-none hover-underline">Forgot Password?</a>
                                 </div>
-                                <div class="form-group-unified">
-                                    <i class="fas fa-lock text-muted"></i>
-                                    <input type="password" name="pswd" id="passwordInputUser" class="form-input-clean" placeholder="Enter your password" required>
-                                    <span class="password-toggle-premium" onclick="togglePassword('passwordInputUser', this)">
+                                <div class="input-group-formal">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" name="pswd" id="passwordInputUser" class="form-control-formal" placeholder="Enter your password" required>
+                                    <span class="password-toggle" onclick="togglePassword('passwordInputUser', this)">
                                         <i class="fas fa-eye"></i>
                                     </span>
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn-submit-premium">
-                                Login <i class="fas fa-arrow-right ml-1" style="font-size: 0.8rem;"></i>
+                            <button type="submit" class="btn-submit-formal mt-3">
+                                Sign In <i class="fas fa-sign-in-alt" style="font-size: 0.85rem;"></i>
                             </button>
 
-                            <!-- OR Sign In Divider -->
-                            <div class="auth-divider">
-                                <span>or sign in with</span>
-                            </div>
-
-                            <!-- Premium Google Sign In Button -->
-                            <button type="button" class="btn-google-auth" id="googleAuthBtn">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google Logo" class="google-icon-svg mr-2">
-                                Sign In with Google
-                            </button>
-
-                            <div class="text-center mt-3 mb-0">
-                                <p class="text-muted small mb-0">New to the platform? <a href="{% url 'UserRegisterForm' %}" class="text-primary font-weight-bold hover-underline">Create an account</a></p>
+                            <div class="d-flex justify-content-between align-items-center mt-4" style="font-size: 0.8rem;">
+                                <span class="text-muted">New user? <a href="{% url 'UserRegisterForm' %}" class="text-primary font-weight-bold hover-underline">Register</a></span>
+                                <button type="button" class="btn btn-link p-0 text-muted hover-underline" style="font-size: 0.8rem; font-weight: 500; outline: none; box-shadow: none;" onclick="flipCard(true)">
+                                    Admin Access <i class="fas fa-arrow-right ml-1"></i>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -537,40 +249,42 @@
                 <div class="flip-card-back">
                     <div class="auth-form-container">
                         <div class="text-center mb-4">
-                            <h4 class="font-weight-bold" style="font-size: 1.65rem; font-family: 'Outfit', sans-serif; color: #818cf8; text-shadow: 0 0 8px rgba(99, 102, 241, 0.4); letter-spacing: 0.02em;">Admin Portal</h4>
-                            <p class="text-muted extra-small">Manage system users and global analytics</p>
+                            <h4 class="font-weight-bold" style="font-family: 'Outfit', sans-serif; color: #818cf8;">Administrator</h4>
+                            <p class="text-muted extra-small">Access global oversight & management dashboard</p>
                         </div>
 
                         <form method="POST" action="{% url 'UserLogin' %}">
                             {% csrf_token %}
                             <input type="hidden" name="role" value="admin">
 
-                            <div class="mb-3 text-left">
-                                <label class="premium-label">Admin Login ID</label>
-                                <div class="form-group-unified">
-                                    <i class="far fa-user text-muted"></i>
-                                    <input type="text" name="loginid" class="form-input-clean" placeholder="Enter Admin ID" required>
+                            <div class="form-group">
+                                <label class="form-label-formal">Admin ID</label>
+                                <div class="input-group-formal">
+                                    <i class="far fa-user"></i>
+                                    <input type="text" name="loginid" class="form-control-formal" placeholder="Enter Administrator ID" required>
                                 </div>
                             </div>
 
-                            <div class="mb-4 text-left">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <label class="premium-label mb-0">Admin Password</label>
-                                </div>
-                                <div class="form-group-unified">
-                                    <i class="fas fa-lock text-muted"></i>
-                                    <input type="password" name="pswd" id="passwordInputAdmin" class="form-input-clean" placeholder="Enter password" required>
-                                    <span class="password-toggle-premium" onclick="togglePassword('passwordInputAdmin', this)">
+                            <div class="form-group mb-4">
+                                <label class="form-label-formal">Password</label>
+                                <div class="input-group-formal">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" name="pswd" id="passwordInputAdmin" class="form-control-formal" placeholder="Enter Password" required>
+                                    <span class="password-toggle" onclick="togglePassword('passwordInputAdmin', this)">
                                         <i class="fas fa-eye"></i>
                                     </span>
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn-submit-premium btn-submit-admin-premium">
-                                Admin Login <i class="fas fa-arrow-right ml-1" style="font-size: 0.8rem;"></i>
+                            <button type="submit" class="btn-submit-formal btn-submit-admin mt-3">
+                                Access Dashboard <i class="fas fa-lock" style="font-size: 0.85rem;"></i>
                             </button>
-                            <div class="text-center mt-3 mb-0">
-                                <p class="text-muted small mb-0">System Administrator Access Only</p>
+
+                            <div class="d-flex justify-content-between align-items-center mt-4" style="font-size: 0.8rem;">
+                                <button type="button" class="btn btn-link p-0 text-muted hover-underline" style="font-size: 0.8rem; font-weight: 500; outline: none; box-shadow: none;" onclick="flipCard(false)">
+                                    <i class="fas fa-arrow-left mr-1"></i> User Sign In
+                                </button>
+                                <span class="text-muted small">Secure Admin Channel</span>
                             </div>
                         </form>
                     </div>
@@ -582,88 +296,13 @@
 </div>
 
 <script>
-    let container = document.getElementById('flipContainer');
-    let cardInner = document.getElementById('flipCardInner');
-    
-    let isFlipped = false;
-    let isDragging = false;
-    let startX = 0;
-    let currentX = 0;
-    let rotation = 0;
-
-    // Drag / Swipe Interactions
-    container.addEventListener('mousedown', dragStart);
-    container.addEventListener('touchstart', dragStart, { passive: true });
-
-    document.addEventListener('mousemove', dragMove);
-    document.addEventListener('touchmove', dragMove, { passive: false });
-
-    document.addEventListener('mouseup', dragEnd);
-    document.addEventListener('touchend', dragEnd);
-
-    function dragStart(e) {
-        // Prevent trigger during interactive form fields (inputs, buttons, links, password toggle)
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.closest('.password-toggle-premium')) {
-            return;
-        }
-        
-        isDragging = true;
-        startX = getX(e);
-        currentX = startX;
-        cardInner.style.transition = 'none';
-    }
-
-    function dragMove(e) {
-        if (!isDragging) return;
-        
-        // Prevent scroll on touch devices when dragging
-        if (e.type === 'touchmove') {
-            e.preventDefault();
-        }
-
-        currentX = getX(e);
-        let diffX = currentX - startX;
-        let cardWidth = container.offsetWidth;
-        
-        // Convert horizontal drag to angle
-        let percent = (diffX / cardWidth) * 180;
-        
-        // Cap percent
-        if (percent > 180) percent = 180;
-        if (percent < -180) percent = -180;
-        
-        rotation = isFlipped ? 180 + percent : percent;
-        cardInner.style.transform = `rotateY(${rotation}deg)`;
-    }
-
-    function dragEnd(e) {
-        if (!isDragging) return;
-        isDragging = false;
-        
-        cardInner.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-        
-        let diffX = currentX - startX;
-        let threshold = 60; // drag 60px to flip
-        
-        if (Math.abs(diffX) > threshold) {
-            // Flip the state
-            isFlipped = !isFlipped;
-        }
-        
-        if (isFlipped) {
+    function flipCard(shouldFlip) {
+        const cardInner = document.getElementById('flipCardInner');
+        if (shouldFlip) {
             cardInner.classList.add('flipped');
-            cardInner.style.transform = 'rotateY(180deg)';
         } else {
             cardInner.classList.remove('flipped');
-            cardInner.style.transform = 'rotateY(0deg)';
         }
-    }
-
-    document.addEventListener('mouseup', dragEnd);
-    document.addEventListener('touchend', dragEnd);
-
-    function getX(e) {
-        return e.touches ? e.touches[0].clientX : e.clientX;
     }
 
     function togglePassword(inputId, toggleEl) {
@@ -679,141 +318,5 @@
             icon.classList.add('fa-eye');
         }
     }
-
-    // Google Sign In interactive workflow
-    const googleBtn = document.getElementById('googleAuthBtn');
-    const googleModalBackdrop = document.getElementById('googleModalBackdrop');
-    const closeGoogleModalBtn = document.getElementById('closeGoogleModalBtn');
-    const googleAccountItems = document.querySelectorAll('.google-account-item:not(.google-add-account)');
-
-    // Simulated registered profiles
-    const googleLoginProfiles = {
-        john: {
-            loginid: "johndoe",
-            pswd: "password123" // simulated profile credentials
-        },
-        jane: {
-            loginid: "janesmith",
-            pswd: "password456"
-        }
-    };
-
-    if (googleBtn && googleModalBackdrop) {
-        // Open Google account chooser
-        googleBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            googleModalBackdrop.classList.add('active');
-        });
-
-        // Close modal cross
-        if (closeGoogleModalBtn) {
-            closeGoogleModalBtn.addEventListener('click', function() {
-                googleModalBackdrop.classList.remove('active');
-            });
-        }
-
-        // Close modal backdrop click
-        googleModalBackdrop.addEventListener('click', function(e) {
-            if (e.target === googleModalBackdrop) {
-                googleModalBackdrop.classList.remove('active');
-            }
-        });
-
-        // Select Google Profile Row
-        googleAccountItems.forEach(item => {
-            item.addEventListener('click', function() {
-                const accountId = this.getAttribute('data-account');
-                const credentials = googleLoginProfiles[accountId];
-                const emailAddress = this.querySelector('.google-account-email').innerText;
-                
-                // Hide Dialog
-                googleModalBackdrop.classList.remove('active');
-                
-                // Show Dynamic Spinner on the Login Card button
-                googleBtn.innerHTML = `<span class="spinner-border spinner-border-sm text-success mr-2" role="status" aria-hidden="true" style="width:0.85rem;height:0.85rem;border-width:0.15em;"></span> Signing in with Google...`;
-                googleBtn.style.pointerEvents = 'none';
-                googleBtn.style.opacity = '0.85';
-                
-                setTimeout(() => {
-                    // Populate login inputs on Front Side Form
-                    const frontForm = googleBtn.closest('form');
-                    if (frontForm) {
-                        const loginidInput = frontForm.querySelector('[name="loginid"]');
-                        const pswdInput = frontForm.querySelector('[name="pswd"]');
-                        
-                        if (loginidInput && pswdInput) {
-                            loginidInput.value = credentials.loginid;
-                            pswdInput.value = credentials.pswd;
-                            
-                            // Success button flash
-                            googleBtn.innerHTML = `<i class="fas fa-check-circle text-success mr-2"></i> Verified Google Session!`;
-                            googleBtn.style.color = '#22c55e';
-                            googleBtn.style.borderColor = '#22c55e';
-                            googleBtn.style.background = 'rgba(34, 197, 94, 0.05)';
-                            
-                            // Instantly submit form to log them in!
-                            setTimeout(() => {
-                                frontForm.submit();
-                            }, 500);
-                        }
-                    }
-                }, 1000);
-            });
-        });
-    }
 </script>
-
-<!-- Google Account Chooser Modal Element -->
-<div class="google-modal-backdrop" id="googleModalBackdrop">
-    <div class="google-oauth-card">
-        <!-- Close Button -->
-        <button type="button" class="google-modal-close" id="closeGoogleModalBtn">&times;</button>
-        
-        <!-- Google Large Color Logo -->
-        <div class="google-logo-container">
-            <svg viewBox="0 0 24 24" width="32" height="32">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-            </svg>
-        </div>
-        
-        <h5 class="google-oauth-title">Sign in with Google</h5>
-        <p class="google-oauth-subtitle">Choose an account to continue to <strong>DERMA.AI</strong></p>
-        
-        <!-- Account List -->
-        <div class="google-accounts-list">
-            <!-- Account 1: John Doe -->
-            <div class="google-account-item" data-account="john">
-                <div class="google-avatar" style="background-color: #4285F4;">J</div>
-                <div class="google-account-details">
-                    <span class="google-account-name">John Doe</span>
-                    <span class="google-account-email">johndoe@gmail.com</span>
-                </div>
-            </div>
-            
-            <!-- Account 2: Jane Smith -->
-            <div class="google-account-item" data-account="jane">
-                <div class="google-avatar" style="background-color: #e040fb;">J</div>
-                <div class="google-account-details">
-                    <span class="google-account-name">Jane Smith</span>
-                    <span class="google-account-email">janesmith@gmail.com</span>
-                </div>
-            </div>
-            
-            <!-- Use another account -->
-            <div class="google-account-item google-add-account">
-                <div class="google-avatar google-plus-avatar"><i class="fas fa-plus"></i></div>
-                <div class="google-account-details">
-                    <span class="google-account-name" style="color: #4285F4; font-weight: 500;">Use another account</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="google-oauth-footer">
-            To continue, Google will share your name, email address, language preference, and profile picture with DERMA.AI. Before using this app, you can review its <a href="#" class="google-link">privacy policy</a> and <a href="#" class="google-link">terms of service</a>.
-        </div>
-    </div>
-</div>
 {% endblock %}

@@ -1,15 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}DERMA.AI | Acne Predictor & Severity Scoring{% endblock %}</title>
+    <title>{% block title %}Acne Ai | Acne Predictor & Severity Scoring{% endblock %}</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
 
     <!-- Preconnect to Google Translate CDN for blazing-fast translations -->
@@ -28,7 +31,8 @@
             }, 'google_translate_element');
         }
     </script>
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+    <script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
     <style>
         /* ===== GLOBAL RESETS & CRITICAL TYPOGRAPHY ===== */
         body {
@@ -77,7 +81,8 @@
             padding: 0 40px;
             max-width: 1200px;
             margin: 0 auto;
-            position: relative; /* Required for perfect absolute centering on mobile */
+            position: relative;
+            /* Required for perfect absolute centering on mobile */
             height: 100%;
         }
 
@@ -97,7 +102,8 @@
             align-items: center;
             gap: 28px;
             list-style: none;
-            margin: 0 32px 0 auto; /* Push links perfectly to the right side on desktop */
+            margin: 0 32px 0 auto;
+            /* Push links perfectly to the right side on desktop */
             padding: 0;
         }
 
@@ -105,9 +111,15 @@
             .navbar-main .container-fluid {
                 padding: 0 20px;
             }
-            .nav-links { display: none; }
-            .nav-burger { display: block !important; }
-            
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-burger {
+                display: block !important;
+            }
+
             /* Center the title perfectly on mobile */
             .nav-brand {
                 position: absolute;
@@ -116,7 +128,9 @@
                 transform: translate(-50%, -50%);
                 margin: 0;
             }
-            .nav-brand-sep, .nav-brand-sub {
+
+            .nav-brand-sep,
+            .nav-brand-sub {
                 display: none !important;
             }
         }
@@ -295,13 +309,16 @@
         .lang-list::-webkit-scrollbar {
             width: 4px;
         }
+
         .lang-list::-webkit-scrollbar-track {
             background: transparent;
         }
+
         .lang-list::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 2px;
         }
+
         body.light-theme .lang-list::-webkit-scrollbar-thumb {
             background: rgba(0, 0, 0, 0.1);
         }
@@ -342,19 +359,24 @@
             display: none !important;
             visibility: hidden !important;
         }
+
         body {
             top: 0px !important;
         }
+
         .goog-logo-link {
             display: none !important;
         }
+
         .goog-te-gadget span {
             display: none !important;
         }
+
         .goog-te-gadget-simple {
             background-color: transparent !important;
             border: none !important;
         }
+
         .skiptranslate {
             display: none !important;
         }
@@ -370,41 +392,59 @@
 
         /* ===== MOBILE SIDEBAR ===== */
         .sidebar-overlay {
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.6);
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(4px);
             z-index: 1040;
-            opacity: 0; visibility: hidden;
+            opacity: 0;
+            visibility: hidden;
             transition: all 0.3s;
         }
-        .sidebar-overlay.active { opacity: 1; visibility: visible; }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* ===== MOBILE SIDEBAR - OPENING FROM LEFT ===== */
         .mobile-sidebar {
             position: fixed;
-            top: 0; 
-            left: -280px; /* Hidden on the left */
-            width: 260px; 
+            top: 0;
+            left: -280px;
+            /* Hidden on the left */
+            width: 260px;
             height: 100vh;
             background: var(--bg-main);
-            border-right: 1px solid var(--border-color); /* Border on the right side */
+            border-right: 1px solid var(--border-color);
+            /* Border on the right side */
             z-index: 1050;
             padding: 28px 20px;
-            display: flex; 
+            display: flex;
             flex-direction: column;
-            transition: left 0.38s cubic-bezier(0.4,0,0.2,1);
+            transition: left 0.38s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .mobile-sidebar.active { left: 0; }
+
+        .mobile-sidebar.active {
+            left: 0;
+        }
+
         .mobile-sidebar .sb-close {
-            background: rgba(255,255,255,0.06);
-            border: none; color: var(--text-main);
-            width: 32px; height: 32px;
+            background: rgba(255, 255, 255, 0.06);
+            border: none;
+            color: var(--text-main);
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             align-self: flex-end;
             margin-bottom: 30px;
             transition: background 0.2s;
         }
+
         .mobile-sidebar a {
             font-family: 'Outfit', sans-serif;
             font-size: 0.9rem;
@@ -413,17 +453,28 @@
             text-decoration: none;
             padding: 11px 14px;
             border-radius: 8px;
-            display: flex; align-items: center; gap: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             margin-bottom: 6px;
             transition: all 0.25s;
         }
-        .mobile-sidebar a:hover { background: rgba(255,255,255,0.07); color: var(--text-main); }
-        body.light-theme .mobile-sidebar a:hover { background: rgba(0,0,0,0.04); }
+
+        .mobile-sidebar a:hover {
+            background: rgba(255, 255, 255, 0.07);
+            color: var(--text-main);
+        }
+
+        body.light-theme .mobile-sidebar a:hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
 
         /* ===== FLASH MESSAGES ===== */
         .flash-messages {
             position: fixed;
-            top: 80px; left: 0; right: 0;
+            top: 80px;
+            left: 0;
+            right: 0;
             z-index: 998;
             padding: 0 20px;
             max-width: 600px;
@@ -437,10 +488,12 @@
             padding: 60px 0 30px;
             margin-top: 80px;
         }
+
         body.light-theme .footer-main {
             background: #ffffff;
             border-top-color: rgba(0, 0, 0, 0.06);
         }
+
         .footer-heading {
             font-family: 'Outfit', sans-serif;
             font-size: 0.85rem;
@@ -450,429 +503,785 @@
             letter-spacing: 0.1em;
             margin-bottom: 20px;
         }
-        .footer-list { list-style: none; padding: 0; margin: 0; }
-        .footer-list li { margin-bottom: 10px; }
+
+        .footer-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-list li {
+            margin-bottom: 10px;
+        }
+
         .footer-list a {
             color: var(--text-muted);
             font-size: 0.85rem;
             text-decoration: none !important;
             transition: color 0.2s;
         }
-        .footer-list a:hover { color: var(--text-main); }
-        .footer-socials {
-            display: flex; justify-content: center;
-            gap: 22px; margin: 36px 0 18px;
+
+        .footer-list a:hover {
+            color: var(--text-main);
         }
+
+        .footer-socials {
+            display: flex;
+            justify-content: center;
+            gap: 22px;
+            margin: 36px 0 18px;
+        }
+
         .footer-socials a {
             color: var(--text-muted);
             font-size: 1.1rem;
             text-decoration: none !important;
             transition: color 0.2s, transform 0.2s;
         }
-        .footer-socials a:hover { color: var(--text-main); transform: translateY(-2px); }
-        .footer-hr { border-top: 1px solid var(--border-color); margin: 0 0 18px; }
+
+        .footer-socials a:hover {
+            color: var(--text-main);
+            transform: translateY(-2px);
+        }
+
+        .footer-hr {
+            border-top: 1px solid var(--border-color);
+            margin: 0 0 18px;
+        }
+
         .footer-copy {
             text-align: center;
             color: var(--text-muted);
             font-size: 0.78rem;
         }
+
         /* Glowing star */
         .shining-star {
-            position: fixed; bottom: 22px; right: 22px;
-            width: 22px; height: 22px;
-            color: rgba(255,255,255,0.35);
-            filter: drop-shadow(0 0 7px rgba(255,255,255,0.5));
+            position: fixed;
+            bottom: 22px;
+            right: 22px;
+            width: 22px;
+            height: 22px;
+            color: rgba(255, 255, 255, 0.35);
+            filter: drop-shadow(0 0 7px rgba(255, 255, 255, 0.5));
             animation: twinkle 4s infinite ease-in-out;
-            z-index: 1000; pointer-events: none;
+            z-index: 1000;
+            pointer-events: none;
         }
+
         @keyframes twinkle {
-            0%,100% { opacity: 0.2; transform: scale(0.85) rotate(0deg); }
-            50%      { opacity: 1;   transform: scale(1.15) rotate(90deg); }
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scale(0.85) rotate(0deg);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.15) rotate(90deg);
+            }
         }
     </style>
 </head>
+
 <body>
 
-<!-- Mobile Sidebar -->
-<div class="sidebar-overlay" id="sbOverlay" onclick="closeSB()"></div>
-<div class="mobile-sidebar" id="mobileSB">
-    <button class="sb-close" onclick="closeSB()"><i class="fas fa-times"></i></button>
-    <a href="{% url 'index' %}"><i class="fas fa-home"></i> Home</a>
-    <a href="#" data-toggle="modal" data-target="#projectModal" onclick="closeSB()"><i class="fas fa-info-circle"></i> About the Model</a>
-    <a href="{% url 'UserLogin' %}" onclick="closeSB()"><i class="fas fa-database"></i> Dataset Registry</a>
-    <a href="#" data-toggle="modal" data-target="#projectModal" onclick="closeSB()"><i class="fas fa-file-alt"></i> Documentation</a>
-    <a href="{% url 'UserLogin' %}" onclick="closeSB()"><i class="fas fa-sign-in-alt"></i> Sign In / Register</a>
-    <!-- Theme toggle row inside sidebar -->
-    <div class="sb-theme-row" style="display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:24px;border-top:1px solid var(--border-color);">
-        <span style="font-family:'Outfit',sans-serif;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);">Theme</span>
-        <button class="nav-theme-btn" id="mobileThemeBtn" title="Toggle Light / Dark" style="margin-left:0;">
-            <i id="mobileThemeIcon" class="fas fa-sun"></i>
-        </button>
-    </div>
-</div>
-
-<!-- Navbar -->
-<nav class="navbar-main">
-    <div class="container-fluid">
-        <!-- Left-aligned mobile burger button -->
-        <button class="nav-burger" id="burgerBtn" onclick="openSB()" aria-label="Open menu">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <!-- Centered (on mobile) or Left-aligned (on desktop) Brand Title -->
-        <a class="nav-brand" href="{% url 'index' %}">
-            <strong style="font-weight: 700; color: var(--text-main);">DERMA.AI</strong>
-            <span class="nav-brand-sep" style="font-weight: 300; opacity: 0.6; margin: 0 8px; color: var(--text-main);">|</span>
-            <span class="nav-brand-sub" style="font-weight: 400; opacity: 0.8; font-size: 0.95rem; letter-spacing: 0.02em; color: var(--text-muted);">Acne Predictor</span>
-        </a>
-
-        <!-- Desktop Navigation Links -->
-        <ul class="nav-links">
-            <li><a href="{% url 'index' %}" class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">Home</a></li>
-            <li><a href="#" data-toggle="modal" data-target="#projectModal">About the Model</a></li>
-            <li><a href="{% url 'UserLogin' %}">Dataset Registry</a></li>
-            <li><a href="#" data-toggle="modal" data-target="#projectModal">Documentation</a></li>
-            <li style="margin-left: 10px;"><a href="{% url 'UserLogin' %}" class="nav-btn-pill">Sign In / Register</a></li>
-        </ul>
-
-        <!-- Right-aligned Action Group (Language Dropdown + Theme) -->
-        <div class="nav-right-group" style="position: relative;">
-            <!-- Hidden Google Translate Element -->
-            <div id="google_translate_element"></div>
-
-            <!-- Custom Language Selector Button and Dropdown -->
-            <div class="lang-selector-container">
-                <button class="nav-theme-btn" id="langDropdownBtn" title="Select Language">
-                    <i class="fas fa-language"></i>
-                </button>
-                
-                <!-- Premium Glassmorphic Dropdown Menu -->
-                <div class="lang-dropdown-menu" id="langDropdownMenu">
-                    <div class="lang-search-container">
-                        <i class="fas fa-search lang-search-icon"></i>
-                        <input type="text" id="langSearchInput" class="lang-search-input" placeholder="Search language...">
-                    </div>
-                    <div class="lang-list" id="langList">
-                        <div class="lang-item active" data-lang="en">English</div>
-                        <div class="lang-item" data-lang="es">Español (Spanish)</div>
-                        <div class="lang-item" data-lang="hi">हिन्दी (Hindi)</div>
-                        <div class="lang-item" data-lang="or">ଓଡ଼ିଆ (Odia)</div>
-                        <div class="lang-item" data-lang="fr">Français (French)</div>
-                        <div class="lang-item" data-lang="ar">العربية (Arabic)</div>
-                        <div class="lang-item" data-lang="de">Deutsch (German)</div>
-                        <div class="lang-item" data-lang="zh-CN">中文 (Chinese)</div>
-                        <div class="lang-item" data-lang="ja">日本語 (Japanese)</div>
-                        <div class="lang-item" data-lang="ru">Русский (Russian)</div>
-                        <div class="lang-item" data-lang="pt">Português (Portuguese)</div>
-                        <div class="lang-item" data-lang="it">Italiano (Italian)</div>
-                        <div class="lang-item" data-lang="ko">한국어 (Korean)</div>
-                        <div class="lang-item" data-lang="tr">Türkçe (Turkish)</div>
-                        <div class="lang-item" data-lang="vi">Tiếng Việt (Vietnamese)</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Theme Switcher button -->
-            <button class="nav-theme-btn" id="themeToggleBtn" title="Toggle Light / Dark">
-                <i id="themeToggleIcon" class="fas fa-sun"></i>
+    <!-- Mobile Sidebar -->
+    <div class="sidebar-overlay" id="sbOverlay" onclick="closeSB()"></div>
+    <div class="mobile-sidebar" id="mobileSB">
+        <button class="sb-close" onclick="closeSB()"><i class="fas fa-times"></i></button>
+        <a href="{% url 'index' %}"><i class="fas fa-home"></i> Home</a>
+        <a href="#" data-toggle="modal" data-target="#projectModal" onclick="closeSB()"><i
+                class="fas fa-info-circle"></i> About the Model</a>
+        <a href="{% url 'UserLogin' %}" onclick="closeSB()"><i class="fas fa-database"></i> Dataset Registry</a>
+        <a href="#" data-toggle="modal" data-target="#projectModal" onclick="closeSB()"><i class="fas fa-file-alt"></i>
+            Documentation</a>
+        <a href="{% url 'UserLogin' %}" onclick="closeSB()"><i class="fas fa-sign-in-alt"></i> Sign In / Register</a>
+        <!-- Theme toggle row inside sidebar -->
+        <div class="sb-theme-row"
+            style="display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:24px;border-top:1px solid var(--border-color);">
+            <span
+                style="font-family:'Outfit',sans-serif;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);">Theme</span>
+            <button class="nav-theme-btn" id="mobileThemeBtn" title="Toggle Light / Dark" style="margin-left:0;">
+                <i id="mobileThemeIcon" class="fas fa-sun"></i>
             </button>
         </div>
     </div>
-</nav>
 
-<!-- Flash Messages -->
-<div class="flash-messages">
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert" style="border-radius:6px; font-size:0.85rem;">
-        <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %} mr-2"></i>
-        {{ message }}
-        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-    </div>
-    {% endfor %}
-    {% endif %}
-</div>
+    <!-- Navbar -->
+    <nav class="navbar-main">
+        <div class="container-fluid">
+            <!-- Left-aligned mobile burger button -->
+            <button class="nav-burger" id="burgerBtn" onclick="openSB()" aria-label="Open menu">
+                <i class="fas fa-bars"></i>
+            </button>
 
-{% block contents %}{% endblock %}
+            <!-- Centered (on mobile) or Left-aligned (on desktop) Brand Title -->
+            <a class="nav-brand" href="{% url 'index' %}">
+                <strong style="font-weight: 700; color: var(--text-main);">Acne Ai</strong>
+                <span class="nav-brand-sep"
+                    style="font-weight: 300; opacity: 0.6; margin: 0 8px; color: var(--text-main);">|</span>
+                <span class="nav-brand-sub"
+                    style="font-weight: 400; opacity: 0.8; font-size: 0.95rem; letter-spacing: 0.02em; color: var(--text-muted);">Acne
+                    Predictor</span>
+            </a>
 
-<!-- About Modal -->
-<div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-        <div class="modal-content border-0 overflow-hidden" style="background:#0f1215; border-radius:14px; border:1px solid rgba(255,255,255,0.07);">
-            <div class="modal-header border-0 p-4" style="background:#111518;">
-                <div class="d-flex align-items-center">
-                    <div style="width:42px;height:42px;background:rgba(255,255,255,0.06);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-right:14px;">
-                        <i class="fas fa-microscope" style="color:#fff;"></i>
-                    </div>
-                    <div>
-                        <h5 class="modal-title font-weight-bold mb-0 text-white">System Intelligence Analysis</h5>
-                        <p class="mb-0 small" style="color:#5a6070;">Technical Research Foundation &amp; Performance Metrics</p>
-                    </div>
-                </div>
-                <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
-            </div>
-            <div class="modal-body p-0">
-                <div class="row no-gutters">
-                    <div class="col-lg-5 p-5" style="background:#0a0d10; border-right:1px solid rgba(255,255,255,0.05);">
-                        <h6 class="text-uppercase small font-weight-bold text-danger mb-4" style="letter-spacing:.08em;">Research Gap Analysis</h6>
-                        <div class="p-3 mb-3" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:8px;">
-                            <div class="d-flex align-items-center mb-2"><i class="fas fa-user-md text-danger mr-2"></i><p class="small font-weight-bold mb-0 text-white">Legacy Manual Diagnosis</p></div>
-                            <p class="mb-0" style="font-size:0.75rem;color:#5a6070;">Subjective visual assessment prone to 15–20% variability in inter-observer agreement.</p>
+            <!-- Desktop Navigation Links -->
+            <ul class="nav-links">
+                <li><a href="{% url 'index' %}"
+                        class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">Home</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#projectModal">About the Model</a></li>
+                <li><a href="{% url 'UserLogin' %}">Dataset Registry</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#projectModal">Documentation</a></li>
+                <li style="margin-left: 10px;"><a href="{% url 'UserLogin' %}" class="nav-btn-pill">Sign In /
+                        Register</a></li>
+            </ul>
+
+            <!-- Right-aligned Action Group (Language Dropdown + Theme) -->
+            <div class="nav-right-group" style="position: relative;">
+                <!-- Hidden Google Translate Element -->
+                <div id="google_translate_element"></div>
+
+                <!-- Custom Language Selector Button and Dropdown -->
+                <div class="lang-selector-container">
+                    <button class="nav-theme-btn" id="langDropdownBtn" title="Select Language">
+                        <i class="fas fa-language"></i>
+                    </button>
+
+                    <!-- Premium Glassmorphic Dropdown Menu -->
+                    <div class="lang-dropdown-menu" id="langDropdownMenu">
+                        <div class="lang-search-container">
+                            <i class="fas fa-search lang-search-icon"></i>
+                            <input type="text" id="langSearchInput" class="lang-search-input"
+                                placeholder="Search language...">
                         </div>
-                        <div class="p-3 mb-5" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:8px;">
-                            <div class="d-flex align-items-center mb-2"><i class="fas fa-code-branch text-danger mr-2"></i><p class="small font-weight-bold mb-0 text-white">Shallow CNN Architectures</p></div>
-                            <p class="mb-0" style="font-size:0.75rem;color:#5a6070;">Baseline models suffered from 45.5% low accuracy due to severe class imbalance.</p>
-                        </div>
-                        <h6 class="text-uppercase small font-weight-bold mb-4" style="letter-spacing:.08em;color:#4facfe;">Hybrid Innovation</h6>
-                        <div class="d-flex align-items-center mb-3"><div style="width:30px;height:30px;background:rgba(79,70,229,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-right:12px;"><i class="fas fa-network-wired small" style="color:#818cf8;"></i></div><p style="font-size:0.78rem;" class="mb-0 text-white"><strong>VGG16 + ResNet50</strong> Transfer Learning</p></div>
-                        <div class="d-flex align-items-center mb-3"><div style="width:30px;height:30px;background:rgba(16,185,129,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-right:12px;"><i class="fas fa-magic small" style="color:#34d399;"></i></div><p style="font-size:0.78rem;" class="mb-0 text-white"><strong>DCGAN</strong> Synthetic Data Balancing</p></div>
-                        <div class="d-flex align-items-center"><div style="width:30px;height:30px;background:rgba(6,182,212,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-right:12px;"><i class="fas fa-bolt small" style="color:#22d3ee;"></i></div><p style="font-size:0.78rem;" class="mb-0 text-white"><strong>YOLOv5</strong> Real-time Localization</p></div>
-                    </div>
-                    <div class="col-lg-7 p-5" style="background:#0c0f13;">
-                        <h6 class="text-uppercase small font-weight-bold mb-4 text-white" style="letter-spacing:.08em;">Benchmark Comparison</h6>
-                        <div class="row no-gutters rounded overflow-hidden mb-4" style="border:1px solid rgba(255,255,255,0.07);">
-                            <div class="col-6 p-4" style="background:#101418;">
-                                <span class="badge badge-secondary mb-3" style="font-size:0.65rem;">RESEARCH BASE PAPER</span>
-                                <p class="small font-weight-bold text-white mb-1">Architecture</p><p style="font-size:0.75rem;color:#5a6070;" class="mb-3">Standard VGG16 / ResNet50</p>
-                                <p class="small font-weight-bold text-white mb-1">Peak Accuracy</p><div class="h5 font-weight-bold mb-3" style="color:#5a6070;">84.25%</div>
-                                <p class="small font-weight-bold text-white mb-1">Class Coverage</p><p style="font-size:0.75rem;color:#5a6070;" class="mb-0">6 Standard Classes</p>
-                            </div>
-                            <div class="col-6 p-4" style="background:#0f1822;border-left:1px solid rgba(255,255,255,0.05);">
-                                <span class="badge mb-3" style="background:#4facfe;color:#0c0d12;font-size:0.65rem;">ENHANCED ACNECHECK AI</span>
-                                <p class="small font-weight-bold mb-1" style="color:#4facfe;">Hybrid Architecture</p><p style="font-size:0.75rem;" class="text-white mb-3">VGG16 + YOLOv5 + ResNet50</p>
-                                <p class="small font-weight-bold mb-1" style="color:#4facfe;">Peak Accuracy</p><div class="h5 font-weight-bold mb-3" style="color:#4facfe;">90.74%</div>
-                                <p class="small font-weight-bold mb-1" style="color:#4facfe;">Class Coverage</p><p style="font-size:0.75rem;" class="text-white mb-0">Dual-Mode (5 Predict / 6 Detect)</p>
-                            </div>
-                        </div>
-                        <div class="p-4" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:8px;">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div><h6 class="mb-1 text-white">Superior Diagnostic Performance</h6><p style="font-size:0.75rem;color:#5a6070;" class="mb-0">Our system delivers a <strong style="color:#fff;">+6.49%</strong> higher accuracy with real-time spot localization.</p></div>
-                                <div class="text-right ml-4"><div class="h4 mb-0 font-weight-bold" style="color:#4facfe;">+6.5%</div><div style="font-size:0.6rem;color:#5a6070;">EFFICIENCY DELTA</div></div>
-                            </div>
+                        <div class="lang-list" id="langList">
+                            <div class="lang-item active" data-lang="en">English</div>
+                            <div class="lang-item" data-lang="es">Español (Spanish)</div>
+                            <div class="lang-item" data-lang="hi">हिन्दी (Hindi)</div>
+                            <div class="lang-item" data-lang="or">ଓଡ଼ିଆ (Odia)</div>
+                            <div class="lang-item" data-lang="fr">Français (French)</div>
+                            <div class="lang-item" data-lang="ar">العربية (Arabic)</div>
+                            <div class="lang-item" data-lang="de">Deutsch (German)</div>
+                            <div class="lang-item" data-lang="zh-CN">中文 (Chinese)</div>
+                            <div class="lang-item" data-lang="ja">日本語 (Japanese)</div>
+                            <div class="lang-item" data-lang="ru">Русский (Russian)</div>
+                            <div class="lang-item" data-lang="pt">Português (Portuguese)</div>
+                            <div class="lang-item" data-lang="it">Italiano (Italian)</div>
+                            <div class="lang-item" data-lang="ko">한국어 (Korean)</div>
+                            <div class="lang-item" data-lang="tr">Türkçe (Turkish)</div>
+                            <div class="lang-item" data-lang="vi">Tiếng Việt (Vietnamese)</div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Theme Switcher button -->
+                <button class="nav-theme-btn" id="themeToggleBtn" title="Toggle Light / Dark">
+                    <i id="themeToggleIcon" class="fas fa-sun"></i>
+                </button>
             </div>
-            <div class="modal-footer border-0 p-4" style="background:#0a0d10;">
-                <p style="font-size:0.72rem;color:#5a6070;" class="mr-auto mb-0"><i class="fas fa-info-circle mr-1"></i>Data validated against clinical dataset of 5,600+ multi-ethnic samples.</p>
-                <button type="button" class="btn btn-sm text-white" data-dismiss="modal" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:8px 20px;font-size:0.8rem;">Close Dashboard</button>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="flash-messages">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show"
+            role="alert" style="border-radius:6px; font-size:0.85rem;">
+            <i
+                class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %} mr-2"></i>
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    {% block contents %}{% endblock %}
+
+    <!-- About Modal -->
+    <div class="modal fade" id="projectModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content border-0 overflow-hidden"
+                style="background:#0f1215; border-radius:14px; border:1px solid rgba(255,255,255,0.07);">
+                <div class="modal-header border-0 p-4" style="background:#111518;">
+                    <div class="d-flex align-items-center">
+                        <div
+                            style="width:42px;height:42px;background:rgba(255,255,255,0.06);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-right:14px;">
+                            <i class="fas fa-microscope" style="color:#fff;"></i>
+                        </div>
+                        <div>
+                            <h5 class="modal-title font-weight-bold mb-0 text-white">System Intelligence Analysis</h5>
+                            <p class="mb-0 small" style="color:#5a6070;">Technical Research Foundation &amp; Performance
+                                Metrics</p>
+                        </div>
+                    </div>
+                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="row no-gutters">
+                        <div class="col-lg-5 p-5"
+                            style="background:#0a0d10; border-right:1px solid rgba(255,255,255,0.05);">
+                            <h6 class="text-uppercase small font-weight-bold text-danger mb-4"
+                                style="letter-spacing:.08em;">Research Gap Analysis</h6>
+                            <div class="p-3 mb-3"
+                                style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:8px;">
+                                <div class="d-flex align-items-center mb-2"><i
+                                        class="fas fa-user-md text-danger mr-2"></i>
+                                    <p class="small font-weight-bold mb-0 text-white">Legacy Manual Diagnosis</p>
+                                </div>
+                                <p class="mb-0" style="font-size:0.75rem;color:#5a6070;">Subjective visual assessment
+                                    prone to 15–20% variability in inter-observer agreement.</p>
+                            </div>
+                            <div class="p-3 mb-5"
+                                style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:8px;">
+                                <div class="d-flex align-items-center mb-2"><i
+                                        class="fas fa-code-branch text-danger mr-2"></i>
+                                    <p class="small font-weight-bold mb-0 text-white">Shallow CNN Architectures</p>
+                                </div>
+                                <p class="mb-0" style="font-size:0.75rem;color:#5a6070;">Baseline models suffered from
+                                    45.5% low accuracy due to severe class imbalance.</p>
+                            </div>
+                            <h6 class="text-uppercase small font-weight-bold mb-4"
+                                style="letter-spacing:.08em;color:#4facfe;">Hybrid Innovation</h6>
+                            <div class="d-flex align-items-center mb-3">
+                                <div
+                                    style="width:30px;height:30px;background:rgba(79,70,229,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-right:12px;">
+                                    <i class="fas fa-network-wired small" style="color:#818cf8;"></i></div>
+                                <p style="font-size:0.78rem;" class="mb-0 text-white"><strong>VGG16 + ResNet50</strong>
+                                    Transfer Learning</p>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <div
+                                    style="width:30px;height:30px;background:rgba(16,185,129,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-right:12px;">
+                                    <i class="fas fa-magic small" style="color:#34d399;"></i></div>
+                                <p style="font-size:0.78rem;" class="mb-0 text-white"><strong>DCGAN</strong> Synthetic
+                                    Data Balancing</p>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div
+                                    style="width:30px;height:30px;background:rgba(6,182,212,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-right:12px;">
+                                    <i class="fas fa-bolt small" style="color:#22d3ee;"></i></div>
+                                <p style="font-size:0.78rem;" class="mb-0 text-white"><strong>YOLOv5</strong> Real-time
+                                    Localization</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 p-5" style="background:#0c0f13;">
+                            <h6 class="text-uppercase small font-weight-bold mb-4 text-white"
+                                style="letter-spacing:.08em;">Benchmark Comparison</h6>
+                            <div class="row no-gutters rounded overflow-hidden mb-4"
+                                style="border:1px solid rgba(255,255,255,0.07);">
+                                <div class="col-6 p-4" style="background:#101418;">
+                                    <span class="badge badge-secondary mb-3" style="font-size:0.65rem;">RESEARCH BASE
+                                        PAPER</span>
+                                    <p class="small font-weight-bold text-white mb-1">Architecture</p>
+                                    <p style="font-size:0.75rem;color:#5a6070;" class="mb-3">Standard VGG16 / ResNet50
+                                    </p>
+                                    <p class="small font-weight-bold text-white mb-1">Peak Accuracy</p>
+                                    <div class="h5 font-weight-bold mb-3" style="color:#5a6070;">84.25%</div>
+                                    <p class="small font-weight-bold text-white mb-1">Class Coverage</p>
+                                    <p style="font-size:0.75rem;color:#5a6070;" class="mb-0">6 Standard Classes</p>
+                                </div>
+                                <div class="col-6 p-4"
+                                    style="background:#0f1822;border-left:1px solid rgba(255,255,255,0.05);">
+                                    <span class="badge mb-3"
+                                        style="background:#4facfe;color:#0c0d12;font-size:0.65rem;">ENHANCED ACNECHECK
+                                        AI</span>
+                                    <p class="small font-weight-bold mb-1" style="color:#4facfe;">Hybrid Architecture
+                                    </p>
+                                    <p style="font-size:0.75rem;" class="text-white mb-3">VGG16 + YOLOv5 + ResNet50</p>
+                                    <p class="small font-weight-bold mb-1" style="color:#4facfe;">Peak Accuracy</p>
+                                    <div class="h5 font-weight-bold mb-3" style="color:#4facfe;">90.74%</div>
+                                    <p class="small font-weight-bold mb-1" style="color:#4facfe;">Class Coverage</p>
+                                    <p style="font-size:0.75rem;" class="text-white mb-0">Dual-Mode (5 Predict / 6
+                                        Detect)</p>
+                                </div>
+                            </div>
+                            <div class="p-4"
+                                style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:8px;">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <h6 class="mb-1 text-white">Superior Diagnostic Performance</h6>
+                                        <p style="font-size:0.75rem;color:#5a6070;" class="mb-0">Our system delivers a
+                                            <strong style="color:#fff;">+6.49%</strong> higher accuracy with real-time
+                                            spot localization.</p>
+                                    </div>
+                                    <div class="text-right ml-4">
+                                        <div class="h4 mb-0 font-weight-bold" style="color:#4facfe;">+6.5%</div>
+                                        <div style="font-size:0.6rem;color:#5a6070;">EFFICIENCY DELTA</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-4" style="background:#0a0d10;">
+                    <p style="font-size:0.72rem;color:#5a6070;" class="mr-auto mb-0"><i
+                            class="fas fa-info-circle mr-1"></i>Data validated against clinical dataset of 5,600+
+                        multi-ethnic samples.</p>
+                    <button type="button" class="btn btn-sm text-white" data-dismiss="modal"
+                        style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:8px 20px;font-size:0.8rem;">Close
+                        Dashboard</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Footer -->
-<footer class="footer-main">
-    <div class="container">
-        <div class="row">
-            <div class="col-6 col-md-3 mb-4 mb-md-0">
-                <h6 class="footer-heading">Company Info</h6>
-                <ul class="footer-list">
-                    <li><a href="#" data-toggle="modal" data-target="#projectModal">About Us</a></li>
-                    <li><a href="#">Platforms</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
+    <!-- Footer -->
+    <footer class="footer-main">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 col-md-3 mb-4 mb-md-0">
+                    <h6 class="footer-heading">Company Info</h6>
+                    <ul class="footer-list">
+                        <li><a href="#" data-toggle="modal" data-target="#projectModal">About Us</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#platformsModal">Platforms</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#contactModal">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 mb-4 mb-md-0">
+                    <h6 class="footer-heading">Resources</h6>
+                    <ul class="footer-list">
+                        <li><a href="#" data-toggle="modal" data-target="#projectModal">Data Trends</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#projectModal">Model Elements</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 mb-4 mb-md-0">
+                    <h6 class="footer-heading">Legal</h6>
+                    <ul class="footer-list">
+                        <li><a href="#" data-toggle="modal" data-target="#legalModal"
+                                onclick="switchLegalTab('calendar')">Terms of Calendar</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 mb-4 mb-md-0">
+                    <h6 class="footer-heading">Uthub</h6>
+                    <ul class="footer-list">
+                        <li><a href="#" data-toggle="modal" data-target="#legalModal"
+                                onclick="switchLegalTab('privacy')">Privacy Policy</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#legalModal"
+                                onclick="switchLegalTab('terms')">Terms of Service</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#platformsModal">Official Sitemap</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="col-6 col-md-3 mb-4 mb-md-0">
-                <h6 class="footer-heading">Resources</h6>
-                <ul class="footer-list">
-                    <li><a href="#">Resources</a></li>
-                    <li><a href="#">Data Trends</a></li>
-                    <li><a href="#">Model Elements</a></li>
-                </ul>
+            <div class="footer-socials">
+                <a href="https://www.linkedin.com/in/akhaya-kumar-dash/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://x.com/akhaya40515" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+                <a href="https://github.com/AKHAYA9" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
             </div>
-            <div class="col-6 col-md-3 mb-4 mb-md-0">
-                <h6 class="footer-heading">Legal</h6>
-                <ul class="footer-list">
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Resources</a></li>
-                    <li><a href="#">Terms of Calendar</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md-3 mb-4 mb-md-0">
-                <h6 class="footer-heading">Uthub</h6>
-                <ul class="footer-list">
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Official Sitemap</a></li>
-                </ul>
+            <hr class="footer-hr">
+            <p class="footer-copy">© 2026 Acne Ai. All rights reserved. Clinical Acne Predictor & Severity Scoring
+                Portal.</p>
+        </div>
+    </footer>
+
+    <!-- Contact Modal -->
+    <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0 overflow-hidden"
+                style="background:#0f1215; border-radius:14px; border:1px solid rgba(255,255,255,0.07);">
+                <div class="modal-header border-0 p-4" style="background:#111518;">
+                    <div class="d-flex align-items-center">
+                        <div
+                            style="width:40px;height:40px;background:rgba(0,128,255,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-right:12px;">
+                            <i class="fas fa-envelope" style="color:#0080ff;"></i>
+                        </div>
+                        <div>
+                            <h5 class="modal-title font-weight-bold mb-0 text-white">Contact & Support</h5>
+                            <p class="mb-0 extra-small text-muted">Submit clinical inquiries & general feedback</p>
+                        </div>
+                    </div>
+                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body p-4" style="background:#0a0d10;">
+                    <form id="contactModalForm" method="POST" action="{% url 'ContactSupport' %}">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label class="extra-small font-weight-bold text-muted uppercase tracking-wider mb-2">Your Name</label>
+                            <input type="text" name="name" class="form-control" placeholder="John Doe" required
+                                style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:10px; color:#fff; padding:12px; font-size:0.85rem;">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="extra-small font-weight-bold text-muted uppercase tracking-wider mb-2">Gmail Address</label>
+                            <input type="email" name="email" class="form-control" placeholder="johndoe@gmail.com" required
+                                style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:10px; color:#fff; padding:12px; font-size:0.85rem;">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="extra-small font-weight-bold text-muted uppercase tracking-wider mb-2">Message</label>
+                            <textarea name="message" class="form-control" rows="4"
+                                placeholder="How can we assist you with our AI models?" required
+                                style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:10px; color:#fff; padding:12px; font-size:0.85rem; resize:none;"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2.5 font-weight-bold"
+                            style="background:#0080ff; border:none; border-radius:10px; font-size:0.85rem; box-shadow:0 4px 12px rgba(0,128,255,0.2);">Send Inquiry</button>
+                    </form>
+                </div>
+                <div class="modal-footer border-0 p-3 text-center justify-content-center"
+                    style="background:#0a0d10; border-top:1px solid rgba(255,255,255,0.05) !important;">
+                    <p class="mb-0 extra-small text-muted">Direct Email: <a href="mailto:akhayakumardash77@gmail.com"
+                            class="text-white hover-underline font-weight-bold">akhayakumardash77@gmail.com</a></p>
+                </div>
             </div>
         </div>
-        <div class="footer-socials">
-            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-github"></i></a>
-        </div>
-        <hr class="footer-hr">
-        <p class="footer-copy">© 2026 DERMA.AI. All rights reserved. Clinical Acne Predictor & Severity Scoring Portal.</p>
     </div>
-</footer>
 
-<!-- Glowing Star -->
-<svg class="shining-star" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 0L14.6 9.4L24 12L14.6 14.6L12 24L9.4 14.6L0 12L9.4 9.4L12 0Z"/>
-</svg>
+    <!-- Platforms & Sitemap Modal -->
+    <div class="modal fade" id="platformsModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0 overflow-hidden"
+                style="background:#0f1215; border-radius:14px; border:1px solid rgba(255,255,255,0.07);">
+                <div class="modal-header border-0 p-4" style="background:#111518;">
+                    <div class="d-flex align-items-center">
+                        <div
+                            style="width:40px;height:40px;background:rgba(99,102,241,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-right:12px;">
+                            <i class="fas fa-cubes" style="color:#6366f1;"></i>
+                        </div>
+                        <div>
+                            <h5 class="modal-title font-weight-bold mb-0 text-white">Ecosystem & Sitemap</h5>
+                            <p class="mb-0 extra-small text-muted">Acne Ai deployment environments & platform
+                                directories</p>
+                        </div>
+                    </div>
+                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body p-4" style="background:#0a0d10;">
+                    <h6 class="extra-small font-weight-bold text-muted uppercase tracking-wider mb-3">Deployment
+                        Environments</h6>
+                    <div class="row mb-4">
+                        <div class="col-6 mb-3">
+                            <div class="p-3 text-center"
+                                style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:10px;">
+                                <i class="fas fa-globe text-primary fa-lg mb-2"></i>
+                                <div class="font-weight-bold text-white small">Web Portal</div>
+                                <div style="font-size:0.65rem;" class="text-success mt-1"><i
+                                        class="fas fa-circle small mr-1" style="font-size:0.4rem;"></i> Online</div>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="p-3 text-center"
+                                style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:10px;">
+                                <i class="fas fa-mobile-alt text-info fa-lg mb-2"></i>
+                                <div class="font-weight-bold text-white small">Mobile App</div>
+                                <div style="font-size:0.65rem;" class="text-muted mt-1">Coming Soon</div>
+                            </div>
+                        </div>
+                    </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    /* ===== SIDEBAR ===== */
-    function openSB() {
-        document.getElementById('mobileSB').classList.add('active');
-        document.getElementById('sbOverlay').classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-    function closeSB() {
-        document.getElementById('mobileSB').classList.remove('active');
-        document.getElementById('sbOverlay').classList.remove('active');
-        document.body.style.overflow = '';
-    }
+                    <h6 class="extra-small font-weight-bold text-muted uppercase tracking-wider mb-3">Official Sitemap
+                    </h6>
+                    <div class="p-3"
+                        style="background:rgba(255,255,255,0.01); border:1px solid rgba(255,255,255,0.05); border-radius:10px;">
+                        <div class="row text-left" style="font-size:0.78rem;">
+                            <div class="col-6 mb-2"><a href="{% url 'index' %}" class="text-muted hover-underline"><i
+                                        class="fas fa-caret-right mr-1.5"></i> Home Dashboard</a></div>
+                            <div class="col-6 mb-2"><a href="{% url 'UserLogin' %}"
+                                    class="text-muted hover-underline"><i class="fas fa-caret-right mr-1.5"></i> Account
+                                    Sign In</a></div>
+                            <div class="col-6 mb-2"><a href="{% url 'UserRegisterForm' %}"
+                                    class="text-muted hover-underline"><i class="fas fa-caret-right mr-1.5"></i>
+                                    Register Account</a></div>
+                            <div class="col-6 mb-2"><a href="{% url 'ForgotPassword' %}"
+                                    class="text-muted hover-underline"><i class="fas fa-caret-right mr-1.5"></i> Forgot
+                                    Password</a></div>
+                            <div class="col-6 mb-2"><a href="{% url 'VerifyOTP' %}"
+                                    class="text-muted hover-underline"><i class="fas fa-caret-right mr-1.5"></i> Verify
+                                    OTP Code</a></div>
+                            <div class="col-6 mb-2"><a href="{% url 'ResetPassword' %}"
+                                    class="text-muted hover-underline"><i class="fas fa-caret-right mr-1.5"></i> Reset
+                                    Password</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    /* ===== THEME TOGGLE ===== */
-    const THEME_KEY = 'ara_theme';
-    const desktopBtn  = document.getElementById('themeToggleBtn');
-    const desktopIcon = document.getElementById('themeToggleIcon');
-    const mobileBtn   = document.getElementById('mobileThemeBtn');
-    const mobileIcon  = document.getElementById('mobileThemeIcon');
+    <!-- Legal (Privacy, Terms & Calendar) Modal -->
+    <div class="modal fade" id="legalModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0 overflow-hidden"
+                style="background:#0f1215; border-radius:14px; border:1px solid rgba(255,255,255,0.07);">
+                <div class="modal-header border-0 p-4 pb-0" style="background:#111518;">
+                    <div class="d-flex align-items-center mb-3">
+                        <div
+                            style="width:40px;height:40px;background:rgba(16,185,129,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-right:12px;">
+                            <i class="fas fa-balance-scale" style="color:#10b981;"></i>
+                        </div>
+                        <div>
+                            <h5 class="modal-title font-weight-bold mb-0 text-white">Legal Information</h5>
+                            <p class="mb-0 extra-small text-muted">Clinical data governance & terms of usage</p>
+                        </div>
+                    </div>
+                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+                </div>
 
-    function applyTheme(theme) {
-        if (theme === 'light') {
-            document.body.classList.add('light-theme');
-            if (desktopIcon) desktopIcon.className = 'fas fa-moon';
-            if (mobileIcon)  mobileIcon.className  = 'fas fa-moon';
-            if (desktopBtn)  desktopBtn.title = 'Switch to Dark Mode';
-            if (mobileBtn)   mobileBtn.title  = 'Switch to Dark Mode';
-        } else {
-            document.body.classList.remove('light-theme');
-            if (desktopIcon) desktopIcon.className = 'fas fa-sun';
-            if (mobileIcon)  mobileIcon.className  = 'fas fa-sun';
-            if (desktopBtn)  desktopBtn.title = 'Switch to Light Mode';
-            if (mobileBtn)   mobileBtn.title  = 'Switch to Light Mode';
+                <!-- Custom Tabs -->
+                <ul class="nav nav-tabs border-0 px-4" style="background:#111518; font-size:0.8rem;">
+                    <li class="nav-item">
+                        <a class="nav-link text-muted py-2 px-3 border-0 active" id="legalTabLink-privacy"
+                            data-toggle="tab" href="#legalTab-privacy"
+                            style="background:transparent; font-weight:600;">Privacy Policy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted py-2 px-3 border-0" id="legalTabLink-terms" data-toggle="tab"
+                            href="#legalTab-terms" style="background:transparent; font-weight:600;">Terms of Service</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted py-2 px-3 border-0" id="legalTabLink-calendar" data-toggle="tab"
+                            href="#legalTab-calendar" style="background:transparent; font-weight:600;">Terms of
+                            Calendar</a>
+                    </li>
+                </ul>
+
+                <div class="modal-body p-4 tab-content"
+                    style="background:#0a0d10; max-height: 380px; overflow-y: auto;">
+                    <!-- Privacy Content -->
+                    <div class="tab-pane fade show active" id="legalTab-privacy">
+                        <h6 class="font-weight-bold text-white small mb-2">1. Clinical Data Privacy Statement</h6>
+                        <p class="text-muted extra-small" style="line-height:1.5;">At Acne Ai, we implement
+                            state-of-the-art secure transmission and encryption protocols to protect dermatological
+                            imagery. Uploaded clinical images are processed in-memory for model inference and are
+                            deleted instantly unless saved within your secure personal dashboard history.</p>
+                        <h6 class="font-weight-bold text-white small mb-2 mt-3">2. HIPAA Alignment & Data Security</h6>
+                        <p class="text-muted extra-small" style="line-height:1.5;">All personal details, history
+                            datasets, and predicted diagnostics are secured under AES-256 standards. Under no
+                            circumstances is clinical diagnostic data sold or shared with third-party networks.</p>
+                    </div>
+                    <!-- Terms Content -->
+                    <div class="tab-pane fade" id="legalTab-terms">
+                        <h6 class="font-weight-bold text-white small mb-2">1. Educational Assistance License</h6>
+                        <p class="text-muted extra-small" style="line-height:1.5;">The diagnostic predictions, spot
+                            detection, and severity scores rendered by Acne Ai are supported by a hybrid deep learning
+                            model (VGG16 + ResNet50 + YOLOv5). These results are educational/assisting assets intended
+                            to empower patients and must not be treated as absolute medical prescriptions.</p>
+                        <h6 class="font-weight-bold text-white small mb-2 mt-3">2. Limitation of Clinical Liability</h6>
+                        <p class="text-muted extra-small" style="line-height:1.5;">Acne Ai shall not be held liable for
+                            any self-treatment decisions made by the user. Users are explicitly advised to consult
+                            certified dermatologists for definitive treatment regimes.</p>
+                    </div>
+                    <!-- Calendar Content -->
+                    <div class="tab-pane fade" id="legalTab-calendar">
+                        <h6 class="font-weight-bold text-white small mb-2">1. Diagnostic Tracking Intervals</h6>
+                        <p class="text-muted extra-small" style="line-height:1.5;">Under the Terms of Calendar,
+                            diagnostic records are timestamped and formatted as a timeline directory. This allows
+                            dermatological tracking over custom dates, weekly progress parameters, and monthly recovery
+                            metrics.</p>
+                        <h6 class="font-weight-bold text-white small mb-2 mt-3">2. Automatic Log Maintenance</h6>
+                        <p class="text-muted extra-small" style="line-height:1.5;">Registered diagnostic logs remain
+                            indexed within the user's secure calendar pipeline indefinitely, or until manually deleted
+                            via the history management interface.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Glowing Star -->
+    <svg class="shining-star" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0L14.6 9.4L24 12L14.6 14.6L12 24L9.4 14.6L0 12L9.4 9.4L12 0Z" />
+    </svg>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        /* ===== LEGAL TAB TOGGLER ===== */
+        function switchLegalTab(tabId) {
+            setTimeout(function () {
+                $('#legalTabLink-' + tabId).tab('show');
+            }, 150);
         }
-        localStorage.setItem(THEME_KEY, theme);
-    }
 
-    function toggleTheme() {
-        const isLight = document.body.classList.contains('light-theme');
-        applyTheme(isLight ? 'dark' : 'light');
-    }
+        /* ===== CONTACT FORM SMTP SUBMISSION ===== */
+        $(document).ready(function() {
+            $('#contactModalForm').on('submit', function(event) {
+                event.preventDefault();
+                var form = $(this);
+                var submitBtn = form.find('button[type="submit"]');
+                var originalText = submitBtn.text();
+                submitBtn.prop('disabled', true).text('Sending inquiry...');
 
-    /* Apply saved theme immediately */
-    applyTheme(localStorage.getItem(THEME_KEY) || 'dark');
-
-    if (desktopBtn) desktopBtn.addEventListener('click', toggleTheme);
-    if (mobileBtn)  mobileBtn.addEventListener('click',  toggleTheme);
-</script>
-
-<!-- Google Language API loaded in head asynchronously -->
-
-<!-- Custom Language Dropdown Logic -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const langDropdownBtn = document.getElementById('langDropdownBtn');
-        const langDropdownMenu = document.getElementById('langDropdownMenu');
-        const langSearchInput = document.getElementById('langSearchInput');
-        const langItems = document.querySelectorAll('.lang-item');
-
-        // Toggle custom language dropdown
-        if (langDropdownBtn && langDropdownMenu) {
-            langDropdownBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                langDropdownMenu.classList.toggle('active');
-                if (langDropdownMenu.classList.contains('active') && langSearchInput) {
-                    langSearchInput.focus();
-                }
-            });
-
-            // Dismiss dropdown clicking outside
-            document.addEventListener('click', function(e) {
-                if (!langDropdownMenu.contains(e.target) && e.target !== langDropdownBtn) {
-                    langDropdownMenu.classList.remove('active');
-                }
-            });
-        }
-
-        // Live search filter inside dropdown
-        if (langSearchInput) {
-            langSearchInput.addEventListener('input', function(e) {
-                const query = e.target.value.toLowerCase().trim();
-                langItems.forEach(item => {
-                    const text = item.textContent.toLowerCase();
-                    if (text.includes(query)) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
+                $.ajax({
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(response) {
+                        submitBtn.prop('disabled', false).text(originalText);
+                        if (response.status === 'success') {
+                            alert(response.message);
+                            $('#contactModal').modal('hide');
+                            form.trigger('reset');
+                        } else {
+                            alert('SMTP Error: ' + response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        submitBtn.prop('disabled', false).text(originalText);
+                        alert('A server or SMTP connection error occurred. Please try again.');
                     }
                 });
             });
+        });
+
+        /* ===== SIDEBAR ===== */
+        function openSB() {
+            document.getElementById('mobileSB').classList.add('active');
+            document.getElementById('sbOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeSB() {
+            document.getElementById('mobileSB').classList.remove('active');
+            document.getElementById('sbOverlay').classList.remove('active');
+            document.body.style.overflow = '';
         }
 
-        // Programmatic Google Translate invocation (with Cookie fallback)
-        function triggerTranslation(langCode) {
-            // Set translation cookies immediately
-            document.cookie = "googtrans=/en/" + langCode + "; path=/";
-            document.cookie = "googtrans=/en/" + langCode + "; domain=" + window.location.hostname + "; path=/";
-            
-            const googleCombo = document.querySelector('.goog-te-combo');
-            if (googleCombo) {
-                googleCombo.value = langCode;
-                googleCombo.dispatchEvent(new Event('change'));
+        /* ===== THEME TOGGLE ===== */
+        const THEME_KEY = 'ara_theme';
+        const desktopBtn = document.getElementById('themeToggleBtn');
+        const desktopIcon = document.getElementById('themeToggleIcon');
+        const mobileBtn = document.getElementById('mobileThemeBtn');
+        const mobileIcon = document.getElementById('mobileThemeIcon');
 
-                // Mark active language item visually
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light-theme');
+                if (desktopIcon) desktopIcon.className = 'fas fa-moon';
+                if (mobileIcon) mobileIcon.className = 'fas fa-moon';
+                if (desktopBtn) desktopBtn.title = 'Switch to Dark Mode';
+                if (mobileBtn) mobileBtn.title = 'Switch to Dark Mode';
+            } else {
+                document.body.classList.remove('light-theme');
+                if (desktopIcon) desktopIcon.className = 'fas fa-sun';
+                if (mobileIcon) mobileIcon.className = 'fas fa-sun';
+                if (desktopBtn) desktopBtn.title = 'Switch to Light Mode';
+                if (mobileBtn) mobileBtn.title = 'Switch to Light Mode';
+            }
+            localStorage.setItem(THEME_KEY, theme);
+        }
+
+        function toggleTheme() {
+            const isLight = document.body.classList.contains('light-theme');
+            applyTheme(isLight ? 'dark' : 'light');
+        }
+
+        /* Apply saved theme immediately */
+        applyTheme(localStorage.getItem(THEME_KEY) || 'dark');
+
+        if (desktopBtn) desktopBtn.addEventListener('click', toggleTheme);
+        if (mobileBtn) mobileBtn.addEventListener('click', toggleTheme);
+    </script>
+
+    <!-- Google Language API loaded in head asynchronously -->
+
+    <!-- Custom Language Dropdown Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const langDropdownBtn = document.getElementById('langDropdownBtn');
+            const langDropdownMenu = document.getElementById('langDropdownMenu');
+            const langSearchInput = document.getElementById('langSearchInput');
+            const langItems = document.querySelectorAll('.lang-item');
+
+            // Toggle custom language dropdown
+            if (langDropdownBtn && langDropdownMenu) {
+                langDropdownBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    langDropdownMenu.classList.toggle('active');
+                    if (langDropdownMenu.classList.contains('active') && langSearchInput) {
+                        langSearchInput.focus();
+                    }
+                });
+
+                // Dismiss dropdown clicking outside
+                document.addEventListener('click', function (e) {
+                    if (!langDropdownMenu.contains(e.target) && e.target !== langDropdownBtn) {
+                        langDropdownMenu.classList.remove('active');
+                    }
+                });
+            }
+
+            // Live search filter inside dropdown
+            if (langSearchInput) {
+                langSearchInput.addEventListener('input', function (e) {
+                    const query = e.target.value.toLowerCase().trim();
+                    langItems.forEach(item => {
+                        const text = item.textContent.toLowerCase();
+                        if (text.includes(query)) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            // Programmatic Google Translate invocation (with Cookie fallback)
+            function triggerTranslation(langCode) {
+                // Set translation cookies immediately
+                document.cookie = "googtrans=/en/" + langCode + "; path=/";
+                document.cookie = "googtrans=/en/" + langCode + "; domain=" + window.location.hostname + "; path=/";
+
+                const googleCombo = document.querySelector('.goog-te-combo');
+                if (googleCombo) {
+                    googleCombo.value = langCode;
+                    googleCombo.dispatchEvent(new Event('change'));
+
+                    // Mark active language item visually
+                    langItems.forEach(item => {
+                        if (item.getAttribute('data-lang') === langCode) {
+                            item.classList.add('active');
+                        } else {
+                            item.classList.remove('active');
+                        }
+                    });
+                } else {
+                    // If Google widget is still loading, wait and retry once
+                    setTimeout(() => {
+                        const retryCombo = document.querySelector('.goog-te-combo');
+                        if (retryCombo) {
+                            retryCombo.value = langCode;
+                            retryCombo.dispatchEvent(new Event('change'));
+
+                            langItems.forEach(item => {
+                                if (item.getAttribute('data-lang') === langCode) {
+                                    item.classList.add('active');
+                                } else {
+                                    item.classList.remove('active');
+                                }
+                            });
+                        } else {
+                            // Fallback reload so that Google Translate picks up the cookie!
+                            window.location.reload();
+                        }
+                    }, 500);
+                }
+            }
+
+            // Click interaction on language items
+            langItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    const langCode = this.getAttribute('data-lang');
+                    triggerTranslation(langCode);
+                    langDropdownMenu.classList.remove('active');
+                });
+            });
+
+            // On page load, highlight the active language from cookie if present
+            const match = document.cookie.match(/googtrans=\/en\/([a-zA-Z\-]+)/);
+            if (match && match[1]) {
+                const activeLang = match[1];
                 langItems.forEach(item => {
-                    if (item.getAttribute('data-lang') === langCode) {
+                    if (item.getAttribute('data-lang') === activeLang) {
                         item.classList.add('active');
                     } else {
                         item.classList.remove('active');
                     }
                 });
-            } else {
-                // If Google widget is still loading, wait and retry once
-                setTimeout(() => {
-                    const retryCombo = document.querySelector('.goog-te-combo');
-                    if (retryCombo) {
-                        retryCombo.value = langCode;
-                        retryCombo.dispatchEvent(new Event('change'));
-                        
-                        langItems.forEach(item => {
-                            if (item.getAttribute('data-lang') === langCode) {
-                                item.classList.add('active');
-                            } else {
-                                item.classList.remove('active');
-                            }
-                        });
-                    } else {
-                        // Fallback reload so that Google Translate picks up the cookie!
-                        window.location.reload();
-                    }
-                }, 500);
             }
-        }
-
-        // Click interaction on language items
-        langItems.forEach(item => {
-            item.addEventListener('click', function() {
-                const langCode = this.getAttribute('data-lang');
-                triggerTranslation(langCode);
-                langDropdownMenu.classList.remove('active');
-            });
         });
-
-        // On page load, highlight the active language from cookie if present
-        const match = document.cookie.match(/googtrans=\/en\/([a-zA-Z\-]+)/);
-        if (match && match[1]) {
-            const activeLang = match[1];
-            langItems.forEach(item => {
-                if (item.getAttribute('data-lang') === activeLang) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
-            });
-        }
-    });
-</script>
-{% block extra_js %}{% endblock %}
+    </script>
+    {% block extra_js %}{% endblock %}
 </body>
+
 </html>

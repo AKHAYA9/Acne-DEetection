@@ -35,10 +35,10 @@ urlpatterns = [
     path("UserHistory/", usr.history, name="UserHistory"),
     path("DeletePrediction/<int:id>/", usr.DeletePrediction, name="DeletePrediction"),
     path("UserLogout/", usr.UserLogout, name="UserLogout"),
-    # Forgot Password Flow
     path("ForgotPassword/", usr.ForgotPassword, name="ForgotPassword"),
     path("VerifyOTP/",      usr.VerifyOTP,      name="VerifyOTP"),
     path("ResetPassword/",  usr.ResetPassword,  name="ResetPassword"),
+    path("ContactSupport/", mainView.ContactSupport, name="ContactSupport"),
 ]
 
 if settings.DEBUG:

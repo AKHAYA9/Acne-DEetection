@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Home | DERMA.AI{% endblock %}
+{% block title %}Home | Acne Ai{% endblock %}
 
 {% block contents %}
 <style>
@@ -413,18 +413,29 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: flex-end;
         width: 14%;
+        height: 110px;
     }
 
     .chart-bar {
         width: 100%;
         border-radius: 6px 6px 0 0;
-        background: rgba(0, 128, 255, 0.2);
+        background: linear-gradient(to top, rgba(0, 128, 255, 0.4), rgba(0, 242, 254, 0.5));
         transition: all 0.3s ease;
         cursor: pointer;
     }
 
-    .chart-bar:hover,
+    body.light-theme .chart-bar {
+        background: linear-gradient(to top, rgba(0, 128, 255, 0.6), rgba(0, 242, 254, 0.8));
+    }
+
+    .chart-bar:hover {
+        transform: translateY(-3px);
+        filter: brightness(1.2);
+        box-shadow: 0 4px 12px rgba(0, 128, 255, 0.3);
+    }
+
     .chart-bar.bar-5 {
         background: linear-gradient(to top, #0080ff, #00f2fe);
         box-shadow: 0 4px 12px rgba(0, 128, 255, 0.3);
@@ -515,7 +526,7 @@
             <div class="col-lg-6 metrics-left animate-up">
                 <h2 class="metrics-title" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 2.4rem; background: linear-gradient(135deg, var(--text-main) 30%, #00f2fe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Model Core Architecture</h2>
                 <p class="metrics-desc mt-3 mb-4" style="font-size: 0.95rem; line-height: 1.6; color: var(--text-muted);">
-                    Our system implements an advanced, hybrid deep learning pipeline tailored specifically for precise multi-ethnic acne severity scoring and spot localization. By combining real-time detectors with state-of-the-art transfer learning extractors, DERMA.AI delivers medical-grade precision.
+                    Our system implements an advanced, hybrid deep learning pipeline tailored specifically for precise multi-ethnic acne severity scoring and spot localization. By combining real-time detectors with state-of-the-art transfer learning extractors, Acne Ai delivers medical-grade precision.
                 </p>
                 
                 <!-- Model Points List -->
