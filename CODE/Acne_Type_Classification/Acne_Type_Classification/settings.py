@@ -11,21 +11,27 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env file
+load_dotenv(os.path.join(BASE_DIR, '.env'))
+
+
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-uxjxzaiy1+#g0+s10-)+hjtza5=%14y_+dfhg04e@0o@s5*q)_'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-uxjxzaiy1+#g0+s10-)+hjtza5=%14y_+dfhg04e@0o@s5*q)_')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('true', '1', 't')
 
-ALLOWED_HOSTS = ['yourusername.pythonanywhere.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['yourusername.pythonanywhere.com', '127.0.0.1', 'localhost', 'localhost:7860', '0.0.0.0']
 
 
 # Application definition
@@ -74,16 +80,26 @@ WSGI_APPLICATION = 'Acne_Type_Classification.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'acne_detection_db',
-        'USER': 'root',
-        'PASSWORD': 'SPIDY1836W@a',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+DB_ENGINE = os.environ.get('DB_ENGINE', 'mysql').lower()
+
+if DB_ENGINE == 'sqlite':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get('DB_NAME', 'acne_detection_db'),
+            'USER': os.environ.get('DB_USER', 'root'),
+            'PASSWORD': os.environ.get('DB_PASSWORD', 'SPIDY1836W@a'),
+            'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
+            'PORT': os.environ.get('DB_PORT', '3306'),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -130,11 +146,11 @@ MEDIA_URL = '/media/'
 
 
 EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST          = 'smtp.gmail.com'
-EMAIL_PORT          = 587
-EMAIL_USE_TLS       = True
-EMAIL_HOST_USER     = 'akhayakumardash77@gmail.com'
-EMAIL_HOST_PASSWORD = 'uegb tuhq bitp qnwz'
-DEFAULT_FROM_EMAIL  = 'AcneDetect<admin>'  # ← DEFAULT_FROM_EMAIL not EMAIL_FROM_EMAIL
-ADMIN_EMAIL         = 'akhayakumardash77@gmail.com'
-SITE_URL            = 'http://127.0.0.1:8000'
+EMAIL_HOST          = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT          = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_USE_TLS       = os.environ.get('EMAIL_USE_TLS', 'True').lower() in ('true', '1', 't')
+EMAIL_HOST_USER     = os.environ.get('EMAIL_HOST_USER', 'akhayakumardash77@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'uegb tuhq bitp qnwz')
+DEFAULT_FROM_EMAIL  = os.environ.get('DEFAULT_FROM_EMAIL', 'AcneDetect<admin>')
+ADMIN_EMAIL         = os.environ.get('ADMIN_EMAIL', 'akhayakumardash77@gmail.com')
+SITE_URL            = os.environ.get('SITE_URL', 'http://127.0.0.1:8000')
