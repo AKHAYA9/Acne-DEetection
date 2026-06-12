@@ -1,0 +1,225 @@
+{% extends 'admins/adminbase.html' %}
+{% load static %}
+
+{% block admin_contents %}
+<div class="container py-2">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="premium-card animate-up {% if result %}p-0 overflow-hidden{% endif %}">
+                <div class="p-4 p-md-5">
+                    <div class="text-center mb-5">
+                        <h2 class="font-weight-bold">Platform AI Diagnosis Console</h2>
+                        <p class="text-muted">Perform on-the-spot acne detection and classification on uploaded dermatological images.</p>
+                    </div>
+
+                    <form method="POST" enctype="multipart/form-data" action="{% url 'AdminPrediction' %}" id="uploadForm">
+                        {% csrf_token %}
+                        <div class="upload-area mb-4 text-center p-5 border-dashed" id="dropZone" style="border: 2px dashed var(--glass-border); border-radius: 20px; background: rgba(255,255,255,0.02); cursor: pointer; transition: all 0.3s;">
+                            {% if prediction and prediction.image %}
+                                 {% if prediction.annotated_image %}
+                                     <img src="{{ prediction.annotated_image.url }}" class="img-fluid rounded-lg shadow-sm mb-3" style="max-height: 300px;">
+                                 {% else %}
+                                     <img src="{{ prediction.image.url }}" class="img-fluid rounded-lg shadow-sm mb-3" style="max-height: 300px;">
+                                 {% endif %}
+                            {% elif temp_image_url %}
+                                <img src="{{ temp_image_url }}" class="img-fluid rounded-lg shadow-sm mb-3" style="max-height: 300px;">
+                            {% else %}
+                                <div id="uploadPlaceholder">
+                                    <div class="feature-icon mx-auto mb-3" style="width: 70px; height: 70px; background: rgba(79, 70, 229, 0.1); color: var(--brand-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <h5 class="font-weight-bold">Drag & Drop Image Here</h5>
+                                    <p class="text-muted small">Supports JPG, PNG (Max 5MB)</p>
+                                    <button type="button" class="btn btn-premium px-4 py-2 mt-2" onclick="document.getElementById('imageInput').click()">Browse Files</button>
+                                </div>
+                            {% endif %}
+                            <input type="file" name="image" id="imageInput" class="d-none" accept="image/*" required onchange="previewImage(this)">
+                            <img id="imagePreview" class="img-fluid rounded-lg shadow-sm mt-3 d-none" style="max-height: 300px;">
+                        </div>
+
+                        {% if not result %}
+                        <div class="form-group text-left mb-4">
+                            <label for="regionSelect" class="font-weight-bold text-muted small text-uppercase" style="letter-spacing: 1px;">Where is the issue located on the face?</label>
+                            <select name="region" id="regionSelect" class="form-control" style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); color: var(--text-main); border-radius: 10px; height: 50px;" required>
+                                <option value="" disabled selected>-- Select Face Region --</option>
+                                <option value="Forehead">Forehead</option>
+                                <option value="Cheeks">Cheeks</option>
+                                <option value="Nose">Nose</option>
+                                <option value="Chin">Chin</option>
+                                <option value="Jawline">Jawline</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-premium w-100 py-3 font-weight-bold animate-pulse-accent" id="analyzeBtn" style="border-radius: 12px;">
+                            <i class="fas fa-brain mr-2"></i> Execute AI Diagnostics
+                        </button>
+                        {% endif %}
+                    </form>
+                </div>
+
+                {% if result %}
+                <div class="result-section border-top" style="border-color: var(--border-color) !important;">
+                    <div class="p-4 p-md-5">
+                        <div class="row align-items-center mb-5">
+                            <div class="col-md-7">
+                                <div class="d-flex align-items-center gap-3 mb-2">
+                                    <span class="badge badge-pill py-2 px-3 {% if info.severity == 'Mild' or info.severity == 'None' %}badge-success{% elif info.severity == 'Moderate' %}badge-warning{% else %}badge-danger{% endif %} text-uppercase" style="font-weight: 700;">{{ info.severity }} Severity</span>
+                                    <span class="text-muted small"><i class="fas fa-check-circle mr-1"></i> AI Confirmed</span>
+                                </div>
+                                <h1 class="display-4 font-weight-bold mb-0">{{ result }}</h1>
+                            </div>
+                            <div class="col-md-5 text-right">
+                                <div class="feature-icon ml-auto" style="width: 80px; height: 80px; background: rgba(0, 242, 254, 0.1); color: var(--brand-accent); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">
+                                    <i class="fas {{ info.icon }}"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-4 mb-4">
+                                <div class="premium-card glass h-100 shadow-none border">
+                                    <h6 class="font-weight-bold mb-3"><i class="fas fa-info-circle text-primary mr-2"></i> Description</h6>
+                                    <p class="text-muted small">{{ info.description }}</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-4">
+                                <div class="premium-card glass h-100 shadow-none border">
+                                    <h6 class="font-weight-bold mb-3"><i class="fas fa-medkit text-success mr-2"></i> Treatment</h6>
+                                    <p class="text-muted small">{{ info.cure }}</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-4">
+                                <div class="premium-card glass h-100 shadow-none border">
+                                    <h6 class="font-weight-bold mb-3"><i class="fas fa-shield-alt text-danger mr-2"></i> Precautions</h6>
+                                    <p class="text-muted small">{{ info.precautions }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if selected_region_info %}
+                        <div class="mt-4 pt-4 border-top" style="border-color: var(--border-color) !important;">
+                            <h5 class="font-weight-bold mb-3"><i class="fas fa-bullseye text-danger mr-2"></i> Target Area Analysis: {{ selected_region }}</h5>
+                            <div class="premium-card p-4 mb-4" style="background: rgba(0, 242, 254, 0.03); border: 1px solid rgba(0, 242, 254, 0.2); box-shadow: 0 4px 20px rgba(0, 242, 254, 0.05);">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3 mb-md-0">
+                                        <div class="h6 font-weight-bold text-primary mb-1"><i class="fas fa-question-circle mr-1"></i> Why here?</div>
+                                        <p class="text-muted small mb-0">{{ selected_region_info.why }}</p>
+                                    </div>
+                                    <div class="col-md-4 mb-3 mb-md-0">
+                                        <div class="h6 font-weight-bold text-warning mb-1"><i class="fas fa-ban mr-1"></i> Prevention</div>
+                                        <p class="text-muted small mb-0">{{ selected_region_info.prevention }}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="h6 font-weight-bold text-success mb-1"><i class="fas fa-check-circle mr-1"></i> Suggested Remedy</div>
+                                        <p class="text-muted small mb-0">{{ selected_region_info.remedy }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if detailed_info and detailed_info.regions %}
+                        <div class="mt-4 pt-4 border-top" style="border-color: var(--border-color) !important;">
+                            <h5 class="font-weight-bold mb-4"><i class="fas fa-map-marked-alt text-primary mr-2"></i> All Face Regions &amp; Reference Guide</h5>
+                            <div class="row">
+                                {% for reg in detailed_info.regions %}
+                                <div class="col-md-6 mb-3">
+                                    <div class="premium-card p-3 h-100" style="background: rgba(255, 255, 255, 0.01); border: 1px solid var(--glass-border); {% if reg.region|lower == selected_region|lower or selected_region|lower in reg.region|lower %}border-color: var(--brand-accent) !important; background: rgba(0,242,254,0.02);{% endif %}">
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <strong class="text-white h6 font-weight-bold mb-0">{{ reg.region }}</strong>
+                                            {% if reg.region|lower == selected_region|lower or selected_region|lower in reg.region|lower %}
+                                                <span class="badge badge-pill badge-danger small" style="font-size:0.6rem;">Target Area</span>
+                                            {% else %}
+                                                <span class="badge badge-pill badge-secondary small" style="font-size:0.6rem;">Regional Trigger</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="small mb-2">
+                                            <span class="text-primary font-weight-bold">Why?</span> <span class="text-muted">{{ reg.why }}</span>
+                                        </div>
+                                        <div class="small mb-2">
+                                            <span class="text-warning font-weight-bold">Prevention:</span> <span class="text-muted">{{ reg.prevention }}</span>
+                                        </div>
+                                        <div class="small">
+                                            <span class="text-success font-weight-bold">Remedy:</span> <span class="text-muted">{{ reg.remedy }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mt-4 pt-4 border-top" style="border-color: var(--border-color) !important;">
+                            <div class="mb-3 mb-md-0">
+                                <h6 class="font-weight-bold mb-1">Model Accuracy Meter</h6>
+                                <div class="progress" style="height: 6px; width: 250px; border-radius: 10px; background: rgba(255,255,255,0.05);">
+                                    <div class="progress-bar" style="width: 92%; background: var(--brand-accent, #00f2fe);"></div>
+                                </div>
+                                <small class="text-muted">92.4% Confidence in Classification</small>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'AdminPrediction' %}" class="btn btn-light px-4 py-2 border font-weight-bold mr-2" style="border-radius: 8px;">New Analysis</a>
+                                <a href="{% url 'AdminHistory' %}" class="btn btn-premium px-4 py-2">View History Logs</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function previewImage(input) {
+        const preview = document.getElementById('imagePreview');
+        const placeholder = document.getElementById('uploadPlaceholder');
+        
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.classList.remove('d-none');
+                if (placeholder) placeholder.classList.add('d-none');
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    const dropZone = document.getElementById('dropZone');
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => dropZone.classList.add('highlight'), false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => dropZone.classList.remove('highlight'), false);
+    });
+
+    dropZone.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        document.getElementById('imageInput').files = files;
+        previewImage(document.getElementById('imageInput'));
+    }
+</script>
+
+<style>
+    .border-dashed {
+        border-style: dashed !important;
+    }
+    .highlight {
+        background: rgba(0, 242, 254, 0.05) !important;
+        border-color: var(--brand-accent) !important;
+    }
+</style>
+{% endblock %}

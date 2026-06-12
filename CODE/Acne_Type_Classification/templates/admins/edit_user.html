@@ -1,7 +1,7 @@
 {% extends 'admins/adminbase.html' %}
 {% load static %}
 
-{% block contents %}
+{% block admin_contents %}
 <div class="animate-up">
     <div class="d-flex align-items-center justify-content-between mb-5">
         <div>
@@ -69,22 +69,35 @@
     .premium-card input, .premium-card select, .premium-card textarea {
         width: 100%;
         padding: 0.75rem 1rem;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border-color);
         border-radius: 8px;
-        background: #f9fafb;
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text-main);
         transition: all 0.2s;
     }
-    .premium-card input:focus {
+    body.light-theme .premium-card input, body.light-theme .premium-card select, body.light-theme .premium-card textarea {
+        background: #ffffff;
+        border-color: rgba(0, 0, 0, 0.08);
+        color: #1a202c;
+    }
+    .premium-card input:focus, .premium-card select:focus, .premium-card textarea:focus {
         outline: none;
-        border-color: #3b82f6;
-        background: #fff;
-        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        border-color: var(--brand-accent, #00f2fe);
+        box-shadow: 0 0 0 4px rgba(0, 242, 254, 0.15);
+    }
+    body.light-theme .premium-card input:focus, body.light-theme .premium-card select:focus, body.light-theme .premium-card textarea:focus {
+        border-color: var(--brand-accent, #0080ff);
+        box-shadow: 0 0 0 4px rgba(0, 128, 255, 0.15);
     }
     .field-locked input {
-        background-color: #f3f4f6 !important;
+        background-color: rgba(255, 255, 255, 0.02) !important;
         cursor: not-allowed;
-        color: #9ca3af;
+        color: var(--text-muted) !important;
         border-style: dashed;
+    }
+    body.light-theme .field-locked input {
+        background-color: #f3f4f6 !important;
+        color: #9ca3af !important;
     }
     .field-wrapper { position: relative; }
     .btn-password-toggle {

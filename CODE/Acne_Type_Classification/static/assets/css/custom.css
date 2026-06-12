@@ -54,6 +54,13 @@ body.light-theme {
     --bg-gradient: radial-gradient(circle at center, rgba(219, 234, 254, 0.4) 0%, #f4f6f8 100%);
 }
 
+body.light-theme .btn-premium {
+    color: #ffffff !important;
+}
+body.light-theme .btn-premium:hover {
+    color: #ffffff !important;
+}
+
 body {
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
     background: #080a0d;
@@ -705,4 +712,41 @@ body.light-theme .navbar-toggler i {
 
 body.light-theme .stats-column:not(:last-child)::after {
     background: rgba(0, 0, 0, 0.08);
+}
+
+/* Premium Table Styling */
+.table-premium {
+    color: var(--text-main) !important;
+}
+.table-premium tbody tr {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid var(--glass-border) !important;
+}
+.table-premium tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+.table-premium td {
+    color: var(--text-main) !important;
+    border-top: 1px solid var(--glass-border) !important;
+}
+.table-premium thead th {
+    color: var(--text-muted) !important;
+    border-bottom: 2px solid var(--glass-border) !important;
+}
+
+body.light-theme .table-premium tbody tr {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+    color: #1a202c !important;
+}
+body.light-theme .table-premium tbody tr:hover {
+    background: rgba(0, 0, 0, 0.02) !important;
+}
+body.light-theme .table-premium td {
+    color: #1a202c !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+body.light-theme .table-premium thead th {
+    color: var(--text-muted) !important;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.06) !important;
 }

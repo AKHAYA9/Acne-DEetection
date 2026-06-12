@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Acne Guide & Face Region Analysis{% endblock %}
+
+{% block contents %}
+<div class="container py-5">
+    <div class="text-center mb-5 animate-up">
+        <span class="badge badge-pill badge-primary px-3 py-2 mb-2 font-weight-bold" style="background: rgba(0, 242, 254, 0.1); color: var(--brand-accent); border: 1px solid rgba(0, 242, 254, 0.2);">CLINICAL GUIDELINES</span>
+        <h1 class="display-4 font-weight-bold">Acne Type &amp; Face Region Analysis</h1>
+        <p class="text-muted lead mx-auto" style="max-width: 600px;">An empirical guide to identifying acne types, their root physiological causes across different face regions, and suggested prevention remedies.</p>
+    </div>
+
+    <!-- Interactive Grid for 5 Acne Types -->
+    <div class="row mb-5 justify-content-center">
+        <!-- 1. CYSTS -->
+        <div class="col-lg-6 mb-4 animate-up">
+            <div class="premium-card h-100 p-4" style="border-top: 4px solid #ef4444;">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h3 class="font-weight-bold mb-0">1. Cysts &amp; Nodules</h3>
+                    <span class="badge badge-danger px-3 py-2 text-uppercase">Severe</span>
+                </div>
+                <p class="text-muted small mb-4"><strong>What is it?</strong> Large, painful, pus-filled acne lesions that form deep under the skin surface and are highly prone to permanent scarring.</p>
+                
+                <h6 class="font-weight-bold text-primary mb-3"><i class="fas fa-map-marker-alt mr-2"></i> Regional Breakdown:</h6>
+                <div class="pl-3 border-left" style="border-color: rgba(255,255,255,0.08) !important;">
+                    <div class="mb-3">
+                        <strong class="text-white small d-block">Forehead</strong>
+                        <span class="text-muted small">Excess oil production, hormonal fluctuations, stress, or hair styling products blocking pores.</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong class="text-white small d-block">Cheeks</strong>
+                        <span class="text-muted small">Bacterial transfer from phone screens, dirty pillowcases, hands, or mechanical friction.</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong class="text-white small d-block">Chin &amp; Jawline</strong>
+                        <span class="text-muted small">Hormonal activity (androgens), stress-induced cortisol spikes, and menstrual cycle triggers.</span>
+                    </div>
+                    <div>
+                        <strong class="text-white small d-block">Nose</strong>
+                        <span class="text-muted small">Extremely oily area with large pores that accumulate thick sebum and plug follicles.</span>
+                    </div>
+                </div>
+                
+                <div class="mt-4 pt-3 border-top" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <h6 class="font-weight-bold text-success mb-2"><i class="fas fa-hand-holding-medical mr-2"></i> Recommended Care:</h6>
+                    <p class="text-muted small mb-0">Requires clinical dermatologist attention. Recommended treatments include oral isotretinoin, prescription-strength topical applications, or hormonal therapies. Avoid popping or squeezing.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. PUSTULES -->
+        <div class="col-lg-6 mb-4 animate-up">
+            <div class="premium-card h-100 p-4" style="border-top: 4px solid #f59e0b;">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h3 class="font-weight-bold mb-0">2. Pustules</h3>
+                    <span class="badge badge-warning px-3 py-2 text-uppercase text-white" style="background:#f59e0b;">Moderate</span>
+                </div>
+                <p class="text-muted small mb-4"><strong>What is it?</strong> Red, inflamed skin bumps containing white or yellow pus near the surface of the skin.</p>
+                
+                <h6 class="font-weight-bold text-primary mb-3"><i class="fas fa-map-marker-alt mr-2"></i> Regional Breakdown:</h6>
+                <div class="pl-3 border-left" style="border-color: rgba(255,255,255,0.08) !important;">
+                    <div class="mb-3">
+                        <strong class="text-white small d-block">Forehead</strong>
+                        <span class="text-muted small">Excess sebum combined with sweat accumulation under hats or hairlines.</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong class="text-white small d-block">Cheeks</strong>
+                        <span class="text-muted small">Transfer of bacteria from dirty fingers, makeup tools, or comedogenic cosmetics.</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong class="text-white small d-block">Chin</strong>
+                        <span class="text-muted small">Hormonal acne flare-ups or friction from resting chin on hands.</span>
+                    </div>
+                    <div>
+                        <strong class="text-white small d-block">Nose</strong>
+                        <span class="text-muted small">Infection of clogged pores by acne-causing bacteria.</span>
+                    </div>
+                </div>
+                
+                <div class="mt-4 pt-3 border-top" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <h6 class="font-weight-bold text-success mb-2"><i class="fas fa-hand-holding-medical mr-2"></i> Recommended Care:</h6>
+                    <p class="text-muted small mb-0">Use benzoyl peroxide washes, topical retinoids, or salicylic acid spot treatments. Keep the face clean and avoid heavy, oil-based foundations.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. PAPULES -->
+        <div class="col-lg-6 mb-4 animate-up">
+            <div class="premium-card h-100 p-4" style="border-top: 4px solid #facc15;">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h3 class="font-weight-bold mb-0">3. Papules</h3>
+                    <span class="badge badge-warning px-3 py-2 text-uppercase text-dark" style="background:#facc15;">Mild to Mod</span>
+                </div>
+                <p class="text-muted small mb-4"><strong>What is it?</strong> Small, firm, red inflamed bumps on the skin surface that do not contain visible pus.</p>
+                
+                <h6 class="font-weight-bold text-primary mb-3"><i class="fas fa-map-marker-alt mr-2"></i> Regional Breakdown:</h6>
+                <div class="pl-3 border-left" style="border-color: rgba(255,255,255,0.08) !important;">
+                    <div class="mb-3">
+                        <strong class="text-white small d-block">Forehead</strong>
+                        <span class="text-muted small">Early stages of pore blockage caused by cellular debris and oil.</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong class="text-white small d-block">Cheeks</strong>
+                        <span class="text-muted small">Skin irritation, sweat accumulation, or friction from masks/clothing.</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong class="text-white small d-block">Jawline</strong>
+                        <span class="text-muted small">Hormonal signals swelling the sebaceous glands.</span>
+                    </div>
+                    <div>
+                        <strong class="text-white small d-block">Nose</strong>
+                        <span class="text-muted small">Irritation of localized clogged follicles due to excessive sebum.</span>
+                    </div>
+                </div>
+                
+                <div class="mt-4 pt-3 border-top" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <h6 class="font-weight-bold text-success mb-2"><i class="fas fa-hand-holding-medical mr-2"></i> Recommended Care:</h6>
+                    <p class="text-muted small mb-0">Cleanse gently without rubbing. Apply salicylic acid cleansers or topical retinoids (such as adapalene) at night. Soothe inflammation with niacinamide.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. WHITEHEADS -->
+        <div class="col-lg-6 mb-4 animate-up">
+            <div class="premium-card h-100 p-4" style="border-top: 4px solid #10b981;">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h3 class="font-weight-bold mb-0">4. Whiteheads</h3>
+                    <span class="badge badge-success px-3 py-2 text-uppercase">Mild</span>
+                </div>
+                <p class="text-muted small mb-4"><strong>What is it?</strong> Closed clogged pores where oil, keratin, and dead skin cells remain trapped beneath a thin layer of skin.</p>
+                
+                <h6 class="font-weight-bold text-primary mb-3"><i class="fas fa-map-marker-alt mr-2"></i> Regional Breakdown:</h6>
+                <div class="pl-3 border-left" style="border-color: rgba(255,255,255,0.08) !important;">
+                    <div class="mb-3">
+                        <strong class="text-white small d-block">Forehead</strong>
+                        <span class="text-muted small">Trapped oil under dry dead cells. Common with dry skin or lack of exfoliation.</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong class="text-white small d-block">Nose</strong>
+                        <span class="text-muted small">Follicles clogged at the surface. Avoid extraction tools which expand pores.</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong class="text-white small d-block">Chin</strong>
+                        <span class="text-muted small">Hormonal shifts altering the thickness of natural oils.</span>
+                    </div>
+                    <div>
+                        <strong class="text-white small d-block">Cheeks</strong>
+                        <span class="text-muted small">Pore-plugging ingredients from heavy night creams or cosmetic powders.</span>
+                    </div>
+                </div>
+                
+                <div class="mt-4 pt-3 border-top" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <h6 class="font-weight-bold text-success mb-2"><i class="fas fa-hand-holding-medical mr-2"></i> Recommended Care:</h6>
+                    <p class="text-muted small mb-0">Over-the-counter salicylic acid or glycolic acid (AHAs) cleansers. Exfoliate regularly and hydrate with non-comedogenic gel moisturizers.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. BLACKHEADS -->
+        <div class="col-lg-6 mb-4 animate-up">
+            <div class="premium-card h-100 p-4" style="border-top: 4px solid #10b981;">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h3 class="font-weight-bold mb-0">5. Blackheads</h3>
+                    <span class="badge badge-success px-3 py-2 text-uppercase">Mild</span>
+                </div>
+                <p class="text-muted small mb-4"><strong>What is it?</strong> Open clogged pores where sebum and skin cells are exposed to air, oxidizing and turning dark brown or black.</p>
+                
+                <h6 class="font-weight-bold text-primary mb-3"><i class="fas fa-map-marker-alt mr-2"></i> Regional Breakdown:</h6>
+                <div class="pl-3 border-left" style="border-color: rgba(255,255,255,0.08) !important;">
+                    <div class="mb-3">
+                        <strong class="text-white small d-block">Nose (Most Common)</strong>
+                        <span class="text-muted small">High density of sebaceous glands and large open pores prone to oxidation.</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong class="text-white small d-block">Forehead</strong>
+                        <span class="text-muted small">Oily T-zone accumulating oil and environmental debris in open follicles.</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong class="text-white small d-block">Chin</strong>
+                        <span class="text-muted small">Hormonal sebum accumulation in chin crevices.</span>
+                    </div>
+                    <div>
+                        <strong class="text-white small d-block">Cheeks</strong>
+                        <span class="text-muted small">Environmental dust, makeup residue, and oil collecting in cheek pores.</span>
+                    </div>
+                </div>
+                
+                <div class="mt-4 pt-3 border-top" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <h6 class="font-weight-bold text-success mb-2"><i class="fas fa-hand-holding-medical mr-2"></i> Recommended Care:</h6>
+                    <p class="text-muted small mb-0">Regular application of Salicylic Acid (BHA) to dissolve oil within the pores. Use clay masks weekly to absorb surface sebum. Avoid physical pore strips.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Face Mapping Analysis Section -->
+    <div class="row">
+        <div class="col-lg-12 animate-up">
+            <div class="premium-card p-4 p-md-5">
+                <div class="mb-4">
+                    <h3 class="font-weight-bold"><i class="fas fa-compress-alt text-primary mr-2"></i> Face Region &amp; Common Triggers</h3>
+                    <p class="text-muted small">A simplified reference list mapping specific face regions to their primary everyday triggers.</p>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-premium small mb-0">
+                        <thead>
+                            <tr class="text-muted">
+                                <th>Face Region</th>
+                                <th>Primary Everyday Causes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-weight-bold"><i class="fas fa-circle text-primary mr-2" style="font-size:0.5rem;"></i> Forehead</td>
+                                <td>Excessive oil production, stress, sweat buildup, and hair care products (pomades/sprays) blocking pores.</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold"><i class="fas fa-circle text-primary mr-2" style="font-size:0.5rem;"></i> Cheeks</td>
+                                <td>Dirty pillowcases, bacteria from cell phone screens, touching face with unwashed hands, and thick cosmetics.</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold"><i class="fas fa-circle text-primary mr-2" style="font-size:0.5rem;"></i> Nose</td>
+                                <td>Concentration of large oil pores, excess natural oil production, and dead skin buildup on the middle face area.</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold"><i class="fas fa-circle text-primary mr-2" style="font-size:0.5rem;"></i> Chin</td>
+                                <td>Hormonal changes (especially stress or cycle hormones), dietary choices, and stress.</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold"><i class="fas fa-circle text-primary mr-2" style="font-size:0.5rem;"></i> Jawline</td>
+                                <td>Hormonal cycles, internal chemistry shifts, and friction from chin straps, masks, or tight collars.</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold"><i class="fas fa-circle text-primary mr-2" style="font-size:0.5rem;"></i> Around Eyebrows</td>
+                                <td>Hair treatments, sweat running down the forehead, and oil gland buildup near the brows.</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold"><i class="fas fa-circle text-primary mr-2" style="font-size:0.5rem;"></i> Around Mouth</td>
+                                <td>Irritating food residue, lip balms with heavy waxes, toothpaste sensitivity, and hormonal shifts.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

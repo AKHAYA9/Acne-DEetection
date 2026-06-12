@@ -21,6 +21,9 @@ urlpatterns = [
     path('DeleteUsers/', admins.DeleteUsers, name='DeleteUsers'),
     path('EditUser/', admins.EditUser, name='EditUser'),
     path('approve-user/<uuid:token>/', admins.ApproveUserViaEmail, name='ApproveUserViaEmail'),
+    path("AdminPrediction/", admins.AdminPrediction, name="AdminPrediction"),
+    path("AdminHistory/", admins.AdminHistory, name="AdminHistory"),
+    path("AdminDeletePrediction/<int:id>/", admins.AdminDeletePrediction, name="AdminDeletePrediction"),
 
 
   
@@ -34,6 +37,8 @@ urlpatterns = [
     path("capture_prediction/", usr.capture_prediction, name="capture_prediction"),
     path("UserHistory/", usr.history, name="UserHistory"),
     path("DeletePrediction/<int:id>/", usr.DeletePrediction, name="DeletePrediction"),
+    path("DeleteSelectedPredictions/", usr.DeleteSelectedPredictions, name="DeleteSelectedPredictions"),
+    path("knowledge-base/", usr.knowledge_base, name="KnowledgeBase"),
     path("UserLogout/", usr.UserLogout, name="UserLogout"),
     path("ForgotPassword/", usr.ForgotPassword, name="ForgotPassword"),
     path("VerifyOTP/",      usr.VerifyOTP,      name="VerifyOTP"),

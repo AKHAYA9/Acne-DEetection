@@ -1,0 +1,95 @@
+{% extends 'admins/adminbase.html' %}
+{% load static %}
+
+{% block admin_contents %}
+<div class="animate-up">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="font-weight-bold mb-1">Global Diagnosis Logs</h2>
+            <p class="text-muted small mb-0">Audit, review, and manage all neural network predictions executed across the platform.</p>
+        </div>
+        <a href="{% url 'AdminPrediction' %}" class="btn btn-premium px-4 py-2">
+            <i class="fas fa-plus mr-2"></i> New Diagnosis
+        </a>
+    </div>
+
+    {% if records %}
+    <div class="premium-card p-0 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-premium align-middle mb-0">
+                <thead>
+                    <tr class="text-muted small">
+                        <th class="pl-4">User Info</th>
+                        <th>Classification Output</th>
+                        <th>Analysis Images</th>
+                        <th>Timestamp</th>
+                        <th>Inference Model</th>
+                        <th class="text-right pr-4">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td class="pl-4 py-3">
+                            {% if record.user %}
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="profile-avatar" style="width: 32px; height: 32px; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                        {{ record.user.name|slice:":1" }}
+                                    </div>
+                                    <div>
+                                        <div class="font-weight-bold small">{{ record.user.name }}</div>
+                                        <div class="text-muted" style="font-size: 0.72rem;">{{ record.user.email }}</div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <span class="badge badge-soft-primary px-3 py-2" style="border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 6px; font-weight: 600;">
+                                    <i class="fas fa-shield-alt mr-1"></i> Admin / System
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="font-weight-bold">{{ record.result }}</div>
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a href="{{ record.image.url }}" target="_blank" title="View Raw Image">
+                                    <img src="{{ record.image.url }}" class="rounded shadow-xs border" style="width: 45px; height: 45px; object-fit: cover;">
+                                </a>
+                                {% if record.annotated_image %}
+                                <a href="{{ record.annotated_image.url }}" target="_blank" title="View YOLO Detections">
+                                    <img src="{{ record.annotated_image.url }}" class="rounded shadow-xs border" style="width: 45px; height: 45px; object-fit: cover; border-color: var(--brand-accent) !important;">
+                                </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="small text-muted">{{ record.timestamp|date:"M d, Y" }}</div>
+                            <div class="extra-small text-muted" style="font-size: 0.7rem;">{{ record.timestamp|date:"P" }}</div>
+                        </td>
+                        <td>
+                            <code class="text-primary small" style="background: rgba(0, 242, 254, 0.05); padding: 2px 6px; border-radius: 4px;">
+                                {{ record.model_name|default:"YOLOv5 Space" }}
+                            </code>
+                        </td>
+                        <td class="text-right pr-4">
+                            <a href="{% url 'AdminDeletePrediction' record.id %}" class="btn btn-outline-danger btn-sm border-0 py-2 px-3" onclick="return confirm('Delete this diagnostic entry permanently from the platform database?')">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="premium-card text-center p-5">
+        <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px; background: rgba(79, 70, 229, 0.05); color: var(--text-muted); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+            <i class="fas fa-history"></i>
+        </div>
+        <h4 class="font-weight-bold">No Records Registered</h4>
+        <p class="text-muted mb-0 mx-auto" style="max-width: 400px;">No AI-driven diagnostic runs have been logged on the platform yet.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

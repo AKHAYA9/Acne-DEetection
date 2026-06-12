@@ -1,235 +1,281 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard — AcneCheck AI</title>
+
+{% block title %}Admin Dashboard — AcneCheck AI{% endblock %}
+
+{% block contents %}
+<style>
+    /* Styling for the elegant desktop admin navigation links */
+    .admin-nav-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px !important;
+        color: var(--text-muted) !important;
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        text-decoration: none !important;
+    }
     
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+    .admin-nav-link i {
+        width: 20px;
+        font-size: 1rem;
+        text-align: center;
+    }
+    
+    .admin-nav-link:hover {
+        color: var(--text-main) !important;
+        background: rgba(255, 255, 255, 0.05);
+        transform: translateX(4px);
+    }
+    
+    body.light-theme .admin-nav-link:hover {
+        background: rgba(0, 0, 0, 0.04);
+    }
+    
+    .admin-nav-link.active {
+        color: #0c0d12 !important;
+        background: var(--brand-accent, #00f2fe) !important;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(0, 242, 254, 0.25);
+    }
+    
+    body.light-theme .admin-nav-link.active {
+        color: #ffffff !important;
+        background: var(--brand-accent, #0080ff) !important;
+        box-shadow: 0 4px 15px rgba(0, 128, 255, 0.25);
+    }
+    
+    .admin-nav-link.text-danger:hover {
+        background: rgba(239, 68, 68, 0.1) !important;
+        color: #ef4444 !important;
+    }
 
-    <style>
-        :root {
-            --admin-sidebar-width: 280px;
-            --admin-bg: var(--bg-main);
-        }
+    /* Styling for the elegant mobile admin tabs */
+    .mobile-tab-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        color: var(--text-muted) !important;
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 500;
+        border-radius: 6px;
+        text-decoration: none !important;
+        transition: all 0.25s ease;
+    }
+    
+    .mobile-tab-link:hover {
+        color: var(--text-main) !important;
+        background: rgba(255, 255, 255, 0.05);
+    }
+    
+    body.light-theme .mobile-tab-link:hover {
+        background: rgba(0, 0, 0, 0.04);
+    }
+    
+    .mobile-tab-link.active {
+        color: #0c0d12 !important;
+        background: var(--brand-accent, #00f2fe) !important;
+        font-weight: 600;
+    }
+    
+    body.light-theme .mobile-tab-link.active {
+        color: #ffffff !important;
+        background: var(--brand-accent, #0080ff) !important;
+    }
+    
+    .mobile-tab-link.text-danger:hover {
+        background: rgba(239, 68, 68, 0.1) !important;
+        color: #ef4444 !important;
+    }
+    
+    /* Elegant and theme-responsive Profile Avatar */
+    .profile-avatar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--brand-accent, #00f2fe);
+        color: #0c0d12 !important;
+        font-weight: 700;
+        border-radius: 50%;
+        text-transform: uppercase;
+    }
+    body.light-theme .profile-avatar {
+        color: #ffffff !important;
+        background: var(--brand-accent, #0080ff);
+    }
 
-        body {
-            background: var(--admin-bg);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
-        }
+    /* Theme-aware overrides for table cards and text color consistency */
+    .table-premium tbody tr {
+        background: rgba(255, 255, 255, 0.02) !important;
+        border: 1px solid var(--glass-border) !important;
+    }
+    .table-premium tbody tr:hover {
+        background: rgba(255, 255, 255, 0.05) !important;
+    }
+    body.light-theme .table-premium tbody tr {
+        background: #ffffff !important;
+        border: 1px solid rgba(0, 0, 0, 0.06) !important;
+        color: #1a202c !important;
+    }
+    body.light-theme .table-premium tbody tr:hover {
+        background: rgba(0, 0, 0, 0.02) !important;
+    }
+    body.light-theme .table-premium thead th {
+        color: var(--text-muted) !important;
+    }
+    
+    /* Dynamic styling for table code text and labels */
+    .table-premium code.text-primary {
+        color: var(--brand-accent, #00f2fe) !important;
+    }
+    body.light-theme .table-premium code.text-primary {
+        color: var(--brand-accent, #0080ff) !important;
+    }
+    
+    /* Ensure table text color matches design system in both themes */
+    .table-premium {
+        color: var(--text-main) !important;
+    }
+    .table-premium td {
+        color: var(--text-main) !important;
+    }
+    body.light-theme .table-premium td {
+        color: #1a202c !important;
+    }
+    
+    /* Theme-aware premium dashboard action buttons */
+    .btn-dashboard-primary {
+        background: var(--brand-accent, #00f2fe) !important;
+        color: #0c0d12 !important;
+        border: none !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 15px rgba(0, 242, 254, 0.25) !important;
+        transition: all 0.3s ease !important;
+    }
+    .btn-dashboard-primary:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4) !important;
+    }
+    body.light-theme .btn-dashboard-primary {
+        color: #ffffff !important;
+        background: var(--brand-accent, #0080ff) !important;
+        box-shadow: 0 4px 15px rgba(0, 128, 255, 0.25) !important;
+    }
+    body.light-theme .btn-dashboard-primary:hover {
+        box-shadow: 0 6px 20px rgba(0, 128, 255, 0.4) !important;
+    }
+    
+    .btn-dashboard-action {
+        background: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid var(--glass-border) !important;
+        color: var(--text-main) !important;
+        font-weight: 700 !important;
+        transition: all 0.3s ease !important;
+    }
+    .btn-dashboard-action:hover {
+        background: rgba(255, 255, 255, 0.08) !important;
+        transform: translateY(-2px) !important;
+        color: var(--text-main) !important;
+    }
+    body.light-theme .btn-dashboard-action {
+        background: #ffffff !important;
+        border-color: rgba(0, 0, 0, 0.08) !important;
+        color: #1a202c !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    }
+    body.light-theme .btn-dashboard-action:hover {
+        background: rgba(0, 0, 0, 0.02) !important;
+        color: #1a202c !important;
+    }
+</style>
 
-        /* Sidebar Styling */
-        #sidebar {
-            width: var(--admin-sidebar-width);
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background: #0f172a; /* Slate 900 */
-            color: #fff;
-            z-index: 1000;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        #content {
-            margin-left: var(--admin-sidebar-width);
-            min-height: 100vh;
-            transition: all 0.3s;
-            padding: 2rem;
-        }
-
-        .sidebar-header {
-            padding: 2rem;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .brand-text {
-            font-size: 1.25rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-        }
-
-        .sidebar-menu {
-            padding: 1.5rem 1rem;
-            list-style: none;
-            margin: 0;
-        }
-
-        .sidebar-menu li {
-            margin-bottom: 0.5rem;
-        }
-
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            padding: 0.85rem 1.25rem;
-            color: #94a3b8;
-            text-decoration: none !important;
-            border-radius: 12px;
-            transition: all 0.2s;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .sidebar-link i {
-            width: 20px;
-            margin-right: 12px;
-            font-size: 1.1rem;
-        }
-
-        .sidebar-link:hover {
-            color: #fff;
-            background: rgba(255,255,255,0.05);
-        }
-
-        .sidebar-link.active {
-            color: #fff;
-            background: var(--brand-primary);
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
-        }
-
-        .sidebar-section-title {
-            padding: 1.5rem 1.25rem 0.5rem;
-            font-size: 0.7rem;
-            font-weight: 800;
-            color: #475569;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        /* Top Bar */
-        .admin-top-bar {
-            background: rgba(17, 37, 38, 0.8);
-            backdrop-filter: blur(12px);
-            padding: 1rem 2rem;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: -2rem -2rem 2rem -2rem;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .user-profile-pill {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 6px 6px 6px 16px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 50px;
-            border: 1px solid var(--border-color);
-        }
-
-        .profile-avatar {
-            width: 32px;
-            height: 32px;
-            background: var(--brand-primary);
-            color: #0f172a;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.8rem;
-        }
-
-        @media (max-width: 991.98px) {
-            #sidebar { left: -280px; }
-            #content { margin-left: 0; }
-            body.sidebar-open #sidebar { left: 0; }
-            body.sidebar-open #content { transform: translateX(280px); }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Sidebar -->
-    <nav id="sidebar">
-        <div class="sidebar-header">
-            <div class="d-flex align-items-center gap-3 mb-1">
-                <div class="brand-icon" style="width: 35px; height: 35px; background: var(--brand-primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff;">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <span class="brand-text">ADMIN.HUB</span>
-            </div>
-            <small class="text-muted" style="font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase;">Control Systems v2.4</small>
-        </div>
-
-        <ul class="sidebar-menu">
-            <div class="sidebar-section-title">Core Panel</div>
-            <li>
-                <a href="{% url 'AdminHome' %}" class="sidebar-link {% if request.resolver_match.url_name == 'AdminHome' %}active{% endif %}">
-                    <i class="fas fa-columns"></i> Dashboard
-                </a>
-            </li>
-            
-            <div class="sidebar-section-title">User Management</div>
-            <li>
-                <a href="{% url 'RegisterUsersView' %}" class="sidebar-link {% if request.resolver_match.url_name == 'RegisterUsersView' %}active{% endif %}">
-                    <i class="fas fa-users"></i> Platform Users
-                </a>
-            </li>
-
-            <div class="sidebar-section-title">System</div>
-            <li>
-                <a href="{% url 'UserLogin' %}" class="sidebar-link text-danger">
-                    <i class="fas fa-power-off"></i> Terminate Session
-                </a>
-            </li>
-        </ul>
-    </nav>
-
-    <!-- Main Content -->
-    <div id="content">
-        <div class="admin-top-bar">
-            <div class="d-flex align-items-center">
-                <button id="sidebarCollapse" class="btn btn-light d-lg-none mr-3">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <h6 class="mb-0 font-weight-bold text-white d-none d-md-block">Administrator Management Center</h6>
-            </div>
-            
-            <div class="user-profile-pill">
-                <div class="small font-weight-bold text-white mr-2">System Administrator</div>
-                <div class="profile-avatar">AD</div>
-            </div>
-        </div>
-
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show border-0 shadow-sm mb-4" role="alert" style="border-radius: 12px;">
-                    <div class="d-flex align-items-center">
-                        <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %} mr-2"></i>
-                        {{ message }}
+<div class="container-fluid py-4" style="max-width: 1200px; min-height: 80vh;">
+    <div class="row">
+        <!-- Navigation Column -->
+        <div class="col-lg-3 mb-4">
+            <div class="premium-card p-3 sticky-top" style="top: 90px; z-index: 100;">
+                <div class="d-flex align-items-center gap-3 mb-4 px-3 pt-2">
+                    <div class="brand-icon d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 10px; color: var(--brand-accent);">
+                        <i class="fas fa-shield-alt" style="font-size: 1.2rem;"></i>
                     </div>
-                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                    <div>
+                        <h6 class="mb-0 font-weight-bold" style="letter-spacing: 0.5px;">ADMIN PANEL</h6>
+                        <small class="text-muted text-uppercase" style="font-size: 0.65rem; letter-spacing: 1.5px;">Control Hub</small>
+                    </div>
                 </div>
-            {% endfor %}
-        {% endif %}
 
-        {% block contents %}{% endblock %}
+                <!-- Desktop Nav list -->
+                <ul class="nav flex-column admin-nav d-none d-lg-flex" style="gap: 8px;">
+                    <li class="nav-item">
+                        <a href="{% url 'AdminHome' %}" class="nav-link admin-nav-link {% if request.resolver_match.url_name == 'AdminHome' %}active{% endif %}">
+                            <i class="fas fa-columns"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'AdminPrediction' %}" class="nav-link admin-nav-link {% if request.resolver_match.url_name == 'AdminPrediction' %}active{% endif %}">
+                            <i class="fas fa-stethoscope"></i> Predict
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'AdminHistory' %}" class="nav-link admin-nav-link {% if request.resolver_match.url_name == 'AdminHistory' %}active{% endif %}">
+                            <i class="fas fa-history"></i> History
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'KnowledgeBase' %}" class="nav-link admin-nav-link {% if request.resolver_match.url_name == 'KnowledgeBase' %}active{% endif %}">
+                            <i class="fas fa-book-medical"></i> Acne Guide
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'RegisterUsersView' %}" class="nav-link admin-nav-link {% if request.resolver_match.url_name == 'RegisterUsersView' or request.resolver_match.url_name == 'EditUser' %}active{% endif %}">
+                            <i class="fas fa-users"></i> Platform Users
+                        </a>
+                    </li>
+                    <li class="nav-item mt-3 pt-3 border-top" style="border-color: var(--glass-border) !important;">
+                        <a href="{% url 'UserLogout' %}" class="nav-link admin-nav-link text-danger">
+                            <i class="fas fa-power-off"></i> Logout Session
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Tab-bar (visible only on mobile) -->
+        <div class="col-12 d-lg-none mb-4">
+            <div class="premium-card p-2">
+                <div class="d-flex justify-content-around align-items-center py-1 mobile-admin-tabs" style="gap: 8px; overflow-x: auto; white-space: nowrap;">
+                    <a href="{% url 'AdminHome' %}" class="mobile-tab-link {% if request.resolver_match.url_name == 'AdminHome' %}active{% endif %}">
+                        <i class="fas fa-columns"></i> Dashboard
+                    </a>
+                    <a href="{% url 'AdminPrediction' %}" class="mobile-tab-link {% if request.resolver_match.url_name == 'AdminPrediction' %}active{% endif %}">
+                        <i class="fas fa-stethoscope"></i> Predict
+                    </a>
+                    <a href="{% url 'AdminHistory' %}" class="mobile-tab-link {% if request.resolver_match.url_name == 'AdminHistory' %}active{% endif %}">
+                        <i class="fas fa-history"></i> History
+                    </a>
+                    <a href="{% url 'KnowledgeBase' %}" class="mobile-tab-link {% if request.resolver_match.url_name == 'KnowledgeBase' %}active{% endif %}">
+                        <i class="fas fa-book-medical"></i> Guide
+                    </a>
+                    <a href="{% url 'RegisterUsersView' %}" class="mobile-tab-link {% if request.resolver_match.url_name == 'RegisterUsersView' or request.resolver_match.url_name == 'EditUser' %}active{% endif %}">
+                        <i class="fas fa-users"></i> Users
+                    </a>
+                    <a href="{% url 'UserLogout' %}" class="mobile-tab-link text-danger">
+                        <i class="fas fa-power-off"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Column -->
+        <div class="col-lg-9">
+            {% block admin_contents %}{% endblock %}
+        </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
-    <script>
-        $(document).ready(function () {
-            $('#sidebarCollapse').on('click', function () {
-                $('body').toggleClass('sidebar-open');
-            });
-        });
-    </script>
-</body>
-</html>
+</div>
+{% endblock %}

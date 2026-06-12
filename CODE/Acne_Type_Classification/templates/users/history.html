@@ -1,7 +1,60 @@
 {% extends 'users/userbase.html' %}
 {% load static %}
 
-{% block contents %}
+{% block user_contents %}
+<style>
+    .custom-card-select-label {
+        position: relative;
+        display: block;
+    }
+    
+    .select-indicator {
+        width: 30px;
+        height: 30px;
+        background: rgba(0, 0, 0, 0.4) !important;
+        border: 2px solid rgba(255, 255, 255, 0.75) !important;
+        color: #ffffff !important;
+        border-radius: 50%;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+    
+    .select-indicator i {
+        font-size: 0.75rem;
+        color: #ffffff !important;
+        opacity: 0;
+        transform: scale(0.5);
+        transition: all 0.2s ease;
+    }
+
+    /* Hover effect */
+    .custom-card-select-label:hover .select-indicator {
+        border-color: #0080ff !important;
+        background: rgba(0, 0, 0, 0.6) !important;
+    }
+
+    /* Selected state - WhatsApp Green */
+    .custom-card-select-label input[type="checkbox"]:checked + .select-indicator {
+        background: #25d366 !important;
+        border-color: #25d366 !important;
+        box-shadow: 0 2px 8px rgba(37, 211, 102, 0.4);
+    }
+    
+    .custom-card-select-label input[type="checkbox"]:checked + .select-indicator i {
+        opacity: 1 !important;
+        transform: scale(1) !important;
+    }
+    
+    /* Highlight the card itself when selected */
+    .premium-card.selected-card {
+        border-color: #0080ff !important;
+        box-shadow: 0 0 15px rgba(0, 128, 255, 0.15) !important;
+        transform: translateY(-2px);
+    }
+</style>
 <div class="container py-4">
     <div class="row align-items-center mb-5 animate-up">
         <div class="col-md-8">
@@ -15,39 +68,190 @@
         </div>
     </div>
 
-    <div class="row">
-        {% for record in records %}
-            {# Determine severity logic #}
-            {% if "cyst" in record.result|lower %}
-                {% with sev_class="badge-danger" sev_label="Severe" icon="fa-exclamation-circle" %}
-                    {% include "users/partials/history_card.html" %}
-                {% endwith %}
-            {% elif "papule" in record.result|lower or "pustule" in record.result|lower %}
-                {% with sev_class="badge-warning" sev_label="Moderate" icon="fa-info-circle" %}
-                    {% include "users/partials/history_card.html" %}
-                {% endwith %}
-            {% elif "blackhead" in record.result|lower or "whitehead" in record.result|lower %}
-                {% with sev_class="badge-success" sev_label="Mild" icon="fa-check-circle" %}
-                    {% include "users/partials/history_card.html" %}
-                {% endwith %}
-            {% else %}
-                {% with sev_class="badge-secondary" sev_label="Standard" icon="fa-circle" %}
-                    {% include "users/partials/history_card.html" %}
-                {% endwith %}
+    <form id="historyForm" method="POST" action="{% url 'DeleteSelectedPredictions' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" id="formAction" value="delete_selected">
+
+        {% if records %}
+        <!-- Selection & Action Bar -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-4 p-3 rounded-lg premium-card animate-up" style="border: 1px solid var(--border-color); gap: 15px;">
+            <div class="d-flex align-items-center">
+                <div class="custom-control custom-checkbox mr-3">
+                    <input type="checkbox" class="custom-control-input" id="selectAllCheckbox" style="cursor: pointer;">
+                    <label class="custom-control-label font-weight-bold text-main" for="selectAllCheckbox" style="cursor: pointer; user-select: none;">Select All</label>
+                </div>
+                <span class="text-muted small border-left pl-3" id="selectedCountText">0 items selected</span>
+            </div>
+            
+            <div class="d-flex align-items-center gap-2">
+                <!-- Delete Selected Button -->
+                <button type="button" class="btn btn-outline-danger btn-sm px-3 py-2 mr-2" id="deleteSelectedBtn" disabled onclick="confirmDeleteSelected()">
+                    <i class="fas fa-trash-alt mr-1"></i> Delete Selected
+                </button>
+                
+                <!-- Delete All Button -->
+                <button type="button" class="btn btn-danger btn-sm px-3 py-2" id="deleteAllBtn" onclick="confirmDeleteAll()">
+                    <i class="fas fa-dumpster-fire mr-1"></i> Delete All History
+                </button>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row">
+            {% for record in records %}
+                {# Determine severity logic #}
+                {% if "cyst" in record.result|lower %}
+                    {% with sev_class="badge-danger" sev_label="Severe" icon="fa-exclamation-circle" %}
+                        {% include "users/partials/history_card.html" %}
+                    {% endwith %}
+                {% elif "papule" in record.result|lower or "pustule" in record.result|lower %}
+                    {% with sev_class="badge-warning" sev_label="Moderate" icon="fa-info-circle" %}
+                        {% include "users/partials/history_card.html" %}
+                    {% endwith %}
+                {% elif "blackhead" in record.result|lower or "whitehead" in record.result|lower %}
+                    {% with sev_class="badge-success" sev_label="Mild" icon="fa-check-circle" %}
+                        {% include "users/partials/history_card.html" %}
+                    {% endwith %}
+                {% else %}
+                    {% with sev_class="badge-secondary" sev_label="Standard" icon="fa-circle" %}
+                        {% include "users/partials/history_card.html" %}
+                    {% endwith %}
+                {% endif %}
+
+            {% empty %}
+                <div class="col-12">
+                    <div class="premium-card text-center py-5 animate-up">
+                        <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); color: var(--text-muted); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+                            <i class="fas fa-folder-open"></i>
+                        </div>
+                        <h4 class="font-weight-bold">No Records Found</h4>
+                        <p class="text-muted mb-4 mx-auto" style="max-width: 400px;">Your assessment history is currently empty. Start your first AI-driven classification to see results here.</p>
+                        <a href="{% url 'prediction' %}" class="btn-premium px-5 py-3">Begin AI Analysis</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </form>
+
+    <!-- Pagination -->
+    {% if records.has_other_pages %}
+    <nav class="mt-5 animate-up">
+        <ul class="pagination justify-content-center">
+            {% if records.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="First" style="border-radius: 8px 0 0 8px; color: var(--brand-secondary); background: var(--bg-card); border-color: var(--border-color);">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ records.previous_page_number }}" aria-label="Previous" style="color: var(--brand-secondary); background: var(--bg-card); border-color: var(--border-color);">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                </li>
             {% endif %}
 
-        {% empty %}
-            <div class="col-12">
-                <div class="premium-card text-center py-5 animate-up">
-                    <div class="feature-icon mx-auto mb-4" style="width: 80px; height: 80px; background: #f1f5f9; color: #94a3b8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
-                        <i class="fas fa-folder-open"></i>
-                    </div>
-                    <h4 class="font-weight-bold">No Records Found</h4>
-                    <p class="text-muted mb-4 mx-auto" style="max-width: 400px;">Your assessment history is currently empty. Start your first AI-driven classification to see results here.</p>
-                    <a href="{% url 'prediction' %}" class="btn-premium px-5 py-3">Begin AI Analysis</a>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+            {% for num in records.paginator.page_range %}
+                {% if records.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link text-white font-weight-bold" style="background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); border-color: transparent;">{{ num }}</span>
+                    </li>
+                {% elif num > records.number|add:'-3' and num < records.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}" style="color: var(--text-main); background: var(--bg-card); border-color: var(--border-color);">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if records.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ records.next_page_number }}" aria-label="Next" style="color: var(--brand-secondary); background: var(--bg-card); border-color: var(--border-color);">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ records.paginator.num_pages }}" aria-label="Last" style="border-radius: 0 8px 8px 0; color: var(--brand-secondary); background: var(--bg-card); border-color: var(--border-color);">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const recordCheckboxes = document.querySelectorAll('.record-checkbox');
+            const selectedCountText = document.getElementById('selectedCountText');
+            const deleteSelectedBtn = document.getElementById('deleteSelectedBtn');
+            const historyForm = document.getElementById('historyForm');
+            const formAction = document.getElementById('formAction');
+
+            let isBatchUpdating = false;
+
+            function updateSelectionState() {
+                const checkedCount = document.querySelectorAll('.record-checkbox:checked').length;
+                selectedCountText.textContent = `${checkedCount} items selected`;
+                
+                // Highlight cards dynamically
+                recordCheckboxes.forEach(cb => {
+                    const card = cb.closest('.premium-card');
+                    if (card) {
+                        if (cb.checked) {
+                            card.classList.add('selected-card');
+                        } else {
+                            card.classList.remove('selected-card');
+                        }
+                    }
+                });
+
+                if (checkedCount > 0) {
+                    deleteSelectedBtn.removeAttribute('disabled');
+                } else {
+                    deleteSelectedBtn.setAttribute('disabled', 'disabled');
+                }
+
+                if (!isBatchUpdating) {
+                    if (recordCheckboxes.length > 0 && checkedCount === recordCheckboxes.length) {
+                        selectAllCheckbox.checked = true;
+                    } else {
+                        selectAllCheckbox.checked = false;
+                    }
+                }
+            }
+
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', function() {
+                    isBatchUpdating = true;
+                    const targetState = selectAllCheckbox.checked;
+                    recordCheckboxes.forEach(cb => {
+                        cb.checked = targetState;
+                        cb.dispatchEvent(new Event('change'));
+                    });
+                    isBatchUpdating = false;
+                    // Force final state sync
+                    selectAllCheckbox.checked = targetState;
+                });
+            }
+
+            recordCheckboxes.forEach(cb => {
+                cb.addEventListener('change', updateSelectionState);
+            });
+
+            window.confirmDeleteSelected = function() {
+                if (confirm('Are you sure you want to delete the selected history records?')) {
+                    formAction.value = 'delete_selected';
+                    historyForm.submit();
+                }
+            };
+
+            window.confirmDeleteAll = function() {
+                if (confirm('WARNING: Are you sure you want to delete ALL your diagnostic history records permanently? This action cannot be undone.')) {
+                    formAction.value = 'delete_all';
+                    historyForm.submit();
+                }
+            };
+        });
+    </script>
 </div>
 {% endblock %}

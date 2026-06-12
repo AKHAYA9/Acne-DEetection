@@ -198,3 +198,112 @@ def ApproveUserViaEmail(request, token):
         print("Approval email error:", e)
 
     return render(request, 'admins/approved_success.html', {'user': user})
+
+
+# =========================
+# ADMIN DIAGNOSTICS & HISTORY
+# =========================
+
+from users.models import AcnePredictionModel
+from users.views import query_huggingface_api, parse_prediction, get_severity_info, HF_SPACE_ID, get_detailed_acne_info
+import time
+
+def AdminPrediction(request):
+    if 'role' not in request.session or request.session['role'] != 'admin':
+        return redirect('UserLogin')
+        
+    if request.method == 'POST':
+        image_file = request.FILES.get('image')
+        if not image_file:
+            messages.error(request, "Please select an image file to upload.")
+            return render(request, 'admins/predict.html')
+            
+        try:
+            image_bytes = image_file.read()
+            image_file.seek(0)
+            
+            api_res = query_huggingface_api(image_bytes)
+            if isinstance(api_res, dict) and "error" in api_res:
+                raise Exception(api_res["error"])
+                
+            result_label = parse_prediction(api_res)
+            region = request.POST.get('region')
+            
+            record = AcnePredictionModel(
+                user=None,  # Saved as admin/system prediction
+                image=image_file,
+                result=result_label[:100],  # Ensure length safety
+                region=region,
+                model_name=f"HuggingFace/{HF_SPACE_ID}"
+            )
+            
+            # Draw boxes if coordinates are present in the response
+            if isinstance(api_res, list):
+                from PIL import Image, ImageDraw
+                import io
+                from django.core.files.base import ContentFile
+                try:
+                    img = Image.open(io.BytesIO(image_bytes))
+                    draw = ImageDraw.Draw(img)
+                    has_boxes = False
+                    for det in api_res:
+                        box = det.get('box')
+                        if box and len(box) == 4:
+                            has_boxes = True
+                            draw.rectangle(box, outline="#00f2fe", width=3)
+                            label_txt = f"{det.get('class', 'Acne')} {int(det.get('confidence', 0)*100)}%"
+                            draw.rectangle([box[0], max(0, box[1] - 15), box[0] + 120, box[1]], fill="#00f2fe")
+                            draw.text((box[0] + 2, max(0, box[1] - 15)), label_txt, fill="#0f172a")
+                    if has_boxes:
+                        out_io = io.BytesIO()
+                        img.save(out_io, format="JPEG")
+                        record.annotated_image.save(f"annotated_{int(time.time())}.jpg", ContentFile(out_io.getvalue()), save=False)
+                except Exception as draw_err:
+                    print(f"Error drawing boxes: {draw_err}")
+            
+            record.save()
+            info = get_severity_info(result_label)
+            detailed_info = get_detailed_acne_info(result_label)
+            
+            selected_region_info = None
+            if region and detailed_info and 'regions' in detailed_info:
+                for reg in detailed_info['regions']:
+                    if region.lower() in reg['region'].lower() or reg['region'].lower() in region.lower():
+                        selected_region_info = reg
+                        break
+            
+            return render(request, 'admins/predict.html', {
+                'result': result_label,
+                'prediction': record,
+                'info': info,
+                'detailed_info': detailed_info,
+                'selected_region': region,
+                'selected_region_info': selected_region_info
+            })
+        except Exception as e:
+            messages.error(request, f"Inference engine failure: {str(e)}")
+            return render(request, 'admins/predict.html')
+            
+    return render(request, 'admins/predict.html')
+
+
+def AdminHistory(request):
+    if 'role' not in request.session or request.session['role'] != 'admin':
+        return redirect('UserLogin')
+        
+    records = AcnePredictionModel.objects.all().order_by('-id')
+    return render(request, 'admins/history.html', {'records': records})
+
+
+def AdminDeletePrediction(request, id):
+    if 'role' not in request.session or request.session['role'] != 'admin':
+        return redirect('UserLogin')
+        
+    try:
+        record = AcnePredictionModel.objects.get(id=id)
+        record.delete()
+        messages.success(request, 'Diagnosis record archived/deleted successfully.')
+    except AcnePredictionModel.DoesNotExist:
+        messages.error(request, 'Record not found.')
+        
+    return redirect('AdminHistory')

@@ -37,10 +37,11 @@ class PasswordResetOTP(models.Model):                          # ← ADD THIS
 
 
 class AcnePredictionModel(models.Model):
-    user            = models.ForeignKey(UserRegistrationModel, on_delete=models.CASCADE)
+    user            = models.ForeignKey(UserRegistrationModel, on_delete=models.CASCADE, null=True, blank=True)
     image           = models.ImageField(upload_to='prediction_images/')
     annotated_image = models.ImageField(upload_to='prediction_images/', null=True, blank=True)
     result          = models.CharField(max_length=100)
+    region          = models.CharField(max_length=50, null=True, blank=True)
     model_name      = models.CharField(max_length=100, null=True, blank=True)
     timestamp       = models.DateTimeField(auto_now_add=True)
 

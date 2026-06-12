@@ -1,7 +1,7 @@
 {% extends 'admins/adminbase.html' %}
 {% load static %}
 
-{% block contents %}
+{% block admin_contents %}
 <div class="animate-up">
     <div class="premium-card bg-dark text-white p-5 border-0 shadow-lg mb-5 overflow-hidden position-relative">
         <div class="row align-items-center position-relative" style="z-index: 2;">
@@ -27,10 +27,10 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">User Base</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">128 Active</div>
+                            <div class="h5 mb-0 font-weight-bold">128 Active</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                            <i class="fas fa-users fa-2x text-muted"></i>
                         </div>
                     </div>
                 </div>
@@ -43,10 +43,10 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">AI Precision</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">94.8% Avg</div>
+                            <div class="h5 mb-0 font-weight-bold">94.8% Avg</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-brain fa-2x text-gray-300"></i>
+                            <i class="fas fa-brain fa-2x text-muted"></i>
                         </div>
                     </div>
                 </div>
@@ -59,10 +59,10 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Analyses Today</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">42 Requests</div>
+                            <div class="h5 mb-0 font-weight-bold">42 Requests</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-microscope fa-2x text-gray-300"></i>
+                            <i class="fas fa-microscope fa-2x text-muted"></i>
                         </div>
                     </div>
                 </div>
@@ -75,10 +75,10 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Server Load</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Low Latency</div>
+                            <div class="h5 mb-0 font-weight-bold">Low Latency</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-server fa-2x text-gray-300"></i>
+                            <i class="fas fa-server fa-2x text-muted"></i>
                         </div>
                     </div>
                 </div>
@@ -105,19 +105,19 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="font-weight-bold text-dark">User Authentication</td>
+                                <td class="font-weight-bold">User Authentication</td>
                                 <td>Security Engine</td>
                                 <td class="text-muted">2 mins ago</td>
                                 <td><span class="badge badge-success px-2 py-1">SUCCESS</span></td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold text-dark">Neural Inference</td>
+                                <td class="font-weight-bold">Neural Inference</td>
                                 <td>VGG16 Pipeline</td>
                                 <td class="text-muted">15 mins ago</td>
                                 <td><span class="badge badge-success px-2 py-1">SUCCESS</span></td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold text-dark">Database Sync</td>
+                                <td class="font-weight-bold">Database Sync</td>
                                 <td>PostgreSQL Core</td>
                                 <td class="text-muted">45 mins ago</td>
                                 <td><span class="badge badge-info px-2 py-1">SYNCED</span></td>
@@ -131,15 +131,15 @@
             <div class="premium-card h-100">
                 <h5 class="font-weight-bold mb-4">Quick Actions</h5>
                 <div class="d-grid gap-3">
-                    <a href="{% url 'RegisterUsersView' %}" class="btn-premium w-100 mb-3 py-3 text-center d-block" style="text-decoration: none;">
+                    <a href="{% url 'AdminPrediction' %}" class="btn btn-dashboard-primary w-100 mb-3 py-3 text-center d-block" style="text-decoration: none; border-radius: 10px;">
+                        <i class="fas fa-brain mr-2"></i> Execute AI Diagnosis
+                    </a>
+                    <a href="{% url 'AdminHistory' %}" class="btn btn-dashboard-action w-100 mb-3 py-3 text-center d-block font-weight-bold small" style="text-decoration: none; border-radius: 10px;">
+                        <i class="fas fa-history mr-2"></i> View Diagnosis Logs
+                    </a>
+                    <a href="{% url 'RegisterUsersView' %}" class="btn btn-dashboard-action w-100 mb-3 py-3 text-center d-block font-weight-bold small" style="text-decoration: none; border-radius: 10px;">
                         <i class="fas fa-user-cog mr-2"></i> User Management
                     </a>
-                    <button class="btn btn-light border w-100 mb-3 py-3 font-weight-bold small">
-                        <i class="fas fa-sync mr-2"></i> Recalibrate Engine
-                    </button>
-                    <button class="btn btn-light border w-100 py-3 font-weight-bold small text-danger">
-                        <i class="fas fa-exclamation-triangle mr-2"></i> System Maintenance
-                    </button>
                 </div>
             </div>
         </div>

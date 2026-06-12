@@ -9,7 +9,15 @@
                     <i class="fas fa-image fa-2x opacity-2"></i>
                 </div>
             {% endif %}
-            <div class="position-absolute top-0 right-0 p-3">
+            <div class="position-absolute p-3" style="top: 0; left: 0; z-index: 5;">
+                <label class="custom-card-select-label m-0">
+                    <input type="checkbox" name="selected_ids" value="{{ record.id }}" class="record-checkbox" style="position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none;">
+                    <div class="select-indicator">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </label>
+            </div>
+            <div class="position-absolute p-3" style="top: 0; right: 0; z-index: 5;">
                 <span class="badge {{ sev_class }} badge-pill py-2 px-3 shadow-sm text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.5px;">
                     <i class="fas {{ icon }} mr-1"></i> {{ sev_label }}
                 </span>
@@ -28,7 +36,7 @@
             </div>
 
             <div class="d-flex gap-2">
-                <button class="btn-premium-outline flex-grow-1 py-2 small font-weight-bold mr-2" data-toggle="modal" data-target="#predModal{{ record.id }}">
+                <button type="button" class="btn-premium-outline flex-grow-1 py-2 small font-weight-bold mr-2" data-toggle="modal" data-target="#predModal{{ record.id }}">
                     <i class="fas fa-expand-alt mr-1"></i> Details
                 </button>
                 <a href="{% url 'DeletePrediction' record.id %}" class="btn btn-outline-danger py-2 px-3 border-0" onclick="return confirm('Archive this record permanently?')">

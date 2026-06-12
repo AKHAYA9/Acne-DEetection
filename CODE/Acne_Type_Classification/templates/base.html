@@ -99,6 +99,29 @@
             color: #1e293b !important;
         }
 
+        /* Dynamic Theme Select Options and dropdown styling */
+        select, select.form-control {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            color: var(--text-main) !important;
+            border: 1px solid var(--glass-border) !important;
+        }
+
+        body.light-theme select, body.light-theme select.form-control {
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+            border-color: #cbd5e1 !important;
+        }
+
+        select option {
+            background-color: #0f172a !important;
+            color: #f8fafc !important;
+        }
+
+        body.light-theme select option {
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+        }
+
         body.light-theme .modal-content input::placeholder,
         body.light-theme .modal-content textarea::placeholder {
             color: #94a3b8 !important;
@@ -583,6 +606,17 @@
             margin: 0 auto;
         }
 
+        .auth-form-container .flash-messages {
+            position: relative !important;
+            top: 0 !important;
+            left: auto !important;
+            right: auto !important;
+            z-index: 10 !important;
+            padding: 0 !important;
+            max-width: 100% !important;
+            margin: 15px 0 15px 0 !important;
+        }
+
         /* ===== FOOTER ===== */
         .footer-main {
             background: #080a0d;
@@ -693,13 +727,24 @@
     <div class="sidebar-overlay" id="sbOverlay" onclick="closeSB()"></div>
     <div class="mobile-sidebar" id="mobileSB">
         <button class="sb-close" onclick="closeSB()"><i class="fas fa-times"></i></button>
-        <a href="{% url 'index' %}"><i class="fas fa-home"></i> Home</a>
-        <a href="#" data-toggle="modal" data-target="#projectModal" onclick="closeSB()"><i
-                class="fas fa-info-circle"></i> About the Model</a>
-        <a href="{% url 'UserLogin' %}" onclick="closeSB()"><i class="fas fa-database"></i> Dataset Registry</a>
-        <a href="#" data-toggle="modal" data-target="#projectModal" onclick="closeSB()"><i class="fas fa-file-alt"></i>
-            Documentation</a>
-        <a href="{% url 'UserLogin' %}" onclick="closeSB()"><i class="fas fa-sign-in-alt"></i> Sign In / Register</a>
+        {% if request.session.role == 'admin' %}
+            <a href="{% url 'AdminHome' %}" onclick="closeSB()"><i class="fas fa-columns"></i> Dashboard</a>
+            <a href="{% url 'AdminPrediction' %}" onclick="closeSB()"><i class="fas fa-stethoscope"></i> Predict</a>
+            <a href="{% url 'AdminHistory' %}" onclick="closeSB()"><i class="fas fa-history"></i> History</a>
+            <a href="{% url 'KnowledgeBase' %}" onclick="closeSB()"><i class="fas fa-book-medical"></i> Guide</a>
+            <a href="{% url 'RegisterUsersView' %}" onclick="closeSB()"><i class="fas fa-users"></i> Platform Users</a>
+            <a href="{% url 'UserLogout' %}" onclick="closeSB()" class="text-danger"><i class="fas fa-power-off"></i> Out</a>
+        {% elif request.session.role == 'user' %}
+            <a href="{% url 'UserHome' %}" onclick="closeSB()"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="{% url 'prediction' %}" onclick="closeSB()"><i class="fas fa-stethoscope"></i> Predict</a>
+            <a href="{% url 'UserHistory' %}" onclick="closeSB()"><i class="fas fa-history"></i> History</a>
+            <a href="{% url 'KnowledgeBase' %}" onclick="closeSB()"><i class="fas fa-book-medical"></i> Guide</a>
+            <a href="{% url 'UserLogout' %}" onclick="closeSB()" class="text-danger"><i class="fas fa-sign-out-alt"></i> Out</a>
+        {% else %}
+            <a href="{% url 'index' %}"><i class="fas fa-home"></i> Home</a>
+            <a href="#" data-toggle="modal" data-target="#projectModal" onclick="closeSB()"><i class="fas fa-info-circle"></i> About</a>
+            <a href="{% url 'UserLogin' %}" onclick="closeSB()"><i class="fas fa-sign-in-alt"></i> Register/Login</a>
+        {% endif %}
         <!-- Theme toggle row inside sidebar -->
         <div class="sb-theme-row"
             style="display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:24px;border-top:1px solid var(--border-color);">
@@ -731,13 +776,24 @@
 
             <!-- Desktop Navigation Links -->
             <ul class="nav-links">
-                <li><a href="{% url 'index' %}"
-                        class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">Home</a></li>
-                <li><a href="#" data-toggle="modal" data-target="#projectModal">About the Model</a></li>
-                <li><a href="{% url 'UserLogin' %}">Dataset Registry</a></li>
-                <li><a href="#" data-toggle="modal" data-target="#projectModal">Documentation</a></li>
-                <li style="margin-left: 10px;"><a href="{% url 'UserLogin' %}" class="nav-btn-pill">Sign In /
-                        Register</a></li>
+                {% if request.session.role == 'admin' %}
+                    <li><a href="{% url 'AdminHome' %}" class="{% if request.resolver_match.url_name == 'AdminHome' %}active{% endif %}">Dashboard</a></li>
+                    <li><a href="{% url 'AdminPrediction' %}" class="{% if request.resolver_match.url_name == 'AdminPrediction' %}active{% endif %}">Predict</a></li>
+                    <li><a href="{% url 'AdminHistory' %}" class="{% if request.resolver_match.url_name == 'AdminHistory' %}active{% endif %}">History</a></li>
+                    <li><a href="{% url 'KnowledgeBase' %}" class="{% if request.resolver_match.url_name == 'KnowledgeBase' %}active{% endif %}">Guide</a></li>
+                    <li><a href="{% url 'RegisterUsersView' %}" class="{% if request.resolver_match.url_name == 'RegisterUsersView' or request.resolver_match.url_name == 'EditUser' %}active{% endif %}">Platform Users</a></li>
+                    <li style="margin-left: 10px;"><a href="{% url 'UserLogout' %}" class="nav-btn-pill text-danger" style="border-color: #ef4444 !important; color: #ef4444 !important;">Out</a></li>
+                {% elif request.session.role == 'user' %}
+                    <li><a href="{% url 'UserHome' %}" class="{% if request.resolver_match.url_name == 'UserHome' %}active{% endif %}">Dashboard</a></li>
+                    <li><a href="{% url 'prediction' %}" class="{% if request.resolver_match.url_name == 'prediction' %}active{% endif %}">Predict</a></li>
+                    <li><a href="{% url 'UserHistory' %}" class="{% if request.resolver_match.url_name == 'UserHistory' %}active{% endif %}">History</a></li>
+                    <li><a href="{% url 'KnowledgeBase' %}" class="{% if request.resolver_match.url_name == 'KnowledgeBase' %}active{% endif %}">Guide</a></li>
+                    <li style="margin-left: 10px;"><a href="{% url 'UserLogout' %}" class="nav-btn-pill text-danger" style="border-color: #ef4444 !important; color: #ef4444 !important;">Out</a></li>
+                {% else %}
+                    <li><a href="{% url 'index' %}" class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">Home</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#projectModal">About</a></li>
+                    <li style="margin-left: 10px;"><a href="{% url 'UserLogin' %}" class="nav-btn-pill">Register/Login</a></li>
+                {% endif %}
             </ul>
 
             <!-- Right-aligned Action Group (Language Dropdown + Theme) -->
@@ -758,11 +814,12 @@
                             <input type="text" id="langSearchInput" class="lang-search-input"
                                 placeholder="Search language...">
                         </div>
-                        <div class="lang-list" id="langList">
+                        <div class="lang-list notranslate" id="langList">
                             <div class="lang-item active" data-lang="en">English</div>
                             <div class="lang-item" data-lang="es">Español (Spanish)</div>
                             <div class="lang-item" data-lang="hi">हिन्दी (Hindi)</div>
                             <div class="lang-item" data-lang="or">ଓଡ଼ିଆ (Odia)</div>
+                            <div class="lang-item" data-lang="te">తెలుగు (Telugu)</div>
                             <div class="lang-item" data-lang="fr">Français (French)</div>
                             <div class="lang-item" data-lang="ar">العربية (Arabic)</div>
                             <div class="lang-item" data-lang="de">Deutsch (German)</div>
@@ -1196,8 +1253,31 @@
             }, 150);
         }
 
-        /* ===== CONTACT FORM SMTP SUBMISSION ===== */
+        /* ===== CONTACT FORM SMTP SUBMISSION & FLASH MESSAGES MOVEMENT ===== */
         $(document).ready(function() {
+            // Relocate flash messages below header in auth forms
+            const $authHeaders = $('.auth-form-container .text-center');
+            if ($authHeaders.length > 0) {
+                $('.flash-messages').each(function() {
+                    const $msg = $(this);
+                    if ($authHeaders.length > 1) {
+                        $authHeaders.each(function() {
+                            $msg.clone().insertAfter($(this));
+                        });
+                        $msg.remove();
+                    } else {
+                        $msg.insertAfter($authHeaders);
+                    }
+                });
+            }
+
+            // Auto-dismiss alert messages after 3.5 seconds
+            setTimeout(function() {
+                $('.flash-messages .alert').fadeTo(500, 0).slideUp(500, function() {
+                    $(this).remove();
+                });
+            }, 3500);
+
             $('#contactModalForm').on('submit', function(event) {
                 event.preventDefault();
                 var form = $(this);
