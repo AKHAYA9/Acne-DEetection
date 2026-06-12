@@ -252,12 +252,13 @@ import time
 from django.core.files.base import ContentFile
 from django.http import JsonResponse
 
+import os
+import tempfile
+
 # Hugging Face Settings
 HF_API_TOKEN = os.environ.get("HF_API_TOKEN", "")
 HF_SPACE_ID = "Akhya/acne-yolo-api"
 
-import tempfile
-import os
 
 def query_huggingface_api(image_bytes):
     from gradio_client import Client, handle_file
