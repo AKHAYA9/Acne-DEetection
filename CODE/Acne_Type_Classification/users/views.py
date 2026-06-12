@@ -259,9 +259,9 @@ HF_SPACE_ID = "Akhya/acne-yolo-api"
 import tempfile
 import os
 
-from gradio_client import Client, handle_file
-
 def query_huggingface_api(image_bytes):
+    from gradio_client import Client, handle_file
+
     # Write image bytes to a temporary file because gradio_client requires a local file path
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
     try:
