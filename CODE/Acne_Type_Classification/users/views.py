@@ -270,8 +270,9 @@ def query_huggingface_api(image_bytes):
         temp_file.close()
         
         # Initialize Gradio Space Client
-        client = Client(HF_SPACE_ID, token=HF_API_TOKEN)
+        client = Client(HF_SPACE_ID, token=HF_API_TOKEN if HF_API_TOKEN else None)
         result = client.predict(
+
             image=handle_file(temp_file.name),
             api_name="/predict"
         )
